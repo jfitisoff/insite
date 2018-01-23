@@ -27,6 +27,11 @@ module Insite
       false
     end
 
+    def page_elements
+      []
+    end
+    alias_method :widget_elements, :page_elements
+
     # Returns the browser's URL.
     def url
       @browser.url

@@ -1,6 +1,6 @@
 module Insite
   class Feature
-    attr_reader :page, :page_elements, :browser
+    attr_reader :args, :page, :page_elements, :browser
 
     include Insite::CommonMethods
 
@@ -11,10 +11,19 @@ module Insite
       include Insite::WidgetMethods
     end # Self.
 
-    def initialize(page)
+    def initialize(site, **args)
+      if site.is_a? RecurlySite::Page # TODO: Bandaid.
+        @site  = site.site
+        @page  = site
+      elsif site.is_a? RecurlySite
+        @site  = site
+        @page  = site.page
+      end
+
+      @args    = args
       @page    = page
-      @browser = @page.browser
-      @page_elements = self.class.page_elements
+      @browser = @site.browser
+      @page_elements = @site.page_elements
     end
   end
 end

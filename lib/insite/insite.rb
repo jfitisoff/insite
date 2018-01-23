@@ -1,3 +1,5 @@
+require 'timeout'
+
 # Usage:
 #  require 'insite'
 #

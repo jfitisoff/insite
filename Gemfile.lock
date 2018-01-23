@@ -80,7 +80,7 @@ DEPENDENCIES
   rake
   rspec
   simplecov
-  watir
+  watir (>= 6.0.0)
   watir-scroll (>= 0.2.0)
 
 BUNDLED WITH

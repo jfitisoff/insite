@@ -187,6 +187,11 @@ module Insite
         else
           @target = @browser.send(dom_type, *args)
         end
+
+        # TODO: Continue looking at scolling solutions.
+        @target.scroll.to
+        wait_until(2) { break if @target.present?; sleep 0.2 }
+
       elsif dom_type.is_a? Watir::ElementCollection
         @dom_type = nil
         @args     = nil
@@ -215,30 +220,7 @@ module Insite
     #  # s.hosted_pages.refresh_urls
     def method_missing(mth, *args, &block)
       if @target.respond_to? mth
-        out = nil
-
-        begin
-          return @target.send(mth, *args, &block)
-        rescue(Watir::Exception::UnknownObjectException) => e
-          if @target.present?
-            [:center, :top, :bottom].each do |position|
-              puts "Could not access #{k} widget even though it appears to be present. Scrolling it to #{position} and retrying"
-
-              begin
-                @target.scroll.to(position)
-                sleep 0.2
-                out = @target.send(mth, *args, &block)
-                done = true
-                break if done
-              rescue(Watir::Exception::UnknownObjectException) => e2
-                puts "Scrolling to #{position} didn't work."
-              end
-            end
-          end
-
-          raise e2 unless done
-          out
-        end
+        @target.send(mth, *args, &block)
       else
         if args[0].is_a? Hash
           page_arguments = args[0]#.with_indifferent_access
@@ -259,7 +241,7 @@ module Insite
             sleep 0.2
           end
 
-          # Dynamic helper methods:
+          # Dynamic helper methods for status icons.
           if respond_to?(:status_icon) && mth.to_s =~ /^(is|has)_\S+\?$/ # Dynamic methods for status checks (if the widget has a status icon.)
             if match = mth.to_s.match(/^(is|has)_(\S+)\?$/)
               if match.to_a.last =~ /#{status_icon.status}/i
@@ -270,12 +252,16 @@ module Insite
             else
               return false
             end
-          elsif mth.to_s =~ /_link$/ # Returns a link element (no validation).
+          # Dynamic helper method, returns DOM object for link (no validation).
+          elsif mth.to_s =~ /_link$/
             return a(text: /^#{mth.to_s.sub(/_link$/, '').gsub('_', ' ')}/i)
-          elsif mth.to_s =~ /_button$/  # Returns a button element (no validation).
+          # Dynamic helper method, returns DOM object for button (no validation).
+          elsif mth.to_s =~ /_button$/
             return button(value: /^#{mth.to_s.sub(/_button$/, '').gsub('_', ' ')}/i)
+          # Dynamic helper method for widgets with a table, returns DOM object for row if match can be found on method text.
           elsif respond_to?(:table) && table.present? && tmp = find_row(mth)
             return tmp
+          # Dynamic helper method for links. If a match is found, clicks on the link and performs follow up actions.
           elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', ' ')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
@@ -301,6 +287,7 @@ module Insite
                 current_page = @site.page
               end
             end
+          # Dynamic helper method for buttons. If a match is found, clicks on the link and performs follow up actions.
           elsif elem = buttons.find { |x| x.text =~ /^#{mth.to_s.gsub('_', ' ')}/i || x.value =~ /^#{mth.to_s.gsub('_', ' ')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1

@@ -34,3 +34,5 @@ WATIR_METHODS = [
   :title, :titles, :tr, :track, :tracks, :trs, :tspan, :tspans, :u, :ul, :uls, :us,
   :use, :uses, :var, :vars, :video, :videos, :view, :views, :wbr, :wbrs
 ]
+
+DEFAULT_SCROLL_ORDER = %i(top bottom center)

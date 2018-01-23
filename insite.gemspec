@@ -54,6 +54,19 @@ Gem::Specification.new do |s|
   s.description = desc
   s.authors     = ["John Fitisoff"]
   s.email       = 'jfitisoff@yahoo.com'
+
+  s.add_runtime_dependency "activesupport"
+  s.add_runtime_dependency "addressable"
+  s.add_runtime_dependency "nokogiri"
+  s.add_runtime_dependency "watir", [">=6.0.0"]
+  s.add_runtime_dependency "watir-scroll", [">=0.2.0"]
+
+  s.add_development_dependency "coveralls"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec"
+
   s.files       = [
     "lib/insite.rb",
     "lib/insite/element_container/element_container.rb",
