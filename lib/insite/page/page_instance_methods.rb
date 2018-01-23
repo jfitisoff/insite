@@ -41,7 +41,7 @@ module Insite
       if @required_arguments.present? && !args
         @required_arguments.each do |arg|
           if @site.respond_to?(arg)
-            @arguments[arg]= site.send(arg)
+            @arguments[arg]= site.public_send(arg)
           elsif @site.arguments[arg]
             @arguments[arg]= @site.arguments[arg]
           else
@@ -56,15 +56,15 @@ module Insite
             if args[arg] #The hash has the required argument.
               @arguments[arg]= args[arg]
             elsif @site.respond_to?(arg)
-              @arguments[arg]= site.send(arg)
+              @arguments[arg]= site.public_send(arg)
             else
               raise PageInitError, "A required page argument is missing. #{args.class} was provided, but this object did not respond to :#{arg}, which is necessary to build an URL for the #{self.class.name} page.\n\n#{caller.join("\n")}"
             end
           elsif args # Some non-hash object was provided.
             if args.respond_to?(arg) #The hash has the required argument.
-              @arguments[arg]= args.send(arg)
+              @arguments[arg]= args.public_send(arg)
             elsif @site.respond_to?(arg)
-              @arguments[arg]= site.send(arg)
+              @arguments[arg]= site.public_send(arg)
             else
               raise PageInitError, "A required page argument is missing. #{args.class} was provided, but this object did not respond to :#{arg}, which is necessary to build an URL for the #{self.class.name} page.\n\n#{caller.join("\n")}"
             end

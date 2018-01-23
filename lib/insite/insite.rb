@@ -112,11 +112,11 @@ module Insite
   def method_missing(sym, *args, &block)
     original_page = @most_recent_page
     if original_page.respond_to?(sym)
-      original_page.send(sym, *args, &block)
+      original_page.public_send(sym, *args, &block)
     else
       new_page = page
       if new_page.respond_to?(sym)
-        page.send(sym, *args, &block)
+        page.public_send(sym, *args, &block)
       else
         if original_page == new_page
           raise NoMethodError, "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: #{@browser.url}\n\nBacktrace:\n#{caller.join("\n")}"

@@ -6,7 +6,7 @@ module Insite
         begin
           k = k.to_sym
           if @page_elements.include?(k)
-            elem = send(k)
+            elem = public_send(k)
 
             if [Watir::Alert, Watir::FileField, Watir::TextField, Watir::TextArea].include? elem.class
               elem.set v
@@ -15,7 +15,7 @@ module Insite
             elsif [Watir::Anchor, Watir::Button].include? html_element.class
               case v
               when Symbol
-                elem.send v
+                elem.public_send v
               when TrueClass
                 elem.click
               when FalseClass
@@ -37,7 +37,7 @@ module Insite
             else
               case v
               when Symbol
-                elem.send v
+                elem.public_send v
               when TrueClass
                 elem.set
               when FalseClass
@@ -47,16 +47,16 @@ module Insite
               end
             end
           elsif @widget_elements.include?(k)
-            w = send(k)
+            w = public_send(k)
 
             begin
               w.update(v)
             rescue => e
               begin
                 if v.is_a?(Array)
-                  send(k).update(v)
+                  public_send(k).update(v)
                 else
-                  send(k).update(*v)
+                  public_send(k).update(*v)
                 end
               rescue => e2
                 raise ArgumentError, "Dynamic method call failed for #{k}.", e2.backtrace
@@ -67,16 +67,16 @@ module Insite
             # to have the page track what widgets it has.
             begin
               if v.is_a?(Array)
-                send(k, *v)
+                public_send(k, *v)
               else
-                send(k, v)
+                public_send(k, v)
               end
             rescue => e
               begin
                 if v.is_a?(Array)
-                  send(k).update(v)
+                  public_send(k).update(v)
                 else
-                  send(k).update(*v)
+                  public_send(k).update(*v)
                 end
               rescue => e2
                 raise ArgumentError, "Dynamic method call failed for #{k}.", e2.backtrace

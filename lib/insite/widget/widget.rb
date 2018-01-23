@@ -189,9 +189,10 @@ module Insite
         end
 
         # TODO: Continue looking at scolling solutions.
-        @target.scroll.to
-        wait_until(2) { break if @target.present?; sleep 0.2 }
-
+        if @target.present?
+          @target.scroll.to
+          wait_until(2) { break if @target.present?; sleep 0.2 }
+        end
       elsif dom_type.is_a? Watir::ElementCollection
         @dom_type = nil
         @args     = nil
@@ -201,7 +202,7 @@ module Insite
           @target = dom_type.map { |x| self.class.new(@site, x.to_subtype) }
         end
       else
-        raise "Unhandled."
+        raise "Unhandled exception."
       end
     end
 

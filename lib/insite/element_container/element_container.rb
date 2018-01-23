@@ -1,62 +1,28 @@
 class ElementContainer
-  attr_reader :target
+  attr_reader :target, :site
 
   include Insite::CommonMethods
+  extend  Forwardable
 
   class << self
     include Insite::WatirMethods
-    include Insite::WidgetMethods
-    # # # Implement the same argument parsing the Watir::HTMLElement does because we're
-    # # # doing a pass-through.
-    # # private
-    # # def parse_args(args)
-    # #   case args.length
-    # #   when 2
-    # #     return { args[0] => args[1] }
-    # #   when 1
-    # #     obj = args.first
-    # #   return obj if obj.kind_of? Hash
-    # #   when 0
-    # #     return {}
-    # #   end
-    # # end
-    # # public
-    # #
-    # WATIR_METHODS.each do |mth|
-    #   define_method(mth) do |name=nil, *args|
-    #     el(name) { |b| b.send(mth, parse_args(args.flatten)) }
-    #   end
-    # end
-    #
-    # # For ElementContainer.
-    # def el(name, &block)
-    #   @page_elements ||= []
-    #   @page_elements << name.to_sym
-    #
-    #   define_method(name) do
-    #     begin
-    #       block.call(@target)
-    #     rescue(Watir::Exception::UnknownObjectException) => e
-    #       tmp = page
-    #
-    #       if tmp == @most_recent_page
-    #         raise e
-    #       else
-    #         @most_recent_page = tmp
-    #         block.call(@target)
-    #       end
-    #     end
-    #   end
-    # end
+    # include Insite::WidgetMethods
   end # self
 
-  def initialize(element)
-    @target = element
-  end
+  def initialize(site, element)
+    @site    = site
+    @browser = @site.browser
+    @target  = element
 
-  # def nokogiri
-  #   Nokogiri::HTML(html)
-  # end
+
+    # TODO: Continue looking at scolling solutions.
+    if @target.present?
+      @target.scroll.to
+      wait_until(2) { break if @target.present?; sleep 0.2 }
+    end
+
+    @target
+  end
 
   # For page widget code.
   def method_missing(sym, *args, &block)

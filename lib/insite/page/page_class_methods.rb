@@ -99,7 +99,7 @@ EOF
       @page_elements << name.to_sym
 
       define_method(name) do
-        self.class.const_get(cname).send(:new, @browser.send(type, *args))
+        self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))
       end
     end
     public
