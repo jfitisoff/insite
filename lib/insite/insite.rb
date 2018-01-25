@@ -177,6 +177,7 @@ module Insite
   #  s.open :firefox
   def open(browser = :firefox, **hsh)
     @browser = Watir::Browser.new(browser, **hsh)
+    self
   end
 
   # Looks at the page currently being displayed in the browser and tries to
@@ -214,6 +215,10 @@ module Insite
     else
       return UndefinedPage.new(self)
     end
+  end
+
+  def text
+    @browser.text
   end
 
   at_exit { @browser.close if @browser }

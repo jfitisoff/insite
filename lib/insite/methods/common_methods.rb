@@ -1,5 +1,17 @@
 module Insite
   module CommonMethods
+    def browser
+      @browser
+    end
+
+    def html
+      @browser.html
+    end
+
+    def site
+      @site
+    end
+
     def update_object(args={}) # test
       failed = []
       args.each do |k, v|

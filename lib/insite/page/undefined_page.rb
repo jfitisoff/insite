@@ -2,14 +2,18 @@ module Insite
   class UndefinedPage
     attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher
 
+    def defined?
+      false
+    end
+
+    def html
+      @browser.html
+    end
+
     def initialize(site)
       @site    = site
       @browser = @site.browser
       @url     = @site.browser.url
-    end
-
-    def defined?
-      false
     end
 
     def inspect
@@ -18,6 +22,10 @@ module Insite
 
     def method_missing(mth, *args, &block)
       raise NoMethodError, "#{self.class} does not support #{mth}. Current Page: #{page.class}. URL at failure: #{@browser.url}"
+    end
+
+    def nokogiri
+      @site.nokogiri
     end
 
     # Similar to the method that you can call on a page object you've defined (but always
