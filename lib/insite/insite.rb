@@ -16,14 +16,27 @@ module Insite
   def self.included(base)
     mod = Module.new
     base.const_set('WidgetMethods', mod)
-    klass = Class.new
-    base.const_set('Page', klass)
 
-    base::Page.send(:extend,  PageClassMethods)
-    base::Page.send(:extend,  WatirMethods)
-    base::Page.send(:extend,  WidgetMethods)
-    base::Page.send(:include, PageInstanceMethods)
+    klass = Class.new(DefinedPage)
+    base.const_set('DefinedPage', klass)
+    base::DefinedPage.send(:extend, WidgetMethods)
+
+    klass = Class.new(UndefinedPage)
+    base.const_set('UndefinedPage', klass)
   end
+
+
+  # def self.included(base)
+  #   mod = Module.new
+  #   base.const_set('WidgetMethods', mod)
+  #   klass1 = Class.new(DefinedPage)
+  #   base.const_set('Page', klass1)
+  #
+  #   base::Page.send(:extend,  PageClassMethods)
+  #   base::Page.send(:extend,  WatirMethods)
+  #   base::Page.send(:extend,  WidgetMethods)
+  #   base::Page.send(:include, PageInstanceMethods)
+  # end
 
   # Closes the site object's browser
   def close
@@ -59,7 +72,7 @@ module Insite
     @arguments   = hsh.with_indifferent_access
     @base_url    = base_url
     @browser     = @arguments[:browser]
-    @pages       = self.class::Page.descendants.reject { |p| p.page_template? }
+    @pages       = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
 
     # Set up accessor methods for each page and page checking methods..
     @pages.each do |current_page|
@@ -68,7 +81,7 @@ module Insite
 
         if current_page.url_matcher
           unless current_page.url_matcher.is_a? Regexp
-            raise PageConfigError, "A url_matcher was defined for the #{current_page} page but it was not a regular expression. Check the value provided to the set_url_matcher method in the class definition for this page. Object provided was a #{current_page.url_matcher.class.name}"
+            raise Insite::Errors::PageConfigError, "A url_matcher was defined for the #{current_page} page but it was not a regular expression. Check the value provided to the set_url_matcher method in the class definition for this page. Object provided was a #{current_page.url_matcher.class.name}"
           end
         end
 
@@ -188,7 +201,7 @@ module Insite
   # object. See the UndefinedPage class for more details.
   def page
     return @most_recent_page if @most_recent_page && @most_recent_page.on_page?
-    raise PageInitError, "Browser not initialized." unless @browser
+    raise Insite::Errors::PageInitError, "Browser not initialized." unless @browser
     url = @browser.url
 
     found_page = nil

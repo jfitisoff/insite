@@ -12,10 +12,10 @@ module Insite
     end # Self.
 
     def initialize(site, **args)
-      if site.is_a? RecurlySite::Page # TODO: Bandaid.
+      if site.is_a? DefinedPage # TODO: Bandaid.
         @site  = site.site
         @page  = site
-      elsif site.is_a? RecurlySite
+      elsif site.class.ancestors.include?(Insite)
         @site  = site
         @page  = site.page
       end

@@ -37,13 +37,12 @@ Gem::Specification.new do |s|
     "lib/insite/feature/feature.rb",
     "lib/insite/methods/common_methods.rb",
     "lib/insite/methods/watir_methods.rb",
-    "lib/insite/page/page_class_methods.rb",
-    "lib/insite/page/page_instance_methods.rb",
+    "lib/insite/page/defined_page.rb",
     "lib/insite/page/undefined_page.rb",
     "lib/insite/widget/widget_methods.rb",
     "lib/insite/widget/widget.rb",
     "lib/insite/constants.rb",
-    "lib/insite/exceptions.rb",
+    "lib/insite/errors.rb",
     "lib/insite/insite.rb",
     "lib/insite/version.rb"
   ]

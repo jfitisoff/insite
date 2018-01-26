@@ -7,7 +7,7 @@ require 'nokogiri'
 
 require "insite/constants"
 require "insite/insite"
-require "insite/exceptions"
+require "insite/errors"
 require "insite/version"
 
 # Modules containing methods that are used in more than one place. The files in
@@ -16,9 +16,8 @@ require "insite/version"
 require "insite/methods/watir_methods"
 require "insite/methods/common_methods"
 
-# Files for Insite::Page
-require "insite/page/page_class_methods"
-require "insite/page/page_instance_methods"
+# Files for pages (defined/undefined.)
+require "insite/page/defined_page"
 require "insite/page/undefined_page"
 
 # Files for Insite::Widget.
