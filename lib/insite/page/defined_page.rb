@@ -287,6 +287,7 @@ class DefinedPage
     @widget_elements = self.class.widget_elements ||= []
     # @widget_methods  = self.class.widget_methods ||= []
     @browser = site.browser
+    browser_check(@browser)
     @page_attributes = self.class.page_attributes
     @page_url = self.class.page_url
     @page_elements = self.class.page_elements
@@ -383,6 +384,8 @@ class DefinedPage
   end
 
   def on_page?
+    browser_check(@browser)
+
     url = @browser.url
 
     if @url_matcher

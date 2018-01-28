@@ -4,12 +4,44 @@ module Insite
       @browser
     end
 
-    def html
-      @browser.html
+    def browser_check(b)
+      if b.is_a?(Watir::Browser)
+        begin
+          unless b.exists?
+            raise(
+              Insite::Errors::BrowserNotOpenError,
+              "Browser check failed. The browser is no longer present."
+            )
+          end
+        rescue(Insite::Errors::BrowserNotOpenError) => e
+          raise e
+        rescue => e2
+          raise(
+            Insite::Errors::BrowserResponseError,
+            <<~eos
+            Browser check failed. The browser returned an #{e2} when it was queried.
+            Backtrace for the error:
+            #{e2.backtrace.join("\n")}
+            eos
+          )
+        end
+      elsif b.nil?
+        raise(
+          Insite::Errors::BrowserNotAvailableError,
+          "No browser available. Try calling site#open on your site object."
+        )
+      else
+        raise(
+          Insite::Errors::BrowserNotValidError,
+          "Expected: Watir::Browser. Actual: #{b.class}."
+        )
+      end
+
+      true
     end
 
-    def site
-      @site
+    def html
+      @browser.html
     end
 
     def update_object(args={}) # test

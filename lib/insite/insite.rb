@@ -7,7 +7,7 @@ require 'timeout'
 #    include Insite
 #  end
 module Insite
-  attr_reader :base_url, :unique_methods
+  attr_reader :base_url, :unique_methods, :browser_type
   attr_accessor :pages, :browser, :arguments, :most_recent_page
 
   # Automatically sets up a Page class when Insite is included. Probably overkill
@@ -69,10 +69,10 @@ module Insite
   #  => 1
   def initialize(base_url, *args, **hsh)
     hsh['arguments'] = args
-    @arguments   = hsh.with_indifferent_access
-    @base_url    = base_url
-    @browser     = @arguments[:browser]
-    @pages       = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
+    @arguments       = hsh.with_indifferent_access
+    @base_url        = base_url
+    @browser_type    = @arguments[:browser]
+    @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
 
     # Set up accessor methods for each page and page checking methods..
     @pages.each do |current_page|
@@ -188,8 +188,13 @@ module Insite
   # constructor. Example:
   #  s = SomeSite.new("http://foo.com")
   #  s.open :firefox
-  def open(browser = :firefox, **hsh)
-    @browser = Watir::Browser.new(browser, **hsh)
+  def open(btype = nil, *args)
+    if btype
+      @browser = Watir::Browser.new(btype, *args)
+    else
+      @browser = Watir::Browser.new(*args)
+    end
+
     self
   end
 
@@ -205,13 +210,13 @@ module Insite
     url = @browser.url
 
     found_page = nil
-    @pages.each do |p|
-      if p.url_matcher && p.url_matcher =~ url
-        found_page = p
-      elsif p.query_arguments && p.url_template.match(url)
-        found_page = p
-      elsif !p.query_arguments && p.url_template.match(url.split(/(\?|#)/)[0])
-        found_page = p
+    @pages.each do |pg|
+      if pg.url_matcher && pg.url_matcher =~ url
+        found_page = pg
+      elsif pg.query_arguments && pg.url_template.match(url)
+        found_page = pg
+      elsif !pg.query_arguments && pg.url_template.match(url.split(/(\?|#)/)[0])
+        found_page = pg
       end
 
       break if found_page

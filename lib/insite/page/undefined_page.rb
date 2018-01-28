@@ -1,6 +1,8 @@
 class UndefinedPage
   attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher
 
+  include Insite::CommonMethods
+
   # Always returns false.
   def defined?
     false
@@ -15,6 +17,8 @@ class UndefinedPage
     @site    = site
     @browser = @site.browser
     @url     = @site.browser.url
+
+    browser_check(@browser)
   end
 
   # Returns a string representation of the undefined page.
@@ -37,6 +41,7 @@ class UndefinedPage
   # returns false since the Undefined page class is only returned when the current page
   # doesn't match up to any page that you've actually defined.
   def on_page?
+    browser_check(@browser)
     false
   end
 
