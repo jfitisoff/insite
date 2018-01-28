@@ -71,7 +71,7 @@ module Insite
     hsh['arguments'] = args
     @arguments       = hsh.with_indifferent_access
     @base_url        = base_url
-    @browser_type    = @arguments[:browser]
+    @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
     @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
 
     # Set up accessor methods for each page and page checking methods..
@@ -189,6 +189,8 @@ module Insite
   #  s = SomeSite.new("http://foo.com")
   #  s.open :firefox
   def open(btype = nil, *args)
+    btype ||= @browser_type
+
     if btype
       @browser = Watir::Browser.new(btype, *args)
     else
@@ -238,6 +240,41 @@ module Insite
   def text
     @browser.text
   end
+
+  private
+  def manage_browser
+    if @browser.is_a?(Watir::Browser)
+      begin
+        unless @browser.exists?
+          raise(
+            Insite::Errors::BrowserNotOpenError,
+            "Browser check failed. The browser is no longer present."
+          )
+        end
+      rescue(Insite::Errors::BrowserNotOpenError) => e
+        raise e
+      rescue => e
+        raise(
+          Insite::Errors::BrowserResponseError,
+          <<~eos
+          Browser check failed. The browser returned an #{e} when it was queried.
+          Backtrace for the error:
+          #{e.backtrace.join("\n")}
+          eos
+        )
+      end
+    elsif @browser.nil?
+      open
+    else
+      raise(
+        Insite::Errors::BrowserNotValidError,
+        "Expected: Watir::Browser. Actual: #{@browser.class}."
+      )
+    end
+
+    true
+  end
+  public
 
   at_exit { @browser.close if @browser }
 end

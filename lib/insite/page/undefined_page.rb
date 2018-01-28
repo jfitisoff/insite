@@ -14,11 +14,11 @@ class UndefinedPage
   end
 
   def initialize(site)
+    @site.manage_browser
+
     @site    = site
     @browser = @site.browser
     @url     = @site.browser.url
-
-    browser_check(@browser)
   end
 
   # Returns a string representation of the undefined page.

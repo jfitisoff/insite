@@ -284,17 +284,18 @@ class DefinedPage
   # site object. Takes a site object and a hash of configuration arguments. The site object will
   # handle all of this for you.
   def initialize(site, args = nil)
+    @site = site
+    @site.manage_browser
+
     @widget_elements = self.class.widget_elements ||= []
-    # @widget_methods  = self.class.widget_methods ||= []
-    @browser = site.browser
-    browser_check(@browser)
+    @browser = @site.browser
     @page_attributes = self.class.page_attributes
     @page_url = self.class.page_url
     @page_elements = self.class.page_elements
     # TODO: Clean this up
     @page_features = self.class.instance_variable_get(:@page_features)
     @required_arguments = self.class.required_arguments
-    @site = site
+
     @url_matcher = self.class.url_matcher
     @url_template = self.class.url_template
     @query_arguments = self.class.query_arguments
