@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
     "lib/insite/element_container/element_container.rb",
     "lib/insite/feature/feature.rb",
     "lib/insite/methods/common_methods.rb",
-    "lib/insite/methods/watir_methods.rb",
+    "lib/insite/methods/dom_methods.rb",
     "lib/insite/page/defined_page.rb",
     "lib/insite/page/undefined_page.rb",
     "lib/insite/widget/widget_methods.rb",

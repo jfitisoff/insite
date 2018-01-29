@@ -1,6 +1,6 @@
 module Insite
-  module WatirMethods
-    WATIR_METHODS.each do |mth|
+  module DOMMethods
+    DOM_METHODS.each do |mth|
       define_method(mth) do |name=nil, *args, &block|
         if block
           element_container(name, mth, *args, &block)

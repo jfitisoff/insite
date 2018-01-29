@@ -10,10 +10,8 @@ require "insite/insite"
 require "insite/errors"
 require "insite/version"
 
-# Modules containing methods that are used in more than one place. The files in
-# watir_methods.rb are used at the class level and the files in common_methods.rb
-# are used in class instances.
-require "insite/methods/watir_methods"
+# Modules with method definitions used by UI metaclasses.
+require "insite/methods/dom_methods"
 require "insite/methods/common_methods"
 
 # Files for pages (defined/undefined.)

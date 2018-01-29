@@ -60,7 +60,7 @@ module Insite
     class << self
       attr_reader :widget_elements
 
-      include WatirMethods
+      include DOMMethods
       include WidgetMethods
 
       # include Insite::WidgetMethods
@@ -71,7 +71,7 @@ module Insite
       # - Don't allow the user to create a widget method that references a
       #   collection (because this will be done automatically.)
       tmp = name.to_s.underscore.to_sym
-      if WATIR_METHODS.include?(name.to_s.underscore.to_sym)
+      if DOM_METHODS.include?(name.to_s.underscore.to_sym)
         raise "#{name} cannot be used as a widget name, as the methodized version of the class name (#{name.to_s.underscore} conflicts with a Watir DOM method.)"
       elsif Watir::Browser.methods.include?(name.to_s.underscore.to_sym)
         raise "#{name} cannot be used as a widget name, as the methodized version of the class name (#{name.to_s.underscore} conflicts with a Watir::Browser method.)"

@@ -5,7 +5,7 @@ class ElementContainer
   extend  Forwardable
 
   class << self
-    include Insite::WatirMethods
+    include Insite::DOMMethods
     # include Insite::WidgetMethods
   end # self
 
@@ -13,7 +13,6 @@ class ElementContainer
     @site    = site
     @browser = @site.browser
     @target  = element
-
 
     # TODO: Continue looking at scolling solutions.
     if @target.present?

@@ -25,27 +25,53 @@ module Insite
     base.const_set('UndefinedPage', klass)
   end
 
+  # Returns true if there's an open browser (that's also responding.) False if not.
+  def browser?
+    begin
+      @browser.exists?
+    rescue => e
+      false
+    end
+  end
 
-  # def self.included(base)
-  #   mod = Module.new
-  #   base.const_set('WidgetMethods', mod)
-  #   klass1 = Class.new(DefinedPage)
-  #   base.const_set('Page', klass1)
-  #
-  #   base::Page.send(:extend,  PageClassMethods)
-  #   base::Page.send(:extend,  WatirMethods)
-  #   base::Page.send(:extend,  WidgetMethods)
-  #   base::Page.send(:include, PageInstanceMethods)
-  # end
-
-  # Closes the site object's browser
+  # Closes the site object's browser/driver.
   def close
     @browser.close
+  end
+
+  def describe
+puts <<-EOF
+Wrapper class for all pages defined for the site.
+Site:\t#{self.class} (#{__FILE__})
+Base URL:\t#{@base_url}
+Browser:\t#{@browser}
+Current Page:\t#{page.class}
+
+Page Accessor Methods (Use '?' with name to check for presence.)
+-----------------------------------------------------------------
+#{
+  tmp = []
+  max = pages.map(&:to_s).max { |x| x.length }
+  if max.length > 40
+    pages.map(&:to_s).sort.map(&:underscore).join("\n")
+  else
+    pages.map(&:to_s).sort.map(&:underscore).each_slice(2) do |arr|
+      tmp << arr[0].to_s.ljust(40) + arr[1].to_s.ljust(40)
+    end
+    tmp.join("\n")
+  end
+}
+EOF
   end
 
   # Returns a Selenium driver object.
   def driver
     @browser.driver
+  end
+
+  # Returns true if there's an open driver (that's also responding.) False if not.
+  def driver?
+    browser?
   end
 
   # Creates a site object, which will have accessor methods for all pages that
@@ -81,7 +107,11 @@ module Insite
 
         if current_page.url_matcher
           unless current_page.url_matcher.is_a? Regexp
-            raise Insite::Errors::PageConfigError, "A url_matcher was defined for the #{current_page} page but it was not a regular expression. Check the value provided to the set_url_matcher method in the class definition for this page. Object provided was a #{current_page.url_matcher.class.name}"
+            raise Insite::Errors::PageConfigError,
+            "A url_matcher was defined for the #{current_page} page but it was not a " \
+            "regular expression. Check the value provided to the set_url_matcher method " \
+            "in the class definition for this page. Object provided was a " \
+            "#{current_page.url_matcher.class.name}"
           end
         end
 
@@ -110,7 +140,8 @@ module Insite
 
   # Custom inspect method so that console output doesn't get in the way when debugging.
   def inspect
-    "#<#{self.class.name}:0x#{object_id}\n @base_url=\"#{@base_url}\"\n @most_recent_page=#{@most_recent_page}>"
+    "#<#{self.class.name}:0x#{object_id}\n @base_url=\"#{@base_url}\" " \
+    "@most_recent_page=#{@most_recent_page}>"
   end
 
   # In cases where Insite doesn't recognize a method call it will try to do the following:
@@ -132,9 +163,22 @@ module Insite
         page.public_send(sym, *args, &block)
       else
         if original_page == new_page
-          raise NoMethodError, "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: #{@browser.url}\n\nBacktrace:\n#{caller.join("\n")}"
+          raise(
+            NoMethodError,
+            "Neither #{self}##{sym} #{original_page.class}##{sym} are supported. " \
+            "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: " \
+            "#{@browser.url}\n\n",
+            caller
+          )
         else
-          raise NoMethodError, "#{original_page.class}##{sym} is not supported.\nInsite detected that the #{new_page.class} page was being displayed, but this page does not support a #{sym} method either.\n\nCurrent URL: #{@browser.url}\n\nBacktrace:\n#{caller.join("\n")}", caller
+          raise(
+            NoMethodError,
+            "Neither #{self}##{sym} #{original_page.class}##{sym} are supported.\nInsite " \
+            "noticed that the #{new_page.class} page was being displayed, but this page " \
+            "doesn't support the method call either.\n\nCurrent URL: " \
+            "#{@browser.url}\n\n",
+            caller
+          )
         end
       end
     end
@@ -208,9 +252,7 @@ module Insite
   # object. See the UndefinedPage class for more details.
   def page
     return @most_recent_page if @most_recent_page && @most_recent_page.on_page?
-    raise Insite::Errors::PageInitError, "Browser not initialized." unless @browser
     url = @browser.url
-
     found_page = nil
     @pages.each do |pg|
       if pg.url_matcher && pg.url_matcher =~ url
@@ -240,41 +282,6 @@ module Insite
   def text
     @browser.text
   end
-
-  private
-  def manage_browser
-    if @browser.is_a?(Watir::Browser)
-      begin
-        unless @browser.exists?
-          raise(
-            Insite::Errors::BrowserNotOpenError,
-            "Browser check failed. The browser is no longer present."
-          )
-        end
-      rescue(Insite::Errors::BrowserNotOpenError) => e
-        raise e
-      rescue => e
-        raise(
-          Insite::Errors::BrowserResponseError,
-          <<~eos
-          Browser check failed. The browser returned an #{e} when it was queried.
-          Backtrace for the error:
-          #{e.backtrace.join("\n")}
-          eos
-        )
-      end
-    elsif @browser.nil?
-      open
-    else
-      raise(
-        Insite::Errors::BrowserNotValidError,
-        "Expected: Watir::Browser. Actual: #{@browser.class}."
-      )
-    end
-
-    true
-  end
-  public
 
   at_exit { @browser.close if @browser }
 end

@@ -7,7 +7,7 @@ module Insite
     class << self
       attr_accessor :alias, :page_elements
 
-      include Insite::WatirMethods
+      include Insite::DOMMethods
       include Insite::WidgetMethods
     end # Self.
 

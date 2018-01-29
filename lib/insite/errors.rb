@@ -1,5 +1,6 @@
 module Insite
   module Errors
+    class Insite::Errors::BrowserClosedError              < StandardError; end
     class Insite::Errors::BrowserLibraryNotSupportedError < StandardError; end
     class Insite::Errors::BrowserNotAvailableError        < StandardError; end
     class Insite::Errors::BrowserNotOpenError             < StandardError; end

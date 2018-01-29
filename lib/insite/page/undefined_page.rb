@@ -8,22 +8,31 @@ class UndefinedPage
     false
   end
 
-  # Returns page HTML as a string.
-  def html
-    @browser.html
+  def describe
+puts <<-EOF
+Page Class:\t#{name} (#{__FILE__})
+URL Template:\tNA
+URL Matcher:\tNA
+
+Page class for any page that hasn't been defined (or that Insite doesn't recognize.)
+
+Note: If there is a page class that is defined for this page that isn't getting
+loaded, try the following:
+ - Review the pages URL template for problems. A URL template is *not* an interpolated
+   string -- it just looks like one. See the documentation for more details.
+ - If the URL template seems to be designed correctly for loading the page, but the
+   page's URL changes after the load, you will need to look at adding a URL matcher,
+   which overrides the URL template for purposes of checking whether the page object
+   is matching the currently displayed page after it has been loaded.
+
+Page Elements:\tNA
+EOF
   end
 
   def initialize(site)
-    @site.manage_browser
-
     @site    = site
-    @browser = @site.browser
+    @browser = process_browser
     @url     = @site.browser.url
-  end
-
-  # Returns a string representation of the undefined page.
-  def inspect
-    "#<#{self.class.name}:#{object_id} @url=#{@browser.url}>"
   end
 
   # TODO: Do the same cache check that's done for a defined page and reapply the
@@ -41,7 +50,6 @@ class UndefinedPage
   # returns false since the Undefined page class is only returned when the current page
   # doesn't match up to any page that you've actually defined.
   def on_page?
-    browser_check(@browser)
     false
   end
 

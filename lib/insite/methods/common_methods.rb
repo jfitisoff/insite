@@ -8,6 +8,52 @@ module Insite
       @browser.html
     end
 
+    # Returns a string representation of the undefined page.
+    def inspect
+      "#<#{self.class.name}:#{object_id} @url=#{@browser.url}>"
+    end
+
+    private
+    def process_browser
+      if @site.browser.is_a?(Watir::Browser)
+        begin
+          if @site.browser.exists?
+            return @site.browser
+          else
+            raise(
+              Insite::Errors::BrowserClosedError,
+              "Browser check failed. The browser is no longer present.\n\n"
+            )
+          end
+        rescue(Insite::Errors::BrowserNotOpenError) => e
+          raise e
+        rescue => e
+          raise(
+            Insite::Errors::BrowserResponseError,
+            <<~eos
+            Browser check failed. The browser returned an #{e} when it was queried.
+            Backtrace for the error:
+            #{e.backtrace.join("\n")}
+
+            eos
+          )
+        end
+      elsif @site.browser.nil?
+        raise(
+          Insite::Errors::BrowserNotOpenError,
+          "A browser has not been defined for the site. Try using Site#open to " \
+          "start a browser.\n\n"
+        )
+      else
+        raise(
+          Insite::Errors::BrowserNotValidError,
+          "Expected: Watir::Browser. Actual: #{@site.browser.class}.\n\n"
+        )
+      end
+
+    end
+    public
+
     def update_object(args={}) # test
       failed = []
       args.each do |k, v|
@@ -91,7 +137,7 @@ module Insite
               end
             end
           end
-        rescue Watir::Exception::ObjectDisabledException, Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::ElementNotVisibleError => e
+        rescue Watir::Exception::ObjectDisabledException,Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::ElementNotVisibleError => e
           unless failed.include?(k)
             puts "Rescued #{e.class} when trying to update #{k}. Sleeping 5 seconds and then trying again."
             failed << k

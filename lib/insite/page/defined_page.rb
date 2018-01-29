@@ -8,7 +8,7 @@ class DefinedPage
     attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_template
     attr_accessor :widget_elements
 
-    include Insite::WatirMethods
+    include Insite::DOMMethods
 
     def describe
   puts <<-EOF
@@ -16,8 +16,16 @@ class DefinedPage
   URL Template:\t#{@url_template.pattern}"
   URL Matcher:\t#{@url_matcher || 'Not specified.'}
 
-  Page Elements:\n#{@page_elements.sort.map { |x| "  #{x}\n" }.join }
+  Contains user-defined logic for a single page.
+
+  Page Elements:\n#{@page_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+
+  Widgets:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+
+  Features:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+
   EOF
+
     end
 
     private
@@ -284,22 +292,21 @@ class DefinedPage
   # site object. Takes a site object and a hash of configuration arguments. The site object will
   # handle all of this for you.
   def initialize(site, args = nil)
-    @site = site
-    @site.manage_browser
+    @site               = site
+    @browser            = process_browser
 
-    @widget_elements = self.class.widget_elements ||= []
-    @browser = @site.browser
-    @page_attributes = self.class.page_attributes
-    @page_url = self.class.page_url
-    @page_elements = self.class.page_elements
+    @widget_elements    = self.class.widget_elements ||= []
+    @browser            = @site.browser
+    @page_attributes    = self.class.page_attributes
+    @page_url           = self.class.page_url
+    @page_elements      = self.class.page_elements
     # TODO: Clean this up
-    @page_features = self.class.instance_variable_get(:@page_features)
+    @page_features      = self.class.instance_variable_get(:@page_features)
     @required_arguments = self.class.required_arguments
-
-    @url_matcher = self.class.url_matcher
-    @url_template = self.class.url_template
-    @query_arguments = self.class.query_arguments
-    @has_fragment    = self.class.has_fragment
+    @url_matcher        = self.class.url_matcher
+    @url_template       = self.class.url_template
+    @query_arguments    = self.class.query_arguments
+    @has_fragment       = self.class.has_fragment
 
     # Try to expand the URL template if the URL has parameters.
     @arguments = {}.with_indifferent_access # Stores the param list that will expand the url_template after examining the arguments used to initialize the page.
@@ -371,6 +378,7 @@ class DefinedPage
       if navigation_disabled?
         raise Insite::Errors::PageNavigationNotAllowedError, "Navigation is intentionally disabled for the #{self.class.name} page. You can only call the accessor method for this page when it's already being displayed in the browser.\n\nCurrent URL:\n------------\n#{@site.browser.url}\n\n#{caller.join("\n")}"
       end
+
       visit
     end
   end
@@ -385,8 +393,6 @@ class DefinedPage
   end
 
   def on_page?
-    browser_check(@browser)
-
     url = @browser.url
 
     if @url_matcher
