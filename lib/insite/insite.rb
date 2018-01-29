@@ -93,8 +93,8 @@ EOF
   #  => true
   #  site.bar
   #  => 1
-  def initialize(base_url, *args, **hsh)
-    hsh['arguments'] = args
+  # TODO: Sort args.
+  def initialize(base_url, **hsh)
     @arguments       = hsh.with_indifferent_access
     @base_url        = base_url
     @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
