@@ -30,6 +30,7 @@ module Insite
       end
     end
 
+    # Duplicates Watir DOM element argument parsing for element methods.
     private
     def parse_args(args)
       case args.length

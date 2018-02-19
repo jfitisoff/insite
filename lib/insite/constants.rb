@@ -1,3 +1,6 @@
+# DOM_ELEMENTS
+# DOM_COLLECTIONS
+
 # Watir DOM methods. This data is used to create class-level element accessors
 # for page objects.
 DOM_METHODS = %i(

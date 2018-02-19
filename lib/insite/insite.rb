@@ -18,8 +18,8 @@ module Insite
     base.const_set('WidgetMethods', mod)
 
     klass = Class.new(DefinedPage)
-    base.const_set('DefinedPage', klass)
-    base::DefinedPage.send(:extend, WidgetMethods)
+    base.const_set('Page', klass)
+    base::send(:extend, WidgetMethods)
 
     klass = Class.new(UndefinedPage)
     base.const_set('UndefinedPage', klass)
@@ -98,7 +98,7 @@ EOF
     @arguments       = hsh.with_indifferent_access
     @base_url        = base_url
     @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
-    @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
+    @pages           = self.class::Page.descendants.reject { |p| p.page_template? }
 
     # Set up accessor methods for each page and page checking methods..
     @pages.each do |current_page|
@@ -153,6 +153,8 @@ EOF
   #
   # If delegation doesn't work then a NoMethodError will be raised with some details about
   # what was attempted.
+  # TODO: Differentiate better between cases where the method was called on the site
+  # class (and subsequently delegated) vs. method being directly called on the page.
   def method_missing(sym, *args, &block)
     original_page = @most_recent_page
     if original_page.respond_to?(sym)
@@ -165,20 +167,23 @@ EOF
         if original_page == new_page
           raise(
             NoMethodError,
-            "Neither #{self}##{sym} #{original_page.class}##{sym} are supported. " \
+            "Neither #{self.class}##{sym} #{original_page.class}##{sym} are supported. " \
             "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: " \
             "#{@browser.url}\n\n",
             caller
           )
         else
+          if new_page.defined?
           raise(
             NoMethodError,
-            "Neither #{self}##{sym} #{original_page.class}##{sym} are supported.\nInsite " \
+            "Neither #{self.class}##{sym} #{original_page.class}##{sym} are supported.\nInsite " \
             "noticed that the #{new_page.class} page was being displayed, but this page " \
             "doesn't support the method call either.\n\nCurrent URL: " \
             "#{@browser.url}\n\n",
             caller
           )
+          else
+          end
         end
       end
     end
@@ -235,12 +240,7 @@ EOF
   def open(btype = nil, *args)
     btype ||= @browser_type
 
-    if btype
-      @browser = Watir::Browser.new(btype, *args)
-    else
-      @browser = Watir::Browser.new(*args)
-    end
-
+    @browser = Watir::Browser.new(btype, *args)
     self
   end
 
@@ -249,7 +249,7 @@ EOF
   # URL in the browser.
   #
   # If a matching page can't be found then Insite will return an "undefined page"
-  # object. See the UndefinedPage class for more details.
+  # object. See the Un class for more details.
   def page
     return @most_recent_page if @most_recent_page && @most_recent_page.on_page?
     url = @browser.url

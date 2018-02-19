@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
     "lib/insite/methods/dom_methods.rb",
     "lib/insite/page/defined_page.rb",
     "lib/insite/page/undefined_page.rb",
+    "lib/insite/namespace/namespace.rb",
     "lib/insite/widget/widget_methods.rb",
     "lib/insite/widget/widget.rb",
     "lib/insite/constants.rb",

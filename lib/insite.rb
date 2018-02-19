@@ -14,10 +14,6 @@ require "insite/version"
 require "insite/methods/dom_methods"
 require "insite/methods/common_methods"
 
-# Files for pages (defined/undefined.)
-require "insite/page/defined_page"
-require "insite/page/undefined_page"
-
 # Files for Insite::Widget.
 require "insite/widget/widget"
 require "insite/widget/widget_methods"
@@ -27,3 +23,7 @@ require "insite/feature/feature"
 
 # Files for ElementContainer.
 require "insite/element_container/element_container"
+
+# Files for pages (defined/undefined.)
+require "insite/page/defined_page"
+require "insite/page/undefined_page"

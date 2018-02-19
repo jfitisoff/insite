@@ -6,7 +6,6 @@ class ElementContainer
 
   class << self
     include Insite::DOMMethods
-    # include Insite::WidgetMethods
   end # self
 
   def initialize(site, element)
@@ -14,10 +13,15 @@ class ElementContainer
     @browser = @site.browser
     @target  = element
 
+    # Temporary replacement for custom wait_until.
     # TODO: Continue looking at scolling solutions.
     if @target.present?
       @target.scroll.to
-      wait_until(2) { break if @target.present?; sleep 0.2 }
+      t = Time.now + 2
+      while Time.now <= t do
+        break if @target.present?
+        sleep 0.1
+      end
     end
 
     @target

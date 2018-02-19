@@ -1,14 +1,25 @@
+# TODO: A lot of this should be handled via delegation.
 module Insite
   module CommonMethods
+    # Returns a Watir::Browser object.
     def browser
       @browser
     end
 
-    def html
-      @browser.html
+    # Returns a Selenium::WebDriver::Driver object.
+    def driver
+      @browser.driver
     end
 
-    # Returns a string representation of the undefined page.
+    # # Don't override the default if it's already there.
+    # unless defined? :html
+    #   # Returns current HTML for the object.
+    #   def html
+    #     @browser.html
+    #   end
+    # end
+
+    # Returns a string representation of the page.
     def inspect
       "#<#{self.class.name}:#{object_id} @url=#{@browser.url}>"
     end
@@ -54,9 +65,14 @@ module Insite
     end
     public
 
-    def update_object(args={}) # test
+    def update_object(**hash_args)
+      rescues = [
+        Watir::Exception::ObjectDisabledException,
+        Watir::Exception::UnknownObjectException,
+        Selenium::WebDriver::Error::ElementNotVisibleError
+      ]
       failed = []
-      args.each do |k, v|
+      hash_args.each do |k, v|
         begin
           k = k.to_sym
           if @page_elements.include?(k)
@@ -118,7 +134,7 @@ module Insite
             end
           else
             # Temporary band-aid to support widgets. TODO: The long-term solution is
-            # to have the page track what widgets it has.
+            # to have the page track which widgets it has.
             begin
               if v.is_a?(Array)
                 public_send(k, *v)
@@ -137,7 +153,7 @@ module Insite
               end
             end
           end
-        rescue Watir::Exception::ObjectDisabledException,Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::ElementNotVisibleError => e
+        rescue(rescues) => e
           unless failed.include?(k)
             puts "Rescued #{e.class} when trying to update #{k}. Sleeping 5 seconds and then trying again."
             failed << k
@@ -147,7 +163,7 @@ module Insite
         end
       end
       sleep 1
-      args
+      hash_args
     end
 
     # Returns a Nokogiri document for the object ONLY. So no need to specify a
