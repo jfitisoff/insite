@@ -98,7 +98,7 @@ EOF
     @arguments       = hsh.with_indifferent_access
     @base_url        = base_url
     @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
-    @pages           = self.class::Page.descendants.reject { |p| p.page_template? }
+    @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
 
     # Set up accessor methods for each page and page checking methods..
     @pages.each do |current_page|
@@ -153,8 +153,6 @@ EOF
   #
   # If delegation doesn't work then a NoMethodError will be raised with some details about
   # what was attempted.
-  # TODO: Differentiate better between cases where the method was called on the site
-  # class (and subsequently delegated) vs. method being directly called on the page.
   def method_missing(sym, *args, &block)
     original_page = @most_recent_page
     if original_page.respond_to?(sym)
@@ -164,27 +162,13 @@ EOF
       if new_page.respond_to?(sym)
         page.public_send(sym, *args, &block)
       else
-        if original_page == new_page
-          raise(
-            NoMethodError,
-            "Neither #{self.class}##{sym} #{original_page.class}##{sym} are supported. " \
-            "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: " \
-            "#{@browser.url}\n\n",
-            caller
-          )
-        else
-          if new_page.defined?
-          raise(
-            NoMethodError,
-            "Neither #{self.class}##{sym} #{original_page.class}##{sym} are supported.\nInsite " \
-            "noticed that the #{new_page.class} page was being displayed, but this page " \
-            "doesn't support the method call either.\n\nCurrent URL: " \
-            "#{@browser.url}\n\n",
-            caller
-          )
-          else
-          end
-        end
+        raise(
+          NoMethodError,
+          "Unable to apply method. #{self.class}##{sym} is not supported. " \
+          "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: " \
+          "#{@browser.url}\n\n",
+          caller
+        )
       end
     end
   end
