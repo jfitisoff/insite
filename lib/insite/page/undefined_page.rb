@@ -1,4 +1,4 @@
-# module Insite
+module Insite
   class UndefinedPage
     attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher
 
@@ -71,4 +71,4 @@
       @browser.title
     end
   end
-# end
+end

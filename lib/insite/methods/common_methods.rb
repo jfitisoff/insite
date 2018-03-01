@@ -80,9 +80,9 @@ module Insite
 
             if [Watir::Alert, Watir::FileField, Watir::TextField, Watir::TextArea].include? elem.class
               elem.set v
-            elsif [Watir::Select].include? html_element.class
+            elsif [Watir::Select].include? elem.class
               elem.select v
-            elsif [Watir::Anchor, Watir::Button].include? html_element.class
+            elsif [Watir::Anchor, Watir::Button].include? elem.class
               case v
               when Symbol
                 elem.public_send v
@@ -91,9 +91,9 @@ module Insite
               when FalseClass
                 # Do nothing here.
               else
-                raise ArgumentError, "Unsupported argument for #{html_element.class}: '#{v}'"
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif html_element.is_a?(Watir::RadioCollection)
+            elsif elem.is_a?(Watir::RadioCollection)
               # TODO: Remove, not a general use case
               rb = elem.to_a.find do |r|
                 r.text =~ /#{Regexp.escape(v)}/i || r.parent.text =~ /#{Regexp.escape(v)}/i
@@ -102,7 +102,7 @@ module Insite
               if rb
                 rb.click
               else
-                raise "No matching radio button could be detected for '#{val}' for #{html_element}."
+                raise "No matching radio button could be detected for '#{val}' for #{elem}."
               end
             else
               case v
@@ -113,7 +113,7 @@ module Insite
               when FalseClass
                 elem.clear
               else
-                raise ArgumentError, "Unsupported argument for #{html_element.class}: '#{v}'"
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
             end
           elsif @widget_elements.include?(k)
@@ -129,7 +129,7 @@ module Insite
                   public_send(k).update(*v)
                 end
               rescue => e2
-                raise ArgumentError, "Dynamic method call failed for #{k}.", e2.backtrace
+                raise ArgumentError, "Dynamic method call failed for #{k}.", e2.backtrace.join("\n")
               end
             end
           else
@@ -153,12 +153,16 @@ module Insite
               end
             end
           end
-        rescue(rescues) => e
-          unless failed.include?(k)
-            puts "Rescued #{e.class} when trying to update #{k}. Sleeping 5 seconds and then trying again."
-            failed << k
-            sleep 5
-            redo
+        rescue => e
+          if rescues.any? { |err| e.is_a?(err) }
+            unless failed.include?(k)
+              puts "Rescued #{e.class} when trying to update #{k}. Sleeping 5 seconds and then trying again."
+              failed << k
+              sleep 5
+              redo
+            end
+          else
+            raise e, e.backtrace
           end
         end
       end
