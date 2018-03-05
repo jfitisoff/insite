@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
 
-  s.files       = [
+  s.files = [
     "lib/insite.rb",
     "lib/insite/element_container/element_container.rb",
     "lib/insite/feature/feature.rb",

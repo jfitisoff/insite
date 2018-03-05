@@ -12,7 +12,8 @@ module Insite
     end # Self.
 
     def initialize(site, **args)
-      if site.is_a?  # TODO: Bandaid.
+      if self.class.ancestors.include?(Insite::DefinedPage)
+      # if site.is_a? Insite:DefinedPage # TODO: Bandaid.
         @site  = site.site
         @page  = site
       elsif site.class.ancestors.include?(Insite)
@@ -26,8 +27,4 @@ module Insite
       @page_elements = @site.page_elements
     end
   end
-end
-
-# TODO: For legacy code, should be removed.
-class PageFeature < Insite::Feature
 end

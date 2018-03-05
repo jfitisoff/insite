@@ -267,5 +267,15 @@ EOF
     @browser.text
   end
 
+  # Returns an Addressable::URI object for the current browser URL.
+  def uri
+    Addressable::URI.parse(@browser.url)
+  end
+
+  # Returns the current browser URL.
+  def url
+    @browser.url
+  end
+
   at_exit { @browser.close if @browser }
 end

@@ -422,7 +422,6 @@ module Insite
 
     def on_page?
       url = @browser.url
-
       if @url_matcher
         if @url_matcher =~ url
           return true
@@ -435,7 +434,9 @@ module Insite
         else
           if pargs = @url_template.extract(Addressable::URI.parse(url))
             pargs = pargs.with_indifferent_access
-            @required_arguments.all? { |k| pargs[k] == @arguments[k].to_s }
+            @required_arguments.all? do |k|
+              pargs[k] == @arguments[k] || pargs[k] == @arguments[k].to_s
+            end
           end
         end
       elsif @url_template.match(url.split(/(\?|#|\/$)/)[0])

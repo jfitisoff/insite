@@ -11,13 +11,13 @@ module Insite
       @browser.driver
     end
 
-    # # Don't override the default if it's already there.
-    # unless defined? :html
-    #   # Returns current HTML for the object.
-    #   def html
-    #     @browser.html
-    #   end
-    # end
+    # Don't override the default if it's already there.
+    unless defined? :html
+      # Returns current HTML for the object.
+      def html
+        @browser.html
+      end
+    end
 
     # Returns a string representation of the page.
     def inspect
@@ -175,5 +175,6 @@ module Insite
     def nokogiri
       Nokogiri::HTML(html)
     end
+    alias document nokogiri
   end
 end
