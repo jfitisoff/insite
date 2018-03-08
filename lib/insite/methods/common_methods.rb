@@ -65,7 +65,7 @@ module Insite
     end
     public
 
-    def update_object(**hash_args)
+    def update_object(hash_args = {})
       rescues = [
         Watir::Exception::ObjectDisabledException,
         Watir::Exception::UnknownObjectException,
