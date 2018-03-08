@@ -16,7 +16,11 @@ module Insite
 
       define_method(name) do
         begin
-          block.call(@browser)
+          elem = block.call(@browser)
+          begin
+            elem.dup.scroll.to
+          rescue => e
+          end
         rescue(Watir::Exception::UnknownObjectException) => e
           tmp = page
 
@@ -24,9 +28,14 @@ module Insite
             raise e
           else
             @most_recent_page = tmp
-            block.call(@browser)
+            elem = block.call(@browser)
+            begin
+              elem.dup.scroll.to
+            rescue => e
+            end
           end
         end
+        elem
       end
     end
 
