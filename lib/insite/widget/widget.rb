@@ -191,7 +191,10 @@ module Insite
         # Temporary replacement for custom wait_until.
         # TODO: Continue looking at scolling solutions.
         if @target.present?
-          @target.scroll.to
+          begin
+            @target.scroll.to
+          rescue Selenium::WebDriver::Error::UnknownError => e
+          end
           t = Time.now + 2
           while Time.now <= t do
             break if @target.present?
@@ -260,15 +263,15 @@ module Insite
             end
           # Dynamic helper method, returns DOM object for link (no validation).
           elsif mth.to_s =~ /_link$/
-            return a(text: /^#{mth.to_s.sub(/_link$/, '').gsub('_', ' ')}/i)
+            return a(text: /^#{mth.to_s.sub(/_link$/, '').gsub('_', '.*')}/i)
           # Dynamic helper method, returns DOM object for button (no validation).
           elsif mth.to_s =~ /_button$/
-            return button(value: /^#{mth.to_s.sub(/_button$/, '').gsub('_', ' ')}/i)
+            return button(value: /^#{mth.to_s.sub(/_button$/, '').gsub('_', '.*')}/i)
           # Dynamic helper method for widgets with a table, returns DOM object for row if match can be found on method text.
           elsif respond_to?(:table) && table.present? && tmp = find_row(mth)
             return tmp
           # Dynamic helper method for links. If a match is found, clicks on the link and performs follow up actions.
-          elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', ' ')}/i } # See if there's a matching button and treat it as a method call if so.
+        elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
 
