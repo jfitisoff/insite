@@ -29,4 +29,4 @@ DOM_METHODS = %i(
   blockquotes  cursors     dt                foreign_object    header      labels   meshgradient      outputs      radios            smalls        symbols    track
   body         data        dts               foreign_objects   headers     legend   meshgradients     p            rb                solidcolor    table      tracks
   bodys        datalist    element           form              heads       legends  meshpatch         param        rbs               solidcolors   tables     trs
-)
+).freeze
