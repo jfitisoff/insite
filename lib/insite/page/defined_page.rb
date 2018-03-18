@@ -63,17 +63,6 @@ module Insite
         end
       end
 
-      # def page_element(name, klass = Section, &block)
-      #   tmpklass = Class.new(klass) do
-      #     self.class_eval(&block) if block_given?
-      #   end
-      #   const_set(name.to_s.camelcase, tmpklass) unless const_defined? name.to_s.camelcase
-      #
-      #   define_method(name.to_s.underscore) do
-      #     tmpklass.new(page = self)
-      #   end
-      # end
-
       # Allows you to set special page attributes that affect page behavior. The two page
       # attributes currently supported are :navigation_disabled and :page_template:
       #
@@ -313,12 +302,16 @@ module Insite
 
       # Try to expand the URL template if the URL has parameters.
       @arguments = {}.with_indifferent_access # Stores the param list that will expand the url_template after examining the arguments used to initialize the page.
+      match = @url_template.match(@browser.url)
+
       if @required_arguments.present? && !args
         @required_arguments.each do |arg|
-          if @site.respond_to?(arg)
-            @arguments[arg]= site.public_send(arg)
+          if match.keys.include?(arg.to_s)
+            @arguments[arg] = match[arg.to_s]
+          elsif @site.respond_to?(arg)
+            @arguments[arg] = site.public_send(arg)
           elsif @site.arguments[arg]
-            @arguments[arg]= @site.arguments[arg]
+            @arguments[arg] = @site.arguments[arg]
           else
             raise(
               Insite::Errors::PageInitError,
@@ -335,8 +328,10 @@ module Insite
 
             if args[arg] #The hash has the required argument.
               @arguments[arg]= args[arg]
+            elsif match.keys.include?(arg.to_s)
+              @arguments[arg] = match[arg.to_s]
             elsif @site.respond_to?(arg)
-              @arguments[arg]= site.public_send(arg)
+              @arguments[arg] = site.public_send(arg)
             else
               raise(
                 Insite::Errors::PageInitError,
