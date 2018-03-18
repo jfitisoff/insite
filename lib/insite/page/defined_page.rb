@@ -306,7 +306,7 @@ module Insite
 
       if @required_arguments.present? && !args
         @required_arguments.each do |arg|
-          if match.keys.include?(arg.to_s)
+          if match && match.keys.include?(arg.to_s)
             @arguments[arg] = match[arg.to_s]
           elsif @site.respond_to?(arg)
             @arguments[arg] = site.public_send(arg)
