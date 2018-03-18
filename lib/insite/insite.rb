@@ -224,7 +224,7 @@ EOF
   def open(btype = nil, *args)
     btype ||= @browser_type
 
-    @browser = Watir::Browser.new(btype, *args)
+    self.instance_variable_set(:@browser, Watir::Browser.new(btype, *args))
     self
   end
 
@@ -241,16 +241,16 @@ EOF
     @pages.each do |pg|
       if pg.url_matcher && pg.url_matcher =~ url
         found_page = pg
-      elsif pg.query_arguments && pg.url_template.match(url)
+      elsif !pg.url_matcher && pg.url_template.match(url)
         found_page = pg
-      elsif !pg.query_arguments && pg.url_template.match(url.split(/(\?|#)/)[0])
-        found_page = pg
+      else
+        next
       end
 
       break if found_page
     end
 
-    if found_page && !found_page.required_arguments.empty?
+    if found_page && found_page.required_arguments.present?
       if hsh = found_page.url_template.extract(url)
         return found_page.new(self, found_page.url_template.extract(url))
       else
