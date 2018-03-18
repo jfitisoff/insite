@@ -162,7 +162,7 @@ module Insite
               redo
             end
           else
-            raise e, e.backtrace
+            raise e, "Failure trying to update #{k} with #{v.class}: #{v}:\n" + e.backtrace.join("\n")
           end
         end
       end
