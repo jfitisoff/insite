@@ -177,7 +177,7 @@ module Insite
       if dom_type.is_a?(Watir::HTMLElement) || dom_type.is_a?(Watir::Element)
         @dom_type = nil
         @args     = nil
-        @target   = dom_type.to_subtype
+        @target   = dom_type
       elsif [String, Symbol].include? dom_type.class
         @dom_type = dom_type
         @args     = args
@@ -188,13 +188,11 @@ module Insite
           @target = @browser.send(dom_type, *args)
         end
 
-        # Temporary replacement for custom wait_until.
-        # TODO: Continue looking at scolling solutions.
-        if @target.present?
-          begin
-            @target.scroll.to
-          rescue Selenium::WebDriver::Error::UnknownError => e
-          end
+        # New webdriver approach.
+        begin
+          @target.scroll.to
+          sleep 0.1
+        rescue => e
           t = Time.now + 2
           while Time.now <= t do
             break if @target.present?
@@ -271,7 +269,7 @@ module Insite
           elsif respond_to?(:table) && table.present? && tmp = find_row(mth)
             return tmp
           # Dynamic helper method for links. If a match is found, clicks on the link and performs follow up actions.
-        elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
+          elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
 
@@ -297,7 +295,7 @@ module Insite
               end
             end
           # Dynamic helper method for buttons. If a match is found, clicks on the link and performs follow up actions.
-          elsif elem = buttons.find { |x| x.text =~ /^#{mth.to_s.gsub('_', ' ')}/i || x.value =~ /^#{mth.to_s.gsub('_', ' ')}/i } # See if there's a matching button and treat it as a method call if so.
+          elsif elem = buttons.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
 
@@ -340,17 +338,22 @@ module Insite
     end
 
     def present?
-      if @parent.present?
-        begin
+      sleep 0.1
+      begin
+        if @parent
+          if @parent.present? && @target.present?
+            true
+          else
+            false
+          end
+        else
           if @target.present?
             true
           else
             false
           end
-        rescue => e
-          false
         end
-      else
+      rescue => e
         false
       end
     end
