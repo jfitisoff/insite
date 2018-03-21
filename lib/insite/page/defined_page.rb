@@ -1,5 +1,5 @@
 # TODO: Title matcher
-
+# TODO: Add page query methods.
 module Insite
   class DefinedPage
     attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :widget_elements

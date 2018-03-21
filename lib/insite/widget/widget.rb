@@ -244,8 +244,18 @@ module Insite
           # If it's a table row we want to hover over it to ensure links are visible
           # before trying to find links.
           if self.is_a?(TableRowWidget)
-            hover
-            sleep 0.2
+            t = Time.now
+            loop do
+              begin
+                scroll.to
+                hover
+                sleep 0.2
+                break
+              rescue => e
+                break if Time.now > t + 10
+                sleep 0.2
+              end
+            end
           end
 
           # Dynamic helper methods for status icons.

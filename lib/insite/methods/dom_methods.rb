@@ -13,7 +13,9 @@ module Insite
     def el(name, &block)
       @page_elements ||= []
       @page_elements << name.to_sym
-
+# TODO: (More context when this happens.)
+# ArgumentError: wrong number of arguments (given 1, expected 0)
+# from /Users/john/.rbenv/versions/2.3.5/lib/ruby/gems/2.3.0/gems/insite-0.5.1/lib/insite/methods/dom_methods.rb:17:in `block in el'
       define_method(name) do
         begin
           elem = block.call(@browser)
