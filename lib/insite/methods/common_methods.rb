@@ -42,7 +42,7 @@ module Insite
           raise(
             Insite::Errors::BrowserResponseError,
             <<~eos
-            Browser check failed. The browser returned an #{e} when it was queried.
+            Browser check failed. The browser returned an #{e.class} (#{e}) when it was queried.
             Backtrace for the error:
             #{e.backtrace.join("\n")}
 
@@ -69,7 +69,8 @@ module Insite
       rescues = [
         Watir::Exception::ObjectDisabledException,
         Watir::Exception::UnknownObjectException,
-        Selenium::WebDriver::Error::ElementNotVisibleError
+        Selenium::WebDriver::Error::ElementNotVisibleError,
+        Selenium::WebDriver::Error::UnknownError
       ]
       failed = []
       hash_args.each do |k, v|
@@ -90,6 +91,41 @@ module Insite
                 elem.click
               when FalseClass
                 # Do nothing here.
+              else
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
+              end
+            elsif elem.is_a?(Watir::Radio)
+              case v
+              when Symbol
+                elem.public_send v
+              when TrueClass
+                3.times do
+                  elem.set
+                  break if elem.set?
+                  sleep 0.5
+                end
+              when FalseClass
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}' (You can only set a radio button, so false is not supported.)"
+              else
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
+              end
+            elsif elem.is_a?(Watir::CheckBox)
+              case v
+              when Symbol
+                elem.public_send v
+              when TrueClass
+                3.times do
+                  elem.set
+                  break if elem.set?
+                  sleep 0.5
+                end
+              when FalseClass
+                3.times do
+                  elem.clear
+                  break if !elem.set?
+                  sleep 0.5
+                end
+                elem.clear
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
@@ -133,8 +169,6 @@ module Insite
               end
             end
           else
-            # Temporary band-aid to support widgets. TODO: The long-term solution is
-            # to have the page track which widgets it has.
             begin
               if v.is_a?(Array)
                 public_send(k, *v)
@@ -165,6 +199,7 @@ module Insite
             raise e, "Failure trying to update #{k} with #{v.class}: #{v}:\n" + e.backtrace.join("\n")
           end
         end
+        sleep 0.2
       end
       sleep 1
       hash_args
