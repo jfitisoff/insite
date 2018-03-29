@@ -477,7 +477,14 @@ module Insite
         )
       end
 
-      @browser.goto(@url)
+      2.times do
+        begin
+          @browser.goto(@url)
+          break
+        rescue Net::ReadTimeout => e
+          sleep 3
+        end
+      end
 
       if @url_matcher
         unless on_page?
