@@ -105,7 +105,8 @@ module Insite
                   sleep 0.5
                 end
               when FalseClass
-                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}' (You can only set a radio button, so false is not supported.)"
+                raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}' \
+                (You can only set a radio button, so false is not a valid argument.)"
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
