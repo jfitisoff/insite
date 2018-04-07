@@ -1,1 +1,10 @@
+pkg/*
+*.gem
+.bundle
 .DS_Store
+coverage
+rdoc
+.yardoc
+Gemfile.lock
+/doc
+.ruby-version
