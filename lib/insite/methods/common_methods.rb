@@ -131,7 +131,7 @@ module Insite
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
             elsif elem.is_a?(Watir::RadioCollection)
-              # TODO: Remove, not a general use case
+              # TODO: Remove, not appropriate as a general use case.
               rb = elem.to_a.find do |r|
                 r.text =~ /#{Regexp.escape(v)}/i || r.parent.text =~ /#{Regexp.escape(v)}/i
               end
