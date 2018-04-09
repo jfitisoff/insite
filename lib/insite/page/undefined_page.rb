@@ -39,8 +39,8 @@ module Insite
     # TODO: Do the same cache check that's done for a defined page and reapply the
     # method if the cache is updated and the new page DOES respond to the method.
     def method_missing(mth, *args, &block)
-      raise NoMethodError, "#{self.class} does not support #{mth}. Currently displayed " \
-      "page: #{page.class}. URL at failure: #{@browser.url}"
+      raise NoMethodError, "Could not apply #{mth}. The current page could not be " \
+      "recognized. Current URL #{@browser.url}"
     end
 
     # Returns a Nokogiri object for the page HTML.
