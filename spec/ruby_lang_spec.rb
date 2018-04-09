@@ -1,5 +1,4 @@
 require_relative 'support/ruby_lang_site'
-require 'pry'
 
 describe "https://www.ruby-lang.org" do
   before(:all) { @s = new_session }
