@@ -3,6 +3,8 @@ A page object library that treats a website as a related collection of pages.
 Page objects are accessed via a site object. Currently supports Watir, Selenium
 support in progress.
 
+More documentation soon.
+
 ## Sample code for https://www.ruby-lang.org/en/:
 ```ruby
 # Site object class.
