@@ -1,6 +1,7 @@
 # insite
 A page object library that treats a website as a related collection of pages.
-Page objects are accessed via a site object.
+Page objects are accessed via a site object. Currently supports Watir, Selenium
+support in progress.
 
 ## Sample code for https://www.ruby-lang.org/en/:
 ```ruby
@@ -110,9 +111,3 @@ describe "https://www.ruby-lang.org" do
   end
 end
 ```
-
-
-## Limitations
-- English only.
-- Limited support for numbers in strings.
-- No support for things like currency codes, etc., at the moment.
