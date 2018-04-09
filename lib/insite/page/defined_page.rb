@@ -308,10 +308,10 @@ module Insite
         @required_arguments.each do |arg|
           if match && match.keys.include?(arg.to_s)
             @arguments[arg] = match[arg.to_s]
-          elsif @site.respond_to?(arg)
-            @arguments[arg] = site.public_send(arg)
           elsif @site.arguments[arg]
             @arguments[arg] = @site.arguments[arg]
+          elsif @site.respond_to?(arg) && @site.public_send(arg)
+            @arguments[arg] = @site.public_send(arg)
           else
             raise(
               Insite::Errors::PageInitError,
@@ -417,6 +417,7 @@ module Insite
 
     def on_page?
       url = @browser.url
+
       if @url_matcher
         if @url_matcher =~ url
           return true
@@ -430,7 +431,9 @@ module Insite
           if pargs = @url_template.extract(Addressable::URI.parse(url))
             pargs = pargs.with_indifferent_access
             @required_arguments.all? do |k|
-              pargs[k] == @arguments[k] || pargs[k] == @arguments[k].to_s
+              pargs[k] == @arguments[k] ||
+              pargs[k] == @arguments[k].to_s ||
+              !@arguments[k] && pargs[k] # Don't complain if arg is not explicit.
             end
           end
         end

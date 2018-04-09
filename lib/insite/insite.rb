@@ -164,9 +164,10 @@ EOF
       else
         raise(
           NoMethodError,
-          "Unable to apply method. #{self.class}##{sym} is not supported. " \
-          "#{original_page.class}##{sym} is not supported.\n\nCurrent URL: " \
-          "#{@browser.url}\n\n",
+          "Unable to apply #{sym}. The site object doesn't support it and the" \
+          "currently displayed page doesn't support it either.\n" \
+          "Page:\t\t#{new_page.class}\n" \
+          "Current URL:\t#{@browser.url}\n\n",
           caller
         )
       end
@@ -222,9 +223,21 @@ EOF
   #  s = SomeSite.new("http://foo.com")
   #  s.open :firefox
   def open(btype = nil, *args)
-    btype ||= @browser_type
+    browser_platform = btype ||= @browser_type
 
-    self.instance_variable_set(:@browser, Watir::Browser.new(btype, *args))
+    if browser_platform
+      self.instance_variable_set(
+        :@browser,
+        Watir::Browser.new(browser_platform, *args)
+      )
+    else
+      self.instance_variable_set(
+        :@browser,
+        Watir::Browser.new(*args)
+      )
+    end
+
+    Watir.logger.level = :error
     self
   end
 

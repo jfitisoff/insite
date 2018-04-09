@@ -63,8 +63,6 @@ module Insite
       include DOMMethods
       include WidgetMethods
 
-      # include Insite::WidgetMethods
-
       # - Don't allow the user to create a widget with a name that matches a DOM
       #   element.
       #
@@ -147,6 +145,15 @@ module Insite
             if dom_type.to_s == dom_type.to_s.singularize
               raise ArgumentError, "Widget collection method :#{method_name} cannot initialize a widget collection using an individual element (#{elem.class}.) Use :#{method_name.to_s.singularize} rather than :#{method_name} if you want to define a widget for an individual element."
             else
+              # TODO: Revisit the whole .to_a thing, need a custom collection or
+              # somesuch (don't bypass watir wait logic.)
+              t = Time.now
+              loop do
+                elem = @browser.send(dom_type, *args, &block)
+                break if elem.present? && elem.length > 0
+                break if Time.now > t + 4
+              end
+
               if elem.present?
                 elem.to_a.map! { |x| subclass.new(self, x, [], &block) }
               else
@@ -231,7 +238,6 @@ module Insite
       else
         if args[0].is_a? Hash
           page_arguments = args[0]#.with_indifferent_access
-          error_check    = page_arguments.delete(:error_check)
         elsif args.empty?
           # Do nothing.
         elsif args[0].nil?
@@ -241,9 +247,9 @@ module Insite
         end
 
         if present?
-          # If it's a table row we want to hover over it to ensure links are visible
-          # before trying to find links.
-          if self.is_a?(TableRowWidget)
+          # If it's a widget we want to hover over it to ensure links are visible
+          # before trying to find them.
+          if self.is_a?(Widget)
             t = Time.now
             loop do
               begin
@@ -258,51 +264,28 @@ module Insite
             end
           end
 
-          # Dynamic helper methods for status icons.
-          if respond_to?(:status_icon) && mth.to_s =~ /^(is|has)_\S+\?$/ # Dynamic methods for status checks (if the widget has a status icon.)
-            if match = mth.to_s.match(/^(is|has)_(\S+)\?$/)
-              if match.to_a.last =~ /#{status_icon.status}/i
-                return true
-              else
-                return false
-              end
-            else
-              return false
-            end
           # Dynamic helper method, returns DOM object for link (no validation).
-          elsif mth.to_s =~ /_link$/
+          if mth.to_s =~ /_link$/
             return a(text: /^#{mth.to_s.sub(/_link$/, '').gsub('_', '.*')}/i)
           # Dynamic helper method, returns DOM object for button (no validation).
           elsif mth.to_s =~ /_button$/
             return button(value: /^#{mth.to_s.sub(/_button$/, '').gsub('_', '.*')}/i)
-          # Dynamic helper method for widgets with a table, returns DOM object for row if match can be found on method text.
-          elsif respond_to?(:table) && table.present? && tmp = find_row(mth)
-            return tmp
           # Dynamic helper method for links. If a match is found, clicks on the link and performs follow up actions.
           elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
 
-            if @site.modal.present?
-              @site.modal.continue(page_arguments)
-            else
-              current_page = @site.page
+            current_page = @site.page
 
-              if page_arguments.present?
-                if error_check != false
-                  if tmp = @site.page_errors
-                    raise tmp.to_s
-                  end
-                end
+            if page_arguments.present?
 
-                if current_page.respond_to?(:submit)
-                  current_page.submit page_arguments
-                elsif @browser.input(xpath: "//div[starts-with(@class,'Row') and last()]//input[@type='submit' and last()]").present?
-                  current_page.update_page page_arguments
-                  @browser.input(xpath: "//div[starts-with(@class,'Row') and last()]//input[@type='submit' and last()]").click
-                end
-                current_page = @site.page
+              if current_page.respond_to?(:submit)
+                current_page.submit page_arguments
+              elsif @browser.input(xpath: "//div[starts-with(@class,'Row') and last()]//input[@type='submit' and last()]").present?
+                current_page.update_page page_arguments
+                @browser.input(xpath: "//div[starts-with(@class,'Row') and last()]//input[@type='submit' and last()]").click
               end
+              current_page = @site.page
             end
           # Dynamic helper method for buttons. If a match is found, clicks on the link and performs follow up actions.
           elsif elem = buttons.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
@@ -315,12 +298,6 @@ module Insite
               current_page = @site.page
 
               if page_arguments.present?
-                if error_check != false
-                  if tmp = @site.page_errors
-                    raise tmp.to_s
-                  end
-                end
-
                 if current_page.respond_to?(:submit)
                   current_page.submit page_arguments
                 elsif @browser.input(xpath: "//div[starts-with(@class,'Row') and last()]//input[@type='submit' and last()]").present?
@@ -335,12 +312,6 @@ module Insite
           end
         else
           raise NoMethodError, "Unhandled method call `#{mth}' for #{self.class} (The widget was not present in the DOM at the point that the method was called.)"
-        end
-
-        if error_check != false
-          if tmp = @site.page_errors
-            raise tmp.to_s
-          end
         end
 
         page_arguments.present? ? page_arguments : current_page
@@ -368,8 +339,4 @@ module Insite
       end
     end
   end
-end
-
-# TODO: For legacy code, should be removed.
-class Widget < Insite::Widget
 end
