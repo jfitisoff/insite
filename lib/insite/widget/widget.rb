@@ -340,3 +340,7 @@ module Insite
     end
   end
 end
+
+# TODO: For legacy code, should be removed.
+class Widget < Insite::Widget
+end
