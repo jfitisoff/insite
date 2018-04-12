@@ -36,6 +36,6 @@ Gem::Specification.new do |s|
     "lib/insite/insite.rb",
     "lib/insite/version.rb"
   ]
-  s.homepage    = 'http://rubygems.org/gems/insite'
+  s.homepage    = 'https://github.com/jfitisoff/insite'
   s.license     = 'MIT'
 end
