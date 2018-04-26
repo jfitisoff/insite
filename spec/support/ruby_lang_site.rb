@@ -1,5 +1,5 @@
 require 'insite'
-require 'rspec'
+# require 'rspec'
 
 require 'coveralls'
 Coveralls.wear!
@@ -85,6 +85,8 @@ end
 class NewsPostPage < RubyLangTemplate
   set_url_matcher %r{/\S{2}/news/\d+/\d+/\d+/\S+/} #
   set_attributes  :navigation_disabled
+
+  _a :foo, text: /Download/i
 
   post :post, :div, :class, 'post'
 end
