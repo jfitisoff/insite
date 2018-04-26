@@ -1,5 +1,5 @@
 require 'insite'
-require 'rspec'
+# require 'rspec'
 
 def new_session
   s = RubyLangSite.new 'https://www.ruby-lang.org', language_code: 'en'
@@ -73,6 +73,8 @@ end
 class NewsPostPage < RubyLangTemplate
   set_url_matcher %r{/\S{2}/news/\d+/\d+/\d+/\S+/} #
   set_attributes  :navigation_disabled
+
+  _a :foo, text: /Download/i
 
   post :post, :div, :class, 'post'
 end

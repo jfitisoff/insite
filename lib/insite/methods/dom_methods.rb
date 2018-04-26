@@ -1,4 +1,25 @@
 module Insite
+  class UIElement
+    attr_accessor :target
+
+    def initialize(*args, &block)
+      @target = $browser.send(*args)
+    end
+
+    def method_missing(mth, *args, &block)
+      if @target.respond_to?(mth)
+        @target.send(*([mth] + args))
+      else
+        raise NoMethodError, "Undefined method `#{mth}' for #{self.class}"
+      end
+    end
+  end
+
+  METHOD_MAP.each do |k, v|
+    klass = Class.new(Insite::UIElement)
+    const_set k.to_s.demodulize, klass
+  end
+
   module DOMMethods
     DOM_METHODS.each do |mth|
       define_method(mth) do |name=nil, *args, &block|
@@ -6,6 +27,18 @@ module Insite
           element_container(name, mth, *args, &block)
         else
           el(name) { |b| b.send(mth, parse_args(args.flatten)) }
+        end
+      end
+    end
+
+    METHOD_MAP.each do |k, v|
+      v.each do |mth|
+        define_method("_#{mth}") do |name=nil, *args, &block|
+          @page_elements ||= []
+          @page_elements << name.to_sym
+          define_method(name) do |*args, &block|
+            "Insite::#{mth.to_s.camelcase}".constantize.new(*args)
+          end
         end
       end
     end
