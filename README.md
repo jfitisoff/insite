@@ -8,7 +8,7 @@ Note: Documentation for this library is still a WIP -- not everything is documen
 # Table of Contents
 * [insite](https://github.com/jfitisoff/insite#insite)
    * [Site Object Model](https://github.com/jfitisoff/insite#site-object-model)
-      * [Why bother?](https://github.com/jfitisoff/insite#wat)
+      * [Wat?](https://github.com/jfitisoff/insite#wat)
 * [Installation](https://github.com/jfitisoff/insite#installation)
 * [Basic usage](https://github.com/jfitisoff/insite#basic-usage)
    * [Creating a site object](https://github.com/jfitisoff/insite#creating-a-site-object)
