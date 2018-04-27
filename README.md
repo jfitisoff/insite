@@ -1,22 +1,26 @@
 # insite
-Insite is a page object library that treats a website as a related collection of pages. Page objects are accessed via a site object. The library currently supports Watir. Selenium support is in progress.
+Insite is a page object library that uses a "Site Object Model" approach -- treating a website as a related collection of pages. Page objects are accessed via a site object, which is a wrapper class that manages all of your pages. The library currently supports Watir. Selenium support is in progress.
 
-Note: Documentation is still a WIP and not everything is properly documented. More to come.
+The library also has some facilities for creating re-usable components for common UI features. This allows you to write code *once* for features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
+
+Note: Documentation for this library is still a WIP -- not everything is documented yet -- and more tests are needed. But the library is stable and usable at this point and I'm actively working on it.
 
 # Table of Contents
 * [insite](https://github.com/jfitisoff/insite#insite)
    * [Site Object Model](https://github.com/jfitisoff/insite#site-object-model)
-* [Basic Usage](https://github.com/jfitisoff/insite#basic-usage)
+      * [Wat?](https://github.com/jfitisoff/insite#wat)
+* [Installation](https://github.com/jfitisoff/insite#installation)
+* [Basic usage](https://github.com/jfitisoff/insite#basic-usage)
    * [Creating a site object](https://github.com/jfitisoff/insite#creating-a-site-object)
    * [Creating a page for a site](https://github.com/jfitisoff/insite#creating-a-page-for-a-site)
-   * [Using a site object page.](https://github.com/jfitisoff/insiteusing-a-site-object-page)
+   * [Using a site object's page](https://github.com/jfitisoff/insite#using-a-site-objects-page)
 * [Features](https://github.com/jfitisoff/insite#features)
-   * [Simplified Page Object Initialization and Navigation](https://github.com/jfitisoff/insite#simplified-page-object-initialization-and-navigation)
-      * [Templated URLs and Support for Object Arguments](https://github.com/jfitisoff/insite#templated-urls-and-support-for-object-arguments)
-      * [Overriding a URL Template for Navigation Purposes](https://github.com/jfitisoff/insitehttps://github.com/jfitisoff/insite#overriding-a-url-template-for-navigation-purposes)
-   * [No need to declare page object variables](https://github.com/jfitisoff/insitehttps://github.com/jfitisoff/insite/tree/more-docs#no-need-to-declare-page-object-variables)
-   * [Page Templates](https://github.com/jfitisoff/insite#page-templates)
-   * [Page Widgets](https://github.com/jfitisoff/insite#page-widgets)
+   * [Simplified page object initialization and navigation](https://github.com/jfitisoff/insite#simplified-page-object-initialization-and-navigation)
+      * [Templated URLs and support for object arguments](https://github.com/jfitisoff/insite#templated-urls-and-support-for-object-arguments)
+      * [Overriding a URL template for navigation purposes](https://github.com/jfitisoff/insite#overriding-a-url-template-for-navigation-purposes)
+   * [No need to declare page object variables](https://github.com/jfitisoff/insite#no-need-to-declare-page-object-variables)
+   * [Page templates](https://github.com/jfitisoff/insite#page-templates)
+   * [Page widgets](https://github.com/jfitisoff/insite#page-widgets)
    * [Updating pages](https://github.com/jfitisoff/insite#updating-pages)
 * [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorgen)
    * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-using-the-site-defined-above)
@@ -24,10 +28,92 @@ Note: Documentation is still a WIP and not everything is properly documented. Mo
 ## Site Object Model
 Page objects are the gold standard for browser automation. Using the Page Object Model, classes are defined for each page in a web application. These classes contain accessor methods for page elements, as well as higher-level methods that utilize these elements to provide support for more complex tasks.
 
-By design, this model for test automation views a website as a collection of individual pages. But when we actually use a web app we generally think of it as an *app* and the pages fade into the background -- they're just part of the app that we're using.
+By design, this model for test automation breaks a web application down into a loose set of individual pages. You work with the website one page object at a time and your page objects often have little or no awareness of the other pages that comprise the web app that you're working with. There's nothing wrong with this: It's a great way to organize code.
 
-Why not take that approach with UI automation? Focus on the app as a whole rather than a collection of individual pages? You could do that by creating another level of organization *above* the page objects for a site: something that represents the site
-itself. That's the approach that this library takes.
+But when we work with a web application the pages fade into the background. We're generally trying to accomplish some specific task (or set of tasks) and the pages are just stepping stones to get to our destination. When there's a problem submitting a form on a specific page, users generally think of that as a problem with the *application*. Pages are involved, but they're just cogs in the machine.
+
+What if you took the same sort of approach with test automation? Maybe by creating some additional level of organization *above* your page objects, some wrapper class that ties all of the pages together and is intended to represent the site itself?
+
+### Wat?
+Let's call the wrapper class mentioned above a "site object." What could you do with it?
+
+For a start, page object initialization could be simplified. The site object could implement a method for each page that you've defined for your site:
+
+```ruby
+# Typical page object:
+page = LoginPage.new browser
+page.visit
+
+# Site object:
+page = s.login_page browser
+page.visit
+```
+
+That's not much of an improvement. Things have just been moved around a little. But what if this thing we're calling a site object was the place where you kept the browser? Then it would be trivial for that accessor method to *automatically* pass the browser in when one of those page object methods is called on the site object:
+
+```ruby
+# Not a huge improvement but automatically passing in the browser simplifies things a little.
+page = s.login_page
+page.visit
+```
+
+Building on that a little more, why not have the site object cache the page when the page accessor method is called? And delegate method calls on the site down to the page? Then you wouldn't have to constantly create variables for your page objects:
+
+```ruby
+# Without delegation:
+page = s.login_page
+page.visit
+page.email.set 'Shelly'
+
+# With delegation (Typing is now reduced even more.)
+s.login_page
+s.visit
+s.email.set 'Shelly'
+```
+
+What next? Most page objects have some sort of capability for navigating to a page. Some have the ability to do a check to determine if the correct page is being displayed by examining the URL or page text.
+
+Let's say that the page object class that we're using could do both of these things.
+
+If that was the case, you could add something to automatically navigate to a page if the browser isn't already displaying it. You probably wouldn't want to add that capability to the page object class as might lead to unintended consequences. But it'd likely be pretty safe to add it to the site object. When a page object accessor method is called, the site object could initialize the page object for the desired page, ask it if the browser is pointing to correct URL and then direct the page object to navigate to the page if necessary:
+
+```ruby
+# Now the need to manually 'visit' or 'load' the page is eliminated.
+s.login_page
+s.email.set 'Shelly'
+
+# This could actually be simplified down to one line:
+s.login_page.email.set 'Shelly'
+```
+
+Sometimes, the navigation attempt may fail and the page you're trying to navigate to may not get displayed. There could be a redirect because the user doesn't have appropriate permissions for a certain page, or maybe the user has a session timeout. In those cases, you could raise an error describing both the target page and the actual page.
+
+In addition to that page accessor method, you could add another method on the site object to check to see if a particular page is loaded. The automatic navigation reduces the need for a method like this but it might be useful for writing test assertions:
+
+```ruby
+# Returns true of false depending on whether the login page is being displayed or not.
+s.login_page?
+=> false
+```
+
+Here's the point where things start to get interesting: The site object is a wrapper class for *all* your pages. It knows about each of them. And each page object has the ability to identify the browser URL of the page that it was created for. Why not add something to the site object that looks at the current browser URL and then sorts through all of its page objects to find a match? Then you could add a method to return *whatever* *the* *current* *page* *is*:
+
+```ruby
+s.page
+=> #<WelcomePage:0x00007fecfa1c6c88>
+```
+
+And for cases where there's no matching page, you could return nil, or some special class for undefined pages with limited functionality.
+
+Let's do one last thing: Take this page check idea and have the site object automatically do it in cases where the URL is expected to change.
+
+At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user (albeit programmatically.) The site object will keep up with you, automatically loading the correct page object as you navigate.
+
+If you've managed to make it to the end of this section, congratulations and you should now have a pretty good idea of what this library does.
+
+# Installation:
+ - gem install insite
+ - You'll need to install a browser driver (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver/] is recommended since Selenium tries to load that one by default if you don't specify the driver.
 
 # Basic Usage
 
@@ -66,7 +152,7 @@ end
 # The constructor also accepts optional hash args.
 site = MySite.new "https://mysite.com"
 
-# Start a browser.
+# Start a browser. Any arguments here, e.g., driver type, get used to initialize the browser.
 site.open
 
 # Navigate to login page and log in (more on navigation below.)
