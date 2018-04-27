@@ -109,7 +109,7 @@ Let's do one last thing: Take this page check idea and have the site object auto
 
 At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user (albeit programmatically.) The site object will keep up with you, automatically loading the correct page object as you navigate.
 
-If you've made it to the end of this section, you should now have a pretty good idea of what this library does.
+If you've managed to make it to the end of this section, congratulations and you should now have a pretty good idea of what this library does.
 
 # Installation:
  - gem install insite
