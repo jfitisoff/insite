@@ -356,7 +356,7 @@ s.billing_info_page.save_changes(
 )
 ```
 
-# Sample code for https://www.ruby-lang.org/en/:
+# Sample code for (www.ruby-lang.org)[https://www.ruby-lang.org/en/]
 ```ruby
 # Site object class.
 class RubyLangSite
