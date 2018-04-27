@@ -3,6 +3,24 @@ Insite is a page object library that treats a website as a related collection of
 
 Note: Documentation is still a WIP and not everything is properly documented. More to come.
 
+# Table of Contents
+* [insite](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Site Object Model](https://github.com/jfitisoff/insite/tree/more-docs)
+* [Basic Usage](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Creating a site object](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Creating a page for the site](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Using the site object and the new page.](https://github.com/jfitisoff/insite/tree/more-docs)
+* [Features](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Simplified Page Object Initialization and Navigation](https://github.com/jfitisoff/insite/tree/more-docs)
+      * [Templated URLs and Support for Object Arguments](https://github.com/jfitisoff/insite/tree/more-docs)
+      * [Overriding a URL Template for Navigation Purposes](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [No need to declare page object variables](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Page Templates](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Page Widgets](https://github.com/jfitisoff/insite/tree/more-docs)
+   * [Updating pages](https://github.com/jfitisoff/insite/tree/more-docs)
+* [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite/tree/more-docshttps://www.ruby-lang.org/en/)
+   * [Sample tests using the site defined above.](https://github.com/jfitisoff/insite/tree/more-docs)
+
 ## Site Object Model
 Page objects are the gold standard for browser automation. Using the Page Object Model, classes are defined for each page in a web application. These classes contain accessor methods for page elements, as well as higher-level methods that utilize these elements to provide support for more complex tasks.
 
