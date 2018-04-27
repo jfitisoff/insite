@@ -97,7 +97,7 @@ All URLs for page objects are defined using URL templates and the templates are 
 
 More info about URL templates can be found in the [RFC](https://www.rfc-editor.org/rfc/rfc6570.txt) if you're interested in a little light reading.
 
-One of the benefits of using templates is that it makes it easy to define and build more complicated URLs. For example, if you have an account details page that requires an account code you can define a page object that looks like this:
+One of the benefits of using templates is that it makes it easy to define and build more complicated URLs. For example, if you have an account page that requires an account code you can define a page object that looks like this:
 
 ```ruby
 class AccountPage < MySite::Page
@@ -129,7 +129,7 @@ In the example above, the account argument can be anything as long as it respond
 For cases where the URL template may not be sufficient to match the final URL that's displayed, you can define a regular expression that overrides the template when the site object is looking at the browser URL to determine whether or not it's on a particular page:
 
 ```ruby
-class AccountDetailsPage < MySite::Page
+class AccountPage < MySite::Page
   # This will be used for all navigation.
   set_url "/accounts/{account_code}"
 
