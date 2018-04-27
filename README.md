@@ -22,7 +22,7 @@ Note: Documentation for this library is still a WIP -- not everything is documen
    * [Page templates](https://github.com/jfitisoff/insite#page-templates)
    * [Page widgets](https://github.com/jfitisoff/insite#page-widgets)
    * [Updating pages](https://github.com/jfitisoff/insite#updating-pages)
-* [Sample code for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorg)
+* [Sample code for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-code-for-wwwruby-langorg)
    * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-that-utilize-the-ruby-langorg-site-defined-above)
 
 ## Site Object Model
@@ -357,8 +357,6 @@ s.billing_info_page.save_changes(
 ```
 
 # Sample code for www.ruby-lang.org
-
-(www.ruby-lang.org)[https://www.ruby-lang.org/en/]
 
 ```ruby
 # Site object class.
