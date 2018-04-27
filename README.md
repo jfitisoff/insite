@@ -310,7 +310,7 @@ Here's how the newly defined widget could be used in any page that has the searc
 class SomePage < SomeSite::Page
   set_url '/customers'
 
-  search_widget :search_customers, :div, class "Search"
+  search_widget :search_customers, :div, class: "Search"
 end
 
 # And then...
