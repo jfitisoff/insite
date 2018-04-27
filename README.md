@@ -23,7 +23,7 @@ Note: Documentation for this library is still a WIP -- not everything is documen
    * [Page widgets](https://github.com/jfitisoff/insite#page-widgets)
    * [Updating pages](https://github.com/jfitisoff/insite#updating-pages)
 * [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorgen)
-   * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-using-the-site-defined-above)
+   * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-using-the-ruby-lang-site-defined-above)
 
 ## Site Object Model
 Page objects are the gold standard for browser automation. Using the Page Object Model, classes are defined for each page in a web application. These classes contain accessor methods for page elements, as well as higher-level methods that utilize these elements to provide support for more complex tasks.
@@ -146,7 +146,7 @@ class LoginPage < MySite::Page
 end
 ```
 
-## Using a site object page.
+## Using a site object's page
 ```ruby
 # Create a site. Main argument is the "base_url" for the site being accessed (required.)
 # The constructor also accepts optional hash args.
@@ -161,7 +161,7 @@ site.login_page.log_in email: 'foo@bar.com', password: 'PassW0rd8'
 
 # Features
 
-## Simplified Page Object Initialization and Navigation
+## Simplified page object initialization and navigation
 Three main points worth noting before digging into how navigation works:
  * Browsers get initialized at the site level. The site object automatically passes the browser down to a page object as it gets initialized. So there's no need to feed a page object a browser object every time you need a page.
 
@@ -196,7 +196,7 @@ site.login_page? # Additional helper method created for each page class.
 => true
 ```
 
-### Templated URLs and Support for Object Arguments
+### Templated URLs and support for object arguments
 All URLs for page objects are defined using URL templates and the templates are implemented using the [addressable](https://github.com/sporkmonger/addressable) gem. Typically, a relative URL is defined for the page and this is used with the site's base URL to create a template for the page. The template is used to build the page URL for navigation and (mostly) used to determine if the page is being displayed.
 
 More info about URL templates can be found in the [RFC](https://www.rfc-editor.org/rfc/rfc6570.txt) if you're interested in a little light reading.
@@ -229,7 +229,7 @@ In the example above, the account argument can be anything as long as it respond
 
 *Note:* Regardless of whether you are using a hash or some other object to initialize a page, if the object doesn't respond to an argument required by the templated URL the page object will fall back to looking at the arguments used to initialize the site object. If it sees a match there it will use that argument to fill in the gaps when attempting to initialize the page. This allows you to specify things like a subdomain or a port number when initializing the site object and use them when defining URL templates for your page objects.
 
-### Overriding a URL Template for Navigation Purposes
+### Overriding a URL template for navigation purposes
 For cases where the URL template may not be sufficient to match the final URL that's displayed, you can define a regular expression that overrides the template when the site object is looking at the browser URL to determine whether or not it's on a particular page:
 
 ```ruby
@@ -262,7 +262,7 @@ site.login_page
 site.email.set 'foo@bar.net'
 ```
 
-## Page Templates
+## Page templates
 Web applications typically have recurring bits of functionality that you'll see on many pages. For example, most web applications have a logout link that's accessible from every page when you are logged in. Things that you'd rather not define over and over. To handle this, you can create one or more page templates that contain these common features. The templates can't be used themselves (no accessor method will be created for them) but other pages can inherit from them.
 
 Here's how to create and use a page template:
@@ -282,7 +282,7 @@ class SomePage < SomeTemplate
 end
 ```
 
-## Page Widgets
+## Page widgets
 You'll typically have common features that will be implemented throughout the UI. Widgets allow you to define those features once and then re-use them everywhere the features occur. Examples of things that could be represented by widgets are cards, pagination controls, calendars etc.
 
 When you define a widget two class-level methods get created, one for the widget and another for a collection of those widgets. Let's say that there are multiple places to search in your app and those search options are all implemented in the same (or a similar way.) Here's what a widget might look like for that UI feature:
@@ -420,7 +420,7 @@ def new_session
 end
 ```
 
-## Sample tests using the site defined above.
+## Sample tests using the ruby-lang site defined above
 ```ruby
 require_relative 'support/ruby_lang_site'
 
