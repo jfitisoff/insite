@@ -22,8 +22,8 @@ Note: Documentation for this library is still a WIP -- not everything is documen
    * [Page templates](https://github.com/jfitisoff/insite#page-templates)
    * [Page widgets](https://github.com/jfitisoff/insite#page-widgets)
    * [Updating pages](https://github.com/jfitisoff/insite#updating-pages)
-* [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorgen)
-   * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-using-the-ruby-lang-site-defined-above)
+* [Sample code for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorg)
+   * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-that-utilize-the-ruby-langorg-site-defined-above)
 
 ## Site Object Model
 Page objects are the gold standard for browser automation. Using the Page Object Model, classes are defined for each page in a web application. These classes contain accessor methods for page elements, as well as higher-level methods that utilize these elements to provide support for more complex tasks.
@@ -356,7 +356,10 @@ s.billing_info_page.save_changes(
 )
 ```
 
-# Sample code for (www.ruby-lang.org)[https://www.ruby-lang.org/en/]
+# Sample code for www.ruby-lang.org
+
+(www.ruby-lang.org)[https://www.ruby-lang.org/en/]
+
 ```ruby
 # Site object class.
 class RubyLangSite
@@ -420,7 +423,7 @@ def new_session
 end
 ```
 
-## Sample tests using the ruby-lang site defined above
+## Sample tests that utilize the ruby-lang.org site defined above
 ```ruby
 require_relative 'support/ruby_lang_site'
 
