@@ -8,7 +8,7 @@ Note: Documentation for this library is still a WIP -- not everything is documen
 # Table of Contents
 * [insite](https://github.com/jfitisoff/insite#insite)
    * [Site Object Model](https://github.com/jfitisoff/insite#site-object-model)
-      * [Why bother?](https://github.com/jfitisoff/insite#why-bother)
+      * [Why bother?](https://github.com/jfitisoff/insite#wat)
 * [Installation](https://github.com/jfitisoff/insite#installation)
 * [Basic usage](https://github.com/jfitisoff/insite#basic-usage)
    * [Creating a site object](https://github.com/jfitisoff/insite#creating-a-site-object)
@@ -32,9 +32,9 @@ By design, this model for test automation breaks a web application down into a l
 
 But when we work with a web application the pages fade into the background. We're generally trying to accomplish some specific task or tasks and the pages are just stepping stones to get there. When there's a problem submitting the form, users generally don't think about the page being broken, they're thinking about the *application* being broken. Pages are involved, but they're just cogs in the machine. It's more natural to think of a web application as one big thing.
 
-What if you took the same sort of approach with test automation? Maybe by creating some additional level of organization *above* your page objects, some wrapper class that ties all of the pages together and is intended to represent the site itself? A sort of binding for your page objects that serves the same sort of purpose that a binder does for the pages in a book?
+What if you took the same sort of approach with test automation? Maybe by creating some additional level of organization *above* your page objects, some wrapper class that ties all of the pages together and is intended to represent the site itself?
 
-### Why bother?
+### Wat?
 Let's call the wrapper class mentioned above a "site object." What could you do with it?
 
 For a start, page object initialization could be simplified. The site object could implement a method for each page that you've defined for your site:
