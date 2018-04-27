@@ -4,22 +4,22 @@ Insite is a page object library that treats a website as a related collection of
 Note: Documentation is still a WIP and not everything is properly documented. More to come.
 
 # Table of Contents
-* [insite](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Site Object Model](https://github.com/jfitisoff/insite/tree/more-docs)
-* [Basic Usage](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Creating a site object](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Creating a page for the site](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Using the site object and the new page.](https://github.com/jfitisoff/insite/tree/more-docs)
-* [Features](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Simplified Page Object Initialization and Navigation](https://github.com/jfitisoff/insite/tree/more-docs)
-      * [Templated URLs and Support for Object Arguments](https://github.com/jfitisoff/insite/tree/more-docs)
-      * [Overriding a URL Template for Navigation Purposes](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [No need to declare page object variables](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Page Templates](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Page Widgets](https://github.com/jfitisoff/insite/tree/more-docs)
-   * [Updating pages](https://github.com/jfitisoff/insite/tree/more-docs)
-* [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite/tree/more-docshttps://www.ruby-lang.org/en/)
-   * [Sample tests using the site defined above.](https://github.com/jfitisoff/insite/tree/more-docs)
+* [insite](https://github.com/jfitisoff/insite#insite)
+   * [Site Object Model](https://github.com/jfitisoff/insite#site-object-model)
+* [Basic Usage](https://github.com/jfitisoff/insite#basic-usage)
+   * [Creating a site object](https://github.com/jfitisoff/insite#creating-a-site-object)
+   * [Creating a page for a site](https://github.com/jfitisoff/insite#creating-a-page-for-a-site)
+   * [Using a site object page.](https://github.com/jfitisoff/insiteusing-a-site-object-page)
+* [Features](https://github.com/jfitisoff/insite#features)
+   * [Simplified Page Object Initialization and Navigation](https://github.com/jfitisoff/insite#simplified-page-object-initialization-and-navigation)
+      * [Templated URLs and Support for Object Arguments](https://github.com/jfitisoff/insite#templated-urls-and-support-for-object-arguments)
+      * [Overriding a URL Template for Navigation Purposes](https://github.com/jfitisoff/insitehttps://github.com/jfitisoff/insite#overriding-a-url-template-for-navigation-purposes)
+   * [No need to declare page object variables](https://github.com/jfitisoff/insitehttps://github.com/jfitisoff/insite/tree/more-docs#no-need-to-declare-page-object-variables)
+   * [Page Templates](https://github.com/jfitisoff/insite#page-templates)
+   * [Page Widgets](https://github.com/jfitisoff/insite#page-widgets)
+   * [Updating pages](https://github.com/jfitisoff/insite#updating-pages)
+* [Sample code for <a href="https://www.ruby-lang.org/en/" rel="nofollow">https://www.ruby-lang.org/en/</a>:](https://github.com/jfitisoff/insite#sample-code-for-httpswwwruby-langorgen)
+   * [Sample tests for www.ruby-lang.org](https://github.com/jfitisoff/insite#sample-tests-using-the-site-defined-above)
 
 ## Site Object Model
 Page objects are the gold standard for browser automation. Using the Page Object Model, classes are defined for each page in a web application. These classes contain accessor methods for page elements, as well as higher-level methods that utilize these elements to provide support for more complex tasks.
@@ -40,7 +40,7 @@ class MySite
 end
 ```
 
-## Creating a page for the site
+## Creating a page for a site
 ```ruby
 # The set_url method is used to define a relative url.
 class LoginPage < MySite::Page
@@ -60,7 +60,7 @@ class LoginPage < MySite::Page
 end
 ```
 
-## Using the site object and the new page.
+## Using a site object page.
 ```ruby
 # Create a site. Main argument is the "base_url" for the site being accessed (required.)
 # The constructor also accepts optional hash args.
