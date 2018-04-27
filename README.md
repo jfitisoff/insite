@@ -213,6 +213,45 @@ end
 site.some_page.search_customers.search 'foo'
 ```
 
+## Updating pages
+Pages support an update_page method. This method takes a hash of values and then updates the elements accordingly. It automatically does some introspection, looking at what type of element it's setting and then doing the right thing with the value that's provided. Here's an example of a page with a credit card form:
+
+```ruby
+class BillingInfoPage < SomeSite::Page
+  text_field :first_name, id: 'fname'
+  text_field :last_name, id: 'lname'
+  text_field :street, id: 'streetaddr'
+  text_field :city, id: 'city'
+  select_list :country, id: 'country'
+  select_list :state, class: 'Region'
+  text_field  :card_number, id: 'cardnum'
+  text_field :zip, id: 'postalcode'
+  text_field :cvv, id: 'cvv'
+  checkbox   :email_notifications, id: 'notifications'
+  button :save_changes_button, value: 'Save Changes'
+
+  def save_changes(hsh = {})
+    update_page hsh
+    save_changes_button.click
+  end
+end
+```
+
+Here's how the save method (that uses update_page) would be called:
+
+```ruby
+s.billing_info_page.save_changes(
+  first_name: 'puddin',
+  last_name: 'tame',
+  street: '221 N. First Street',
+  city: 'Oakland',
+  state: 'California',
+  zip: '94605'
+  country: 'United States',
+  email_notifications: false
+)
+```
+
 # Sample code for https://www.ruby-lang.org/en/:
 ```ruby
 # Site object class.
