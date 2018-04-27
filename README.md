@@ -13,7 +13,7 @@ Note: Documentation for this library is still a WIP -- not everything is documen
 * [Basic usage](https://github.com/jfitisoff/insite#basic-usage)
    * [Creating a site object](https://github.com/jfitisoff/insite#creating-a-site-object)
    * [Creating a page for a site](https://github.com/jfitisoff/insite#creating-a-page-for-a-site)
-   * [Using a site object page.](https://github.com/jfitisoff/insite#using-a-site-object-page)
+   * [Using a site object's page](https://github.com/jfitisoff/insite#using-a-site-objects-page)
 * [Features](https://github.com/jfitisoff/insite#features)
    * [Simplified page object initialization and navigation](https://github.com/jfitisoff/insite#simplified-page-object-initialization-and-navigation)
       * [Templated URLs and support for object arguments](https://github.com/jfitisoff/insite#templated-urls-and-support-for-object-arguments)
