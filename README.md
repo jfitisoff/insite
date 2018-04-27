@@ -30,7 +30,7 @@ Page objects are the gold standard for browser automation. Using the Page Object
 
 By design, this model for test automation breaks a web application down into a loose set of individual pages. You work with the website one page object at a time and your page objects often have little or no awareness of the other pages that comprise the web app that you're working with. There's nothing wrong with this: It's a great way to organize code.
 
-But when we work with a web application the pages fade into the background. We're generally trying to accomplish some specific task or tasks and the pages are just stepping stones to get there. When there's a problem submitting the form, users generally don't think about the page being broken, they're thinking about the *application* being broken. Pages are involved, but they're just cogs in the machine. It's more natural to think of a web application as one big thing.
+But when we work with a web application the pages fade into the background. We're generally trying to accomplish some specific task (or set of tasks) and the pages are just stepping stones to get to our destination. When there's a problem submitting a form on a specific page, users generally think of that as a problem with the *application*. Pages are involved, but they're just cogs in the machine.
 
 What if you took the same sort of approach with test automation? Maybe by creating some additional level of organization *above* your page objects, some wrapper class that ties all of the pages together and is intended to represent the site itself?
 
@@ -109,7 +109,7 @@ Let's do one last thing: Take this page check idea and have the site object auto
 
 At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user (albeit programmatically.) The site object will keep up with you, automatically loading the correct page object as you navigate.
 
-That's what this library does.
+If you've made it to the end of this section, you should now have a pretty good idea of what this library does.
 
 # Installation:
  - gem install insite
