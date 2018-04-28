@@ -3,7 +3,7 @@ Insite is a page object library that uses a "Site Object Model" approach -- trea
 
 The library also has some facilities for creating re-usable components for common UI features. This allows you to write code *once* for features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
 
-Note: Documentation for this library is still a WIP -- not everything is documented yet -- and more tests are needed. But the library is stable and usable at this point and I'm actively working on it.
+**Note:** Documentation for this library is still a WIP -- not everything is documented yet -- and more tests are needed. But the library is stable and usable at this point and I'm actively working on it.
 
 # Table of Contents
 * [insite](https://github.com/jfitisoff/insite#insite)
@@ -65,7 +65,7 @@ page = s.login_page
 page.visit
 page.email.set 'Shelly'
 
-# With delegation (Typing is now reduced even more.)
+# With delegation (No need to declare a page object variable.)
 s.login_page
 s.visit
 s.email.set 'Shelly'
@@ -96,24 +96,32 @@ s.login_page?
 => false
 ```
 
-Here's the point where things start to get interesting: The site object is a wrapper class for *all* your pages. It knows about each of them. And each page object has the ability to identify the browser URL of the page that it was created for. Why not add something to the site object that looks at the current browser URL and then sorts through all of its page objects to find a match? Then you could add a method to return *whatever* *the* *current* *page* *is*:
+Here's the point where things start to get interesting: The site object is a wrapper class for *all* of your pages. It knows about each of them. And each page object has the ability to identify the browser URL of the page that it was created for. Why not add something to the site object that looks at the current browser URL and then sorts through all of its page objects to find a match? Then you could add a method to return *whatever* *the* *current* *page* *is*:
 
 ```ruby
 s.page
 => #<WelcomePage:0x00007fecfa1c6c88>
 ```
 
-And for cases where there's no matching page, you could return nil, or some special class for undefined pages with limited functionality.
+And for cases where there's no matching page, you could return nil, or some special class for undefined pages with limited functionality:
 
-Let's do one last thing: Take this page check idea and have the site object automatically do it in cases where the URL is expected to change.
+```ruby
+s.page
+=> #<UndefinedPage:0x00007fbf099afb30>
+```
+
+Let's do one last thing: Add some code to the site object to automatically do this page check in cases where the URL is expected to change.
 
 At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user (albeit programmatically.) The site object will keep up with you, automatically loading the correct page object as you navigate.
 
 If you've managed to make it to the end of this section, congratulations and you should now have a pretty good idea of what this library does.
 
 # Installation:
- - gem install insite
- - You'll need to install a browser driver (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver/] is recommended since Selenium tries to load that one by default if you don't specify the driver.
+```
+ gem install insite
+```
+
+**Note:** You'll need to install a browser driver (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver/] is recommended since Selenium tries to load that one by default if you don't specify the driver.
 
 # Basic Usage
 
@@ -136,9 +144,9 @@ class LoginPage < MySite::Page
   text_field :password, id: 'pwd'
   button :log_in_button, type: 'submit'
 
-  # The update_page method takes a hash argument of element names and values and
-  # then updates the page accordingly (it figures out what the element is and what
-  # to do with the values.)
+  # The update_page method below takes a hash argument of element names and
+  # values and then updates the page accordingly (it figures out what the
+  # element is and how to apply the value.)
   def log_in(hsh = {})
     update_page hsh
     log_in_button.click
@@ -189,7 +197,7 @@ Since the site object has the browser, is paying attention to the browser URL *a
 site.login_page
 ```
 
-*Note:* There's also an additional helper method that gets created for each page object, which allows you to check whether or not it's being displayed in the browser:
+**Note:** There's also an additional helper method that gets created for each page object, which allows you to check whether or not it's being displayed in the browser:
 
 ```ruby
 site.login_page? # Additional helper method created for each page class.
@@ -225,9 +233,9 @@ Even better, if you have a Ruby object that responds to "account_code" you can j
 site.account_page account
 ```
 
-In the example above, the account argument can be anything as long as it responds to an account_code method.
+In the example above, the account argument can be any object that responds to an account_code method.
 
-*Note:* Regardless of whether you are using a hash or some other object to initialize a page, if the object doesn't respond to an argument required by the templated URL the page object will fall back to looking at the arguments used to initialize the site object. If it sees a match there it will use that argument to fill in the gaps when attempting to initialize the page. This allows you to specify things like a subdomain or a port number when initializing the site object and use them when defining URL templates for your page objects.
+**Note:** Regardless of whether you are using a hash or some other object to initialize a page, if the object doesn't respond to an argument required by the templated URL the page object will fall back to looking at the arguments used to initialize the site object. If it sees a match there it will use that argument to fill in the gaps when attempting to initialize the page. This allows you to specify things like a subdomain or a port number when initializing the site object and use them when defining URL templates for your page objects.
 
 ### Overriding a URL template for navigation purposes
 For cases where the URL template may not be sufficient to match the final URL that's displayed, you can define a regular expression that overrides the template when the site object is looking at the browser URL to determine whether or not it's on a particular page:
