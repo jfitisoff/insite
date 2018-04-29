@@ -125,7 +125,7 @@ If you've managed to make it to the end of this section, congratulations and you
  gem install insite
 ```
 
-**Note:** You'll need to install a browser driver (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver/] is recommended since Selenium tries to load that one by default if you don't specify the driver.
+**Note:** You'll need to install a browser driver. (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver] is recommended since Selenium tries to load that one by default if you don't specify the driver.
 
 # Basic Usage
 
