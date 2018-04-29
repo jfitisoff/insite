@@ -1,4 +1,8 @@
 # insite
+[![Gem Version](https://badge.fury.io/rb/insite.svg)](https://rubygems.org/gems/insite)
+[![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
+[![Coverage Status](https://coveralls.io/repos/jfitisoff/insite/badge.svg?nocache)](https://coveralls.io/r/jfitisoff/insite)
+
 Insite is a page object library that uses a "Site Object Model" approach -- treating a website as a related collection of pages. Page objects are accessed via a site object, which is a wrapper class that manages all of your pages. The library currently supports Watir. Selenium support is in progress.
 
 The library also has some facilities for creating re-usable components for common UI features. This allows you to write code *once* for features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
@@ -215,8 +219,9 @@ One of the benefits of using templates is that it makes it easy to define and bu
 class AccountPage < MySite::Page
   # Note: This isn't a typo: Ruby string interpolation isn't being used here.
   # The brackets without a leading pound sign are used to define an embedded variable
-  # within the template. This gets replaced later on with whatever "account_code" is
-  # when the template is used to build a URL.
+  # within a template. This gets replaced later on with whatever "account_code" is
+  # when the template is used to build a URL. See URL template links above for more
+  # information about how to work with URL templates.
   set_url "/accounts/{account_code}"
 end
 ```
