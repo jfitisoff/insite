@@ -69,7 +69,7 @@ page = s.login_page
 page.visit
 page.email.set 'Shelly'
 
-# With delegation (No need to declare a page object variable.)
+# With delegation (No need to constantly declare page object variables.)
 s.login_page
 s.visit
 s.email.set 'Shelly'
@@ -79,20 +79,41 @@ What next? Most page objects have some sort of capability for navigating to a pa
 
 Let's say that the page object class that we're using could do both of these things.
 
-If that was the case, you could add something to automatically navigate to a page if the browser isn't already displaying it. You probably wouldn't want to add that capability to the page object class as might lead to unintended consequences. But it'd likely be pretty safe to add it to the site object. When a page object accessor method is called, the site object could initialize the page object for the desired page, ask it if the browser is pointing to correct URL and then direct the page object to navigate to the page if necessary:
+That opens the opportunity for another enhancement. The site object defines an accessor method for each of the site's pages. Right now, these accessor methods just create and return a new page object.
+
+Instead of always having to manually visit a page
+
+Given that, it
+you could  add some logic to automatically handle navigation when a page object is initialized.
+
+If that was the case, you *could* add something to automatically navigate to a page when the browser isn't already displaying it. The page accessor methods could do something like this:
+- Create a page object.
+- Use the page object to check if the correct page is being displayed:
+  - Navigate when that check fails (so that the correct page gets displayed.)
+  - Don't navigate when the check passes (because you're already there.)
+- Return the page object after completing the navigation check (and maybe navigating.)
+
+Here's how that would look:
 
 ```ruby
-# Now the need to manually 'visit' or 'load' the page is eliminated.
+# Now there's no need to manually 'visit' or 'load' the page.
+
+# If the page isn't being displayed in the browser then the method call will
+# cause the browser to load the correct page.
 s.login_page
 s.email.set 'Shelly'
 
-# This could actually be simplified down to one line:
+# This second call to the same method WON'T cause any navigation since you're
+# already there:
+s.login_page
+
+# One side note: The original example was three lines of code. But with the changes
+# so far, it can now be condensed down to just one line:
 s.login_page.email.set 'Shelly'
 ```
+Sometimes, a navigation attempt may fail and the page that you're trying to get to won't  get displayed. There might be a redirect because the user doesn't have appropriate permissions for a certain page, or maybe the user has had a session timeout. In cases like that, you could raise an error describing both the target page and the actual page.
 
-Sometimes, the navigation attempt may fail and the page you're trying to navigate to may not get displayed. There could be a redirect because the user doesn't have appropriate permissions for a certain page, or maybe the user has a session timeout. In those cases, you could raise an error describing both the target page and the actual page.
-
-In addition to that page accessor method, you could add another method on the site object to check to see if a particular page is loaded. The automatic navigation reduces the need for a method like this but it might be useful for writing test assertions:
+Moving on: In addition to that page accessor method, you could add another method on the site object that checks to see if a particular page is loaded. The automatic navigation capability that just got added reduces the need for it but it could still be useful in some cases. For example, you could use it when writing test assertions.
 
 ```ruby
 # Returns true of false depending on whether the login page is being displayed or not.
@@ -107,16 +128,16 @@ s.page
 => #<WelcomePage:0x00007fecfa1c6c88>
 ```
 
-And for cases where there's no matching page, you could return nil, or some special class for undefined pages with limited functionality:
+And for cases where there's no matching page, you could return some special class that represents pages that you haven't defined a page object for:
 
 ```ruby
 s.page
 => #<UndefinedPage:0x00007fbf099afb30>
 ```
 
-Let's do one last thing: Add some code to the site object to automatically do this page check in cases where the URL is expected to change.
+Let's do one last thing with this page identification and navigation support: Add some code to the site object to automatically use it in cases where the URL is expected to change.
 
-At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user (albeit programmatically.) The site object will keep up with you, automatically loading the correct page object as you navigate.
+At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user -- albeit programmatically -- and the site object would keep up with you, automatically loading the correct page object as you navigate through the application.
 
 If you've managed to make it to the end of this section, congratulations and you should now have a pretty good idea of what this library does.
 
@@ -125,7 +146,8 @@ If you've managed to make it to the end of this section, congratulations and you
  gem install insite
 ```
 
-**Note:** You'll need to install a browser driver. (ChromeDriver)[https://sites.google.com/a/chromium.org/chromedriver] is recommended since Selenium tries to load that one by default if you don't specify the driver.
+**Note:** You'll need to install a browser driver.
+[ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver) is recommended since Selenium tries to load that one by default if you don't specify the driver.
 
 # Basic Usage
 
