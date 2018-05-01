@@ -79,27 +79,22 @@ What next? Most page objects have some sort of capability for navigating to a pa
 
 Let's say that the page object class that we're using could do both of these things.
 
-That opens the opportunity for another enhancement. The site object defines an accessor method for each of the site's pages. Right now, these accessor methods just create and return a new page object.
+That opens the opportunity for another enhancement. When the user asks for a page (by calling a page accessor method on the site) you could add a check to see if the correct page is getting displayed in the browser. And if the page isn't being displayed, *automatically* navigate to the page that the user wants.
 
-Instead of always having to manually visit a page
+A good place to add that check would be the page accessor methods. For example, when a user calls site.credentials_page the method would:
+- Create a page object for the credentials page.
+- Check to see if the credentials page is getting displayed in the browser.
+ - Try to load the page if it's *not* getting displayed.
+ - Don't do anything if it *is* getting displayed (because you're already there!)
+- Return the browser object after the navigation check.
 
-Given that, it
-you could  add some logic to automatically handle navigation when a page object is initialized.
-
-If that was the case, you *could* add something to automatically navigate to a page when the browser isn't already displaying it. The page accessor methods could do something like this:
-- Create a page object.
-- Use the page object to check if the correct page is being displayed:
-  - Navigate when that check fails (so that the correct page gets displayed.)
-  - Don't navigate when the check passes (because you're already there.)
-- Return the page object after completing the navigation check (and maybe navigating.)
-
-Here's how that would look:
+Here's how that would look in practice:
 
 ```ruby
 # Now there's no need to manually 'visit' or 'load' the page.
 
 # If the page isn't being displayed in the browser then the method call will
-# cause the browser to load the correct page.
+# automatically load the correct page.
 s.login_page
 s.email.set 'Shelly'
 
@@ -112,14 +107,6 @@ s.login_page
 s.login_page.email.set 'Shelly'
 ```
 Sometimes, a navigation attempt may fail and the page that you're trying to get to won't  get displayed. There might be a redirect because the user doesn't have appropriate permissions for a certain page, or maybe the user has had a session timeout. In cases like that, you could raise an error describing both the target page and the actual page.
-
-Moving on: In addition to that page accessor method, you could add another method on the site object that checks to see if a particular page is loaded. The automatic navigation capability that just got added reduces the need for it but it could still be useful in some cases. For example, you could use it when writing test assertions.
-
-```ruby
-# Returns true of false depending on whether the login page is being displayed or not.
-s.login_page?
-=> false
-```
 
 Here's the point where things start to get interesting: The site object is a wrapper class for *all* of your pages. It knows about each of them. And each page object has the ability to identify the browser URL of the page that it was created for. Why not add something to the site object that looks at the current browser URL and then sorts through all of its page objects to find a match? Then you could add a method to return *whatever* *the* *current* *page* *is*:
 
@@ -135,7 +122,7 @@ s.page
 => #<UndefinedPage:0x00007fbf099afb30>
 ```
 
-Let's do one last thing with this page identification and navigation support: Add some code to the site object to automatically use it in cases where the URL is expected to change.
+Let's do one last thing with this page identification and navigation support: Add some code to the site object to automatically use it in cases where the URL is expected to change. This behavior would be more passive and focused on loading and caching the correct page object rather than actively navigating. 
 
 At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user -- albeit programmatically -- and the site object would keep up with you, automatically loading the correct page object as you navigate through the application.
 
