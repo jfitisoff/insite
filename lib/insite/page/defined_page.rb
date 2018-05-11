@@ -5,6 +5,7 @@ module Insite
     attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :widget_elements
 
     include Insite::CommonMethods
+    # extend  Insite::DOMMethods
     alias_method :update_page, :update_object
 
     class << self
@@ -12,7 +13,7 @@ module Insite
       attr_accessor :widget_elements
 
       include Insite::DOMMethods
-      include Insite::WidgetMethods
+      # include Insite::WidgetMethods
 
       def describe
     puts <<-EOF
@@ -40,8 +41,8 @@ module Insite
         cname = name.to_s.camelcase + 'Container'
         const_set(cname, tmpklass) unless const_defined? cname
 
-        @page_elements ||= []
-        @page_elements << name.to_sym
+        @page_elements ||= [name.to_sym]
+        # @page_elements << name.to_sym
 
         define_method(name) do
           self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))

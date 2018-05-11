@@ -14,22 +14,22 @@ class RubyLangSite
   include Insite
 end
 
-class MenuBar < RubyLangSite::Widget
-end
-
-class Post < RubyLangSite::Widget
-  def title
-    h3.text
-  end
-
-  def summary
-    element(xpath: ".//p").text
-  end
-
-  def info
-    element(:class, 'post-info').text
-  end
-end
+# class MenuBar < RubyLangSite::Widget
+# end
+#
+# class Post < RubyLangSite::Widget
+#   def title
+#     h3.text
+#   end
+#
+#   def summary
+#     element(xpath: ".//p").text
+#   end
+#
+#   def info
+#     element(:class, 'post-info').text
+#   end
+# end
 
 # Page Template. This is just a container class to store common features. Because
 # it's a template it can't be accessed directly -- no page accessor method gets
@@ -38,8 +38,8 @@ end
 class RubyLangTemplate < RubyLangSite::Page
   set_attributes :page_template # Page template, so no accessor method for this page
 
-  menu_bar :header, :div, id: 'header_content'
-  menu_bar :footer, :div, id: 'footer'
+  # menu_bar :header, :div, id: 'header_content'
+  # menu_bar :footer, :div, id: 'footer'
 end
 
 # Models the page that users first see when they access the site. The landing page will
@@ -53,7 +53,7 @@ class HomePage < RubyLangTemplate
   set_url "/{language_code}/"
 
   # Use the Posts widget defined earlier.
-  posts :posts, :divs, :class, 'post'
+  # posts :posts, :divs, :class, 'post'
 end
 
 # Models the news page, which shows summaries of the last ten most recent posts. The user
@@ -65,7 +65,7 @@ class NewsPage < RubyLangTemplate
 
 
   # Use the Posts widget defined earlier.
-  posts :posts, :divs, :class, 'post'
+  # posts :posts, :divs, :class, 'post'
 end
 
 # This page hosts a single, complete, news post. Users get to it by drilling down on
@@ -74,7 +74,13 @@ class NewsPostPage < RubyLangTemplate
   set_url_matcher %r{/\S{2}/news/\d+/\d+/\d+/\S+/} #
   set_attributes  :navigation_disabled
 
-  _a :foo, text: /Download/i
+  a :foo, text: /Download/i do
+    def bar
+      puts bar
+    end
 
-  post :post, :div, :class, 'post'
+    a :c, index: 0
+  end
+
+  # post :post, :div, :class, 'post'
 end

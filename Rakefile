@@ -10,6 +10,11 @@ begin
     t.fail_on_error = false
   end
 
+  RSpec::Core::RakeTask.new(:console) do |t|
+    t.fail_on_error = false
+    exec   "./console.rb"
+  end
+
   task :default => :spec
 rescue LoadError
   # no rspec available

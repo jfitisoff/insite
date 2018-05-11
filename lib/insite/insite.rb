@@ -162,9 +162,10 @@ EOF
       if new_page.respond_to?(sym)
         page.public_send(sym, *args, &block)
       else
+        # TODO: Make it clearer where the method got called.
         raise(
           NoMethodError,
-          "Unable to apply #{sym}. The site object doesn't support it and the" \
+          "Unable to apply method call :#{sym}. The site object doesn't support it and the" \
           "currently displayed page doesn't support it either.\n" \
           "Page:\t\t#{new_page.class}\n" \
           "Current URL:\t#{@browser.url}\n\n",
