@@ -14,15 +14,16 @@ require "insite/version"
 require "insite/methods/dom_methods"
 require "insite/methods/common_methods"
 
+# Files for Insite element wrapper classes.
+require "insite/element/element"
+require "insite/element/element_definitions/elements.rb"
+
 # Files for Insite::Widget.
 require "insite/widget/widget"
 require "insite/widget/widget_methods"
 
 # Files for Insite::Feature.
 require "insite/feature/feature"
-
-# Files for ElementContainer.
-require "insite/element_container/element_container"
 
 # Files for pages (defined/undefined.)
 require "insite/page/defined_page"

@@ -79,11 +79,11 @@ module Insite
           if @page_elements.include?(k)
             elem = public_send(k)
 
-            if [Watir::Alert, Watir::FileField, Watir::TextField, Watir::TextArea].include? elem.class
+            if [Insite::Alert, Insite::FileField, Insite::TextField, Insite::TextArea].include? elem.class
               elem.set v
-            elsif [Watir::Select].include? elem.class
+            elsif [Insite::Select].include? elem.class
               elem.select v
-            elsif [Watir::Anchor, Watir::Button].include? elem.class
+            elsif [Insite::Anchor, Insite::Button].include? elem.class
               case v
               when Symbol
                 elem.public_send v
@@ -94,7 +94,7 @@ module Insite
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif elem.is_a?(Watir::Radio)
+            elsif elem.is_a?(Insite::Radio)
               case v
               when Symbol
                 elem.public_send v
@@ -110,7 +110,7 @@ module Insite
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif elem.is_a?(Watir::CheckBox)
+            elsif elem.is_a?(Insite::CheckBox)
               case v
               when Symbol
                 elem.public_send v
@@ -129,17 +129,6 @@ module Insite
                 elem.clear
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
-              end
-            elsif elem.is_a?(Watir::RadioCollection)
-              # TODO: Remove, not appropriate as a general use case.
-              rb = elem.to_a.find do |r|
-                r.text =~ /#{Regexp.escape(v)}/i || r.parent.text =~ /#{Regexp.escape(v)}/i
-              end
-
-              if rb
-                rb.click
-              else
-                raise "No matching radio button could be detected for '#{val}' for #{elem}."
               end
             else
               case v

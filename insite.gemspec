@@ -23,7 +23,8 @@ Gem::Specification.new do |s|
 
   s.files = [
     "lib/insite.rb",
-    "lib/insite/element_container/element_container.rb",
+    "lib/insite/element/element.rb",
+    "lib/insite/element/element_definitions/elements.rb",
     "lib/insite/feature/feature.rb",
     "lib/insite/methods/common_methods.rb",
     "lib/insite/methods/dom_methods.rb",
