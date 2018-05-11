@@ -33,22 +33,22 @@ module Insite
 
       end
 
-      private
-      def element_container(name, type, *args, &block)
-        tmpklass = Class.new(ElementContainer) do
-          self.class_eval(&block) if block_given?
-        end
-        cname = name.to_s.camelcase + 'Container'
-        const_set(cname, tmpklass) unless const_defined? cname
-
-        @page_elements ||= [name.to_sym]
-        # @page_elements << name.to_sym
-
-        define_method(name) do
-          self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))
-        end
-      end
-      public
+      # private
+      # def element_container(name, type, *args, &block)
+      #   tmpklass = Class.new(ElementContainer) do
+      #     self.class_eval(&block) if block_given?
+      #   end
+      #   cname = name.to_s.camelcase + 'Container'
+      #   const_set(cname, tmpklass) unless const_defined? cname
+      #
+      #   @page_elements ||= [name.to_sym]
+      #   # @page_elements << name.to_sym
+      #
+      #   define_method(name) do
+      #     self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))
+      #   end
+      # end
+      # public
 
       # Creates a section within the page. TODO: section is a DOM element, rename this.
       def feature(fname, klass = Insite::Feature, &block)
