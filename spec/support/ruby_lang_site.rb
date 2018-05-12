@@ -76,11 +76,11 @@ class NewsPostPage < RubyLangTemplate
 
   a :foo, text: /Download/i do
     def bar
-      puts bar
+      puts 'bar'
     end
 
     a :c, index: 0
   end
-
+  a :d, index: 0
   # post :post, :div, :class, 'post'
 end

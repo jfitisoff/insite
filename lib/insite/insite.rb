@@ -165,8 +165,8 @@ EOF
         # TODO: Make it clearer where the method got called.
         raise(
           NoMethodError,
-          "Unable to apply method call :#{sym}. The site object doesn't support it and the" \
-          "currently displayed page doesn't support it either.\n" \
+          "Unable to apply method call :#{sym}. The site object doesn't support it. " \
+          "The currently displayed page (#{new_page}) doesn't support it either.\n" \
           "Page:\t\t#{new_page.class}\n" \
           "Current URL:\t#{@browser.url}\n\n",
           caller
