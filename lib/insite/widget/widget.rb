@@ -60,8 +60,8 @@ module Insite
     class << self
       attr_reader :widget_elements
 
-      include DOMMethods
-      include WidgetMethods
+      include Insite::DOMMethods
+      include Insite::WidgetMethods
 
       # - Don't allow the user to create a widget with a name that matches a DOM
       #   element.

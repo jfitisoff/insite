@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "lib/insite.rb",
     "lib/insite/element/element.rb",
     "lib/insite/element/element_definitions/elements.rb",
+    "lib/insite/element/element_definitions/element_methods.rb",
     "lib/insite/feature/feature.rb",
     "lib/insite/methods/common_methods.rb",
     "lib/insite/methods/dom_methods.rb",

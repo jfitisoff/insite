@@ -16,7 +16,8 @@ require "insite/methods/common_methods"
 
 # Files for Insite element wrapper classes.
 require "insite/element/element"
-require "insite/element/element_definitions/elements.rb"
+require "insite/element/element_definitions/elements"
+require "insite/element/element_definitions/element_methods"
 
 # Files for Insite::Widget.
 require "insite/widget/widget"
