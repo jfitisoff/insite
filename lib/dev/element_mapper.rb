@@ -18,7 +18,8 @@ module Watir
       Watir::Container.instance_methods.each do |mth|
         begin
           klass = get_class_for_method(mth).to_s.demodulize
-          unless klass == String
+          unless klass == 'String'
+            klass = "Insite::#{klass}"
             out[klass] = [] unless out[klass]
             out[klass] << get_common_method_names(mth)
             out[klass] = out[klass].flatten.uniq
@@ -30,41 +31,82 @@ module Watir
       out
     end
 
-    def build_element_classes
-      str = ''
-      Insite::METHOD_MAP.each do |k, v|
-        tmp = <<~EOS
-        class Insite::#{k.to_s.demodulize} < Insite::Element
+    def generate_all
+      generate_element_map
+      generate_element_classes
+      generate_element_methods
+    end
+
+    def generate_element_classes
+      keys = element_map.sort_by { |k, v| k }.to_h.keys
+      str = keys.map do |key|
+        if key =~ /Collection$/
+          c = 'Insite::ElementCollection'
+        else
+          c = 'Insite::Element'
+        end
+
+        <<~EOS
+        class #{key} < #{c}
         end
 
         EOS
-
-        str << tmp
       end
 
-      f = File.new("./lib/insite/element/element_definitions/elements.rb", 'w+')
+      f = File.new("./lib/insite/element/generated/element_classes.rb", 'w+')
       f.puts str
       f.close
     end
 
-    def build_element_methods
-      str = ''
-      Insite::METHOD_MAP.each do |k, v|
+    def generate_element_map
+      f = File.new("./lib/insite/element/generated/element_map.rb", 'w+')
+      str = element_map.to_s.sub(
+        /\{/,
+        "{\n\s\s\s\s"
+      ).sub(
+        /\}/,
+        "}.freeze\n"
+      ).gsub(
+         /\],\s*/,
+         "],\n\s\s\s\s"
+      ).gsub(
+         /,\s*:/,
+         ",\n\s\s\s\s\s\s:"
+      ).gsub(
+        /\[(:[a-z, 1-9,_]+?,$)/,
+        "[\n\s\s\s\s\s\s\\1"
+      ).gsub(
+        /(:[a-z, 1-9,_]+?),\n\s+(:[a-z, 1-9,_]+?)\],$/,
+        "\\1,\n\s\s\s\s\s\s\\2\n\s\s\s\s\],"
+      )
+      output = <<~EOS
+      module Insite
+        METHOD_MAP = #{str}
+      end
+      EOS
+      f.puts output
+      f.close
+    end
+
+    def generate_element_methods
+      hsh = {}
+      element_map.each do |k, v|
         v.each do |mth|
 tmp = <<-EOS
     def #{mth}(*args)
-      #{"Insite::#{k.to_s.demodulize}".constantize}.new(
+      #{k}.new(
         @site,
         @browser.send(*args.unshift(__method__))
       )
     end
 
 EOS
-          str << tmp
+          hsh[v] = tmp
         end
       end
+      str = hsh.sort_by { |k, v| k }.to_h.values.join
 
-      f = File.new("./lib/insite/element/element_definitions/element_methods.rb", 'w+')
+      f = File.new("./lib/insite/element/generated/element_methods.rb", 'w+')
 out = <<-EOF
 module Insite
   class Element
