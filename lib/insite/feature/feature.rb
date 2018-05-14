@@ -8,7 +8,7 @@
 #       attr_accessor :alias, :page_elements
 #
 #       include Insite::DOMMethods
-#       include Insite::WidgetMethods
+#       include Insite::ComponentMethods
 #     end # Self.
 #
 #     def initialize(site, **args)

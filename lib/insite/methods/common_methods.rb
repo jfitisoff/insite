@@ -142,7 +142,7 @@ module Insite
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
             end
-          elsif @widget_elements.include?(k)
+          elsif @component_elements.include?(k)
             w = public_send(k)
 
             begin
@@ -201,5 +201,20 @@ module Insite
       Nokogiri::HTML(html)
     end
     alias document nokogiri
+
+    # Duplicates Watir DOM element argument parsing for element methods.
+    private
+    def parse_args(args)
+      case args.length
+      when 2
+        return { args[0] => args[1] }
+      when 1
+        obj = args.first
+      return obj if obj.kind_of? Hash
+      when 0
+        return {}
+      end
+    end
+    public
   end
 end

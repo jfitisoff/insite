@@ -26,10 +26,10 @@ class RubyLangSite
   include Insite
 end
 
-# class MenuBar < RubyLangSite::Widget
+# class MenuBar < RubyLangSite::Component
 # end
 #
-# class Post < RubyLangSite::Widget
+# class Post < RubyLangSite::Component
 #   def title
 #     h3.text
 #   end
@@ -64,7 +64,7 @@ class HomePage < RubyLangTemplate
   # matcher isn't provided.)
   set_url "/{language_code}/"
 
-  # Use the Posts widget defined earlier.
+  # Use the Posts component defined earlier.
   # posts :posts, :divs, :class, 'post'
 end
 
@@ -76,7 +76,7 @@ class NewsPage < RubyLangTemplate
   set_url "/{language_code}/news/"
 
 
-  # Use the Posts widget defined earlier.
+  # Use the Posts component defined earlier.
   # posts :posts, :divs, :class, 'post'
 end
 

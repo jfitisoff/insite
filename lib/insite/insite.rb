@@ -15,11 +15,11 @@ module Insite
   # same time: Each site will use its own page objects only.
   def self.included(base)
     mod = Module.new
-    base.const_set('WidgetMethods', mod)
+    base.const_set('ComponentMethods', mod)
 
     klass = Class.new(DefinedPage)
     base.const_set('Page', klass)
-    base::send(:extend, WidgetMethods)
+    base::send(:extend, ComponentMethods)
 
     klass = Class.new(UndefinedPage)
     base.const_set('UndefinedPage', klass)

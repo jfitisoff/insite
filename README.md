@@ -387,12 +387,12 @@ class RubyLangSite
   include Insite
 end
 
-# Reusable widget.
-class MenuBar < RubyLangSite::Widget
+# Reusable component.
+class MenuBar < RubyLangSite::Component
 end
 
-# Reusable widget.
-class Post < RubyLangSite::Widget
+# Reusable component.
+class Post < RubyLangSite::Component
   def title
     h3.text
   end

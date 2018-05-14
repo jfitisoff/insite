@@ -2,18 +2,20 @@
 # TODO: Add page query methods.
 module Insite
   class DefinedPage
-    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :widget_elements
+    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :component_elements
 
     include Insite::CommonMethods
-    # extend  Insite::DOMMethods
+    extend  Insite::ComponentMethods
+    include Insite::ComponentInstanceMethods
+    extend  Insite::DOMMethods
     alias_method :update_page, :update_object
 
     class << self
       attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_template
-      attr_accessor :widget_elements
+      attr_accessor :component_elements
 
-      include Insite::DOMMethods
-      # include Insite::WidgetMethods
+      # include Insite::DOMMethods
+      # include Insite::ComponentMethods
 
       def describe
     puts <<-EOF
@@ -25,9 +27,9 @@ module Insite
 
     Page Elements:\n#{@page_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
-    Widgets:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+    Components:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
-    Features:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+    Features:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
     EOF
 
@@ -261,14 +263,14 @@ module Insite
         end
       end
 
-      def widget_method(method_name, widget_symbol, widget_method, target_element)
-        @widget_methods ||= []
-        @widget_methods << method_name.to_sym unless @widget_methods.include?(method_name.to_sym)
+      def component_method(method_name, component_symbol, component_method, target_element)
+        @component_methods ||= []
+        @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
 
         define_method(method_name) do |*args, &block|
-          self.class.const_get(widget_symbol.to_s.camelize)
+          self.class.const_get(component_symbol.to_s.camelize)
           .new(@site, @site.send(target_element))
-          .send(widget_method, *args, &block)
+          .send(component_method, *args, &block)
         end
       end
     end # Self.
@@ -288,7 +290,7 @@ module Insite
       @site               = site
       @browser            = process_browser
 
-      @widget_elements    = self.class.widget_elements ||= []
+      @component_elements = self.class.component_elements ||= []
       @browser            = @site.browser
       @page_attributes    = self.class.page_attributes
       @page_url           = self.class.page_url

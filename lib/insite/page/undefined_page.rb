@@ -59,7 +59,7 @@ module Insite
     def page_elements
       []
     end
-    alias_method :widget_elements, :page_elements
+    alias_method :component_elements, :page_elements
 
     # Returns the current URL.
     def url

@@ -4,6 +4,8 @@ module Insite
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
+    # extend  Insite::ComponentMethods
+    # include Insite::ComponentInstanceMethods
     extend  Forwardable
 
     def initialize(site, element)
@@ -25,14 +27,10 @@ module Insite
       @target
     end
 
-    # For page widget code.
+    # For page component code.
     def method_missing(sym, *args, &block)
       if @target.respond_to? sym
-        if @target.is_a? Watir::ElementCollection
-          @target.map { |x| self.class.new(x) }.send(sym, *args, &block)
-        else
-          @target.send(sym, *args, &block)
-        end
+        @target.send(sym, *args, &block)
       else
         super
       end
