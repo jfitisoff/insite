@@ -16,12 +16,15 @@ require "insite/methods/common_methods"
 
 # Files for Insite element wrapper classes.
 require "insite/element/element"
-require "insite/element/element_definitions/elements"
-require "insite/element/element_definitions/element_methods"
+require "insite/element/element_collection"
+require "insite/element/generated/element_classes"
+require "insite/element/generated/element_instance_methods"
 
-# Files for Insite::Widget.
-require "insite/widget/widget"
-require "insite/widget/widget_methods"
+# Files for Insite::Component.
+require "insite/component/component"
+require "insite/component/component_collection"
+require "insite/component/component_methods"
+require "insite/component/component_instance_methods"
 
 # Files for Insite::Feature.
 require "insite/feature/feature"
