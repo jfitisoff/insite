@@ -1,5 +1,4 @@
 require 'insite'
-# require 'rspec'
 
 require 'coveralls'
 Coveralls.wear!

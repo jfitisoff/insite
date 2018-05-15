@@ -4,8 +4,6 @@ module Insite
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
-    # extend  Insite::ComponentMethods
-    # include Insite::ComponentInstanceMethods
     extend  Forwardable
 
     def initialize(site, element)

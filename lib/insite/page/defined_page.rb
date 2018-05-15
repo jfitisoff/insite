@@ -8,14 +8,12 @@ module Insite
     extend  Insite::ComponentMethods
     include Insite::ComponentInstanceMethods
     extend  Insite::DOMMethods
+
     alias_method :update_page, :update_object
 
     class << self
       attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_template
       attr_accessor :component_elements
-
-      # include Insite::DOMMethods
-      # include Insite::ComponentMethods
 
       def describe
     puts <<-EOF
