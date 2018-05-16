@@ -14,7 +14,7 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
-      @identifiers = @collection_member_type.instance_variable_get(:@identifiers)
+      @locators = @collection_member_type.locators
 
       if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
         @dom_type = nil

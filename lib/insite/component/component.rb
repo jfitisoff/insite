@@ -7,7 +7,9 @@ require_relative '../methods/common_methods'
 # into components that can be reused across multiple pages.
 module Insite
   class Component
-    attr_reader :args, :browser, :indentifiers, :site, :type, :target
+    attr_reader :args, :browser, :locators, :site, :type, :target
+    class_attribute :locators, default: {}
+    self.locators = self.locators.clone
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
@@ -16,7 +18,8 @@ module Insite
     alias_method :update_component, :update_object
 
     class << self
-      attr_reader :component_elements, :indentifiers
+      attr_reader :component_elements
+
 
       # - Don't allow the user to create a component with a name that matches a DOM
       #   element.
@@ -33,12 +36,37 @@ module Insite
       if tmp =~ /.*s+/
         raise "Invalid component type :#{tmp}. You can create a component for the DOM object but it must be for :#{tmp.singularize} (:#{tmp} will be created automatically.)"
       end
+
     end # Self.
 
     extend Forwardable
 
-    def self.identify_by(hsh = {})
-      @identifiers = hsh
+    def self.locate_by(hsh = {})
+      tmp = locators.clone
+      hsh.each do |k, v|
+        if k == :tag_name && tmp[k] && v && tmp[k] != v
+          raise(
+          ArgumentError,
+          "\n\nInvalid use of the :tag_name locator in the #{self} component class. This component inherits " \
+          "from the #{superclass} component, which already defines #{superclass.locators[:tag_name]} as " \
+          "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
+          "use #{self}.locate_by! in the page definition in place of #{self}.locate_by. Warning: The " \
+          "locate_by! method arguments overwrite the locators that were inherited from #{superclass}. " \
+          "So if you DO use it you'll need to specify ALL of the locators needed to properly identify the " \
+          "#{self} component.\n\n",
+          caller
+        )
+        elsif tmp[k] && v
+          tmp[k] = [tmp[k]].flatten + [v].flatten
+        else
+          tmp[k] = v
+        end
+      end
+      self.locators = tmp
+    end
+
+    def self.locate_by!(hsh = {})
+      self.locators = hsh
     end
 
     def self.inherited(subclass)
@@ -51,7 +79,6 @@ module Insite
 
       collection_class = Class.new(Insite::ComponentCollection) do
         @collection_member_type = subclass
-        @identifiers = subclass.instance_variable_get(:@identifiers)
       end
       Insite.const_set(pluralized_name_string.camelize, collection_class)
 
@@ -67,7 +94,7 @@ module Insite
               @component_elements << mname.to_sym
             end
 
-            hsh = parse_args(a).merge(klass.instance_variable_get(:@identifiers))
+            hsh = parse_args(a).merge(klass.locators)
             dom_type = hsh.delete(:dom_type)
 
             define_method(mname) do
@@ -78,7 +105,8 @@ module Insite
 
         ComponentInstanceMethods.send(:define_method, nstring) do |*a|
           nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
-          hsh = parse_args(a).merge(subclass.instance_variable_get(:@identifiers))
+
+          hsh = parse_args(a).merge(subclass.locators)
           dom_type = hsh.delete(:dom_type)
 
           klass.new(self, dom_type || default_dom_type, **hsh)
@@ -101,7 +129,7 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
-      @identifiers = self.class.instance_variable_get(:@identifiers)
+      @locators = self.class.locators
 
       if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
         @dom_type = nil
@@ -133,7 +161,6 @@ module Insite
           end
         end
       else
-binding.pry
         raise "Unhandled exception."
       end
     end
