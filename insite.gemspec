@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.authors     = ["John Fitisoff"]
   s.email       = 'jfitisoff@yahoo.com'
 
-  s.add_runtime_dependency "activesupport"
-  s.add_runtime_dependency "addressable"
-  s.add_runtime_dependency "nokogiri"
+  s.add_runtime_dependency "activesupport", [">=4.2.5"]
+  s.add_runtime_dependency "addressable", [">=2.5.1"]
+  s.add_runtime_dependency "nokogiri", [">=1.7.0"]
   s.add_runtime_dependency "watir", [">=6.0.0"]
   s.add_runtime_dependency "watir-scroll", [">=0.2.0"]
 
@@ -39,8 +39,20 @@ Gem::Specification.new do |s|
     "lib/insite/constants.rb",
     "lib/insite/errors.rb",
     "lib/insite/insite.rb",
-    "lib/insite/version.rb"
+    "lib/insite/version.rb",
+    "lib/insite/examples/angular_material_site.rb",
+    "lib/insite/examples/angular_material_site/site.rb",
+    "lib/insite/examples/angular_material_site/pages.rb",
+    "lib/insite/examples/angular_material_site/utils.rb",
+    "lib/insite/examples/angular_material_site/components/mat_checkbox.rb",
+    "lib/insite/examples/angular_material_site/components/mat_error.rb",
+    "lib/insite/examples/angular_material_site/components/mat_form_field_select.rb",
+    "lib/insite/examples/angular_material_site/components/mat_form_field.rb",
+    "lib/insite/examples/angular_material_site/components/mat_option.rb",
+    "lib/insite/examples/angular_material_site/components/mat_select_content.rb",
+    "lib/insite/examples/angular_material_site/components/mat_select.rb",
   ]
+
   s.homepage    = 'https://github.com/jfitisoff/insite'
   s.license     = 'MIT'
 end
