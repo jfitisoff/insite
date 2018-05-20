@@ -7,12 +7,13 @@ require_relative '../methods/common_methods'
 # into components that can be reused across multiple pages.
 module Insite
   class Component
-    attr_reader :args, :browser, :locators, :site, :type, :target
-    class_attribute :locators, default: {}
-    self.locators = self.locators.clone
+    attr_reader :args, :browser, :non_relative, :selector, :site, :type, :target
+    class_attribute :selector, default: {}
+    self.selector = self.selector.clone
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
+    include Insite::ElementInstanceMethods
     extend  Insite::ComponentMethods
     include Insite::ComponentInstanceMethods
     alias_method :update_component, :update_object
@@ -41,32 +42,34 @@ module Insite
 
     extend Forwardable
 
-    def self.locate_by(hsh = {})
-      tmp = locators.clone
+    def self.select_by(hsh = {})
+      tmp = selector.clone
       hsh.each do |k, v|
-        if k == :tag_name && tmp[k] && v && tmp[k] != v
+        if %i(css, xpath).include? k
+          raise ArgumentError, "The :#{k} selector argument is not currently allowed for component definitions."
+        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
           raise(
-          ArgumentError,
-          "\n\nInvalid use of the :tag_name locator in the #{self} component class. This component inherits " \
-          "from the #{superclass} component, which already defines #{superclass.locators[:tag_name]} as " \
-          "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
-          "use #{self}.locate_by! in the page definition in place of #{self}.locate_by. Warning: The " \
-          "locate_by! method arguments overwrite the locators that were inherited from #{superclass}. " \
-          "So if you DO use it you'll need to specify ALL of the locators needed to properly identify the " \
-          "#{self} component.\n\n",
-          caller
-        )
-        elsif tmp[k] && v
-          tmp[k] = [tmp[k]].flatten + [v].flatten
+            ArgumentError,
+            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
+            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
+            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
+            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
+            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
+            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
+            "#{self} component.\n\n",
+            caller
+          )
+        elsif tmp[k].is_a?(Array)
+            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
         else
           tmp[k] = v
         end
       end
-      self.locators = tmp
+      self.selector = tmp
     end
 
-    def self.locate_by!(hsh = {})
-      self.locators = hsh
+    def self.select_by!(hsh = {})
+      self.selector = hsh
     end
 
     def self.inherited(subclass)
@@ -94,7 +97,7 @@ module Insite
               @component_elements << mname.to_sym
             end
 
-            hsh = parse_args(a).merge(klass.locators)
+            hsh = parse_args(a).merge(klass.selector)
             dom_type = hsh.delete(:dom_type)
 
             define_method(mname) do
@@ -106,7 +109,7 @@ module Insite
         ComponentInstanceMethods.send(:define_method, nstring) do |*a|
           nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
 
-          hsh = parse_args(a).merge(subclass.locators)
+          hsh = parse_args(a).merge(subclass.selector)
           dom_type = hsh.delete(:dom_type)
 
           klass.new(self, dom_type || default_dom_type, **hsh)
@@ -114,8 +117,18 @@ module Insite
       end
     end # self.inherited
 
+    def attributes
+      nokogiri.xpath("//#{@selector[:tag_name]}")[0].attributes.values.map do |x|
+        x.name == 'class' ? [x.name, x.value.split] : [x.name, x.value]
+      end.to_h
+    end
+
+    def classes
+      attribute('class').split
+    end
+
     # This method gets used 2 different ways. Most of the time, dom_type and args
-    # will be a symbol and a set of hash arguments that will be used to locate an
+    # will be a symbol and a set of hash arguments that will be used to select an
     # element.
     #
     # In some cases, dom_type can also be a Watir DOM object, and in this case, the
@@ -129,25 +142,38 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
-      @locators = self.class.locators
+      @selector = self.class.selector
 
       if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
         @dom_type = nil
         @args     = nil
         @target   = dom_type
       elsif dom_type.is_a?(Watir::Element) || dom_type.is_a?(Watir::ElementCollection)
-          @dom_type = nil
-          @args     = nil
-          @target   = dom_type
+        @dom_type = nil
+        @args     = nil
+        @target   = dom_type
       elsif [::String, ::Symbol].include? dom_type.class
-        @dom_type = dom_type
-        @args     = args
+        @dom_type     = dom_type
+        @args         = merge_selector_args(parse_args(args))
+        @non_relative = @args.delete(:non_relative) || false
 
-        if @parent.is_a? Component
-          @target = @parent.send(dom_type, *args)
+        if @non_relative
+          @target = @browser.send(dom_type, **@args)
         else
-          @target = @browser.send(dom_type, *args)
+          if @parent.is_a?(Component) || @parent.is_a?(Element)
+            @target = @parent.send(dom_type, **@args)
+          else
+            @target = @browser.send(dom_type, **@args)
+          end
         end
+
+        # if !@non_relative
+        # #   @target = @browser.send(dom_type, *args)
+        # # elsif @parent.is_a? Component
+        #   @target = @parent.send(dom_type, *args)
+        # else
+        #   @target = @browser.send(dom_type, *args)
+        # end
 
         # New webdriver approach.
         begin
@@ -287,6 +313,39 @@ module Insite
       rescue => e
         false
       end
+    end
+
+    private
+    def merge_selector_args(other = {})
+      tmp = self.class.selector.clone
+
+      if tmp.empty? && other.empty?
+        raise ArgumentError, "No selector values have been specified for the " \
+        "#{self.class} component. And no selector arguments were specified " \
+        "when calling the instance component's accessor method. "
+      end
+
+      other.each do |k, v|
+        if k == :tag_name && tmp[k] != v
+          raise(
+            ArgumentError,
+            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
+            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
+            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
+            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
+            "select_by! method arguments overwrite the selector arguments that were inherited from #{superclass}. " \
+            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
+            "#{self} component (because nothing will be inherited.)\n\n",
+            caller
+          )
+        elsif tmp[k].is_a?(Array) && v.is_a?(Array) # TODO: class check here?
+          tmp[k] = (tmp[k].flatten + [v].flatten).uniq
+        else
+          tmp[k] = v
+        end
+      end
+
+      tmp
     end
   end
 end

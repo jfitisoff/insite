@@ -13,4 +13,10 @@ module Insite
     end
   end
 
+  def to_a
+    # TODO: Do this in a more efficient way.
+    @target.to_a.map do |elem|
+      "Insite::#{@target.element_class_name}".constantize.new(self, elem)
+    end
+  end
 end

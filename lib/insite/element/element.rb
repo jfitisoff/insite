@@ -4,6 +4,7 @@ module Insite
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
+    include Insite::ElementInstanceMethods
     extend  Forwardable
 
     def initialize(site, element)
@@ -13,7 +14,7 @@ module Insite
 
       # Temporary replacement for custom wait_until.
       # TODO: Continue looking at scolling solutions.
-      if @target.present?
+      if @target.present? && @target.respond_to?(:scroll)
         @target.scroll.to
         t = ::Time.now + 2
         while ::Time.now <= t do

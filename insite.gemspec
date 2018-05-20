@@ -44,13 +44,20 @@ Gem::Specification.new do |s|
     "lib/insite/examples/angular_material_site/site.rb",
     "lib/insite/examples/angular_material_site/pages.rb",
     "lib/insite/examples/angular_material_site/utils.rb",
+    "lib/insite/examples/angular_material_site/components/mat_button_toggle_group.rb",
+    "lib/insite/examples/angular_material_site/components/mat_button_toggle.rb",
+    "lib/insite/examples/angular_material_site/components/mat_button.rb",
     "lib/insite/examples/angular_material_site/components/mat_checkbox.rb",
     "lib/insite/examples/angular_material_site/components/mat_error.rb",
+    "lib/insite/examples/angular_material_site/components/mat_input.rb",
     "lib/insite/examples/angular_material_site/components/mat_form_field_select.rb",
     "lib/insite/examples/angular_material_site/components/mat_form_field.rb",
     "lib/insite/examples/angular_material_site/components/mat_option.rb",
+    "lib/insite/examples/angular_material_site/components/mat_radio_button.rb",
+    "lib/insite/examples/angular_material_site/components/mat_radio_group.rb",
     "lib/insite/examples/angular_material_site/components/mat_select_content.rb",
     "lib/insite/examples/angular_material_site/components/mat_select.rb",
+    "lib/insite/examples/angular_material_site/components/mat_textarea.rb",
   ]
 
   s.homepage    = 'https://github.com/jfitisoff/insite'

@@ -1,12 +1,11 @@
 module Insite
-  class ComponentCollection #< Component
+  class ComponentCollection
     attr_reader :args, :collection_member_type, :browser, :indentifiers, :site, :target
     include Enumerable
+    include Insite::ElementInstanceMethods
 
     def each(&block)
-      @target.to_a.map do |elem|
-        @collection_member_type.new(self, elem)
-      end.each(&block)
+      to_a.each(&block)
     end
 
     def initialize(parent, dom_type, *args)
@@ -14,7 +13,7 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
-      @locators = @collection_member_type.locators
+      @selector = @collection_member_type.selector
 
       if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
         @dom_type = nil
@@ -38,7 +37,6 @@ module Insite
       end
     end
 
-    # For page component code.
     def method_missing(sym, *args, &block)
       if @target.respond_to? sym
         tmp = @target.send(sym, *args, &block)
@@ -48,6 +46,11 @@ module Insite
         super
       end
     end
-  end
 
+    def to_a
+      @target.to_a.map do |elem|
+        @collection_member_type.new(self, elem)
+      end
+    end
+  end
 end

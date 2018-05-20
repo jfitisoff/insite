@@ -34,7 +34,7 @@ module Watir
     def generate_all
       generate_element_map
       generate_element_classes
-      generate_element_methods
+      generate_element_instance_methods
     end
 
     def generate_element_classes
@@ -88,7 +88,7 @@ module Watir
       f.close
     end
 
-    def generate_element_methods
+    def generate_element_instance_methods
       hsh = {}
       element_map.each do |k, v|
         v.each do |mth|
@@ -96,7 +96,7 @@ tmp = <<-EOS
     def #{mth}(*args)
       #{k}.new(
         @site,
-        @browser.send(*args.unshift(__method__))
+        @target.send(*args.unshift(__method__))
       )
     end
 
@@ -106,10 +106,10 @@ EOS
       end
       str = hsh.sort_by { |k, v| k }.to_h.values.join
 
-      f = File.new("./lib/insite/element/generated/element_methods.rb", 'w+')
+      f = File.new("./lib/insite/element/generated/element_instance_methods.rb", 'w+')
 out = <<-EOF
 module Insite
-  class Element
+  module ElementInstanceMethods
 #{str}
   end
 end

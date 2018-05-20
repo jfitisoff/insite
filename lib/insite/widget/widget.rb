@@ -166,7 +166,7 @@ module Insite
     end # self.
 
     # This method gets used 2 different ways. Most of the time, dom_type and args
-    # will be a symbol and a set of hash arguments that will be used to locate an
+    # will be a symbol and a set of hash arguments that will be used to select an
     # element.
     #
     # In some cases, dom_type can be a Watir DOM object, and in this case, the
