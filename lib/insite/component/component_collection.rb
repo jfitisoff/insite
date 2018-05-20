@@ -2,10 +2,27 @@ module Insite
   class ComponentCollection
     attr_reader :args, :collection_member_type, :browser, :indentifiers, :site, :target
     include Enumerable
-    include Insite::ElementInstanceMethods
+
+    def ==(other)
+      to_a == other.to_a
+    end
+    alias eql? ==
+
+    def[](idx)
+      tmp = @target[idx]
+      tmp ? @collection_member_type.new(@site, tmp) : nil
+    end
+
+    def first
+      self[0]
+    end
 
     def each(&block)
       to_a.each(&block)
+    end
+
+    def empty?
+      length == 0
     end
 
     def initialize(parent, dom_type, *args)
@@ -37,15 +54,15 @@ module Insite
       end
     end
 
-    def method_missing(sym, *args, &block)
-      if @target.respond_to? sym
-        tmp = @target.send(sym, *args, &block)
-      elsif [].respond_to? sym
-        tmp = @target.to_a.send(sym, *args, &block)
-      else
-        super
-      end
+    def last
+      self[-1]
     end
+
+    def length
+      to_a.length
+    end
+    alias count length
+    alias size length
 
     def to_a
       @target.to_a.map do |elem|
