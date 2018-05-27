@@ -1,4 +1,4 @@
-# TODO: Title matcher
+# TODO: Title matcher?
 # TODO: Add page query methods.
 module Insite
   class DefinedPage
@@ -515,5 +515,9 @@ module Insite
       @site.most_recent_page = self
       self
     end
+
+    # def respond_to_missing?(mth, include_priv = false)
+    #   respond_to?(mth, include_priv)
+    # end
   end
 end

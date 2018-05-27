@@ -1,7 +1,35 @@
 module Insite
   module ElementInstanceMethods
-    def link(*args)
+    def a(*args)
       Insite::Anchor.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def abbr(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def abbrs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def address(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def addresses(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -21,8 +49,36 @@ module Insite
       )
     end
 
-    def links(*args)
+    def article(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def articles(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def as(*args)
       Insite::AnchorCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def aside(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def asides(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -42,6 +98,13 @@ module Insite
       )
     end
 
+    def b(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def base(*args)
       Insite::Base.new(
         @site,
@@ -56,14 +119,42 @@ module Insite
       )
     end
 
-    def q(*args)
+    def bdi(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def bdis(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def bdo(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def bdos(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def blockquote(*args)
       Insite::Quote.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
     end
 
-    def qs(*args)
+    def blockquotes(*args)
       Insite::QuoteCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -93,6 +184,13 @@ module Insite
 
     def brs(*args)
       Insite::BRCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def bs(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -168,8 +266,50 @@ module Insite
       )
     end
 
+    def cite(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def cites(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def code(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def codes(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def col(*args)
       Insite::TableCol.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def colgroup(*args)
+      Insite::TableCol.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def colgroups(*args)
+      Insite::TableColCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -252,6 +392,20 @@ module Insite
       )
     end
 
+    def dd(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def dds(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def defs(*args)
       Insite::Defs.new(
         @site,
@@ -266,14 +420,14 @@ module Insite
       )
     end
 
-    def ins(*args)
+    def del(*args)
       Insite::Mod.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
     end
 
-    def inses(*args)
+    def dels(*args)
       Insite::ModCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -308,6 +462,20 @@ module Insite
       )
     end
 
+    def dfn(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def dfns(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def div(*args)
       Insite::Div.new(
         @site,
@@ -336,6 +504,34 @@ module Insite
       )
     end
 
+    def dt(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def dts(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def element(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def elements(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def ellipse(*args)
       Insite::Ellipse.new(
         @site,
@@ -345,6 +541,13 @@ module Insite
 
     def ellipses(*args)
       Insite::EllipseCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def em(*args)
+      Insite::HTMLElement.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -364,6 +567,13 @@ module Insite
       )
     end
 
+    def ems(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def field_set(*args)
       Insite::FieldSet.new(
         @site,
@@ -373,6 +583,48 @@ module Insite
 
     def field_sets(*args)
       Insite::FieldSetCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def fieldset(*args)
+      Insite::FieldSet.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def fieldsets(*args)
+      Insite::FieldSetCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def figcaption(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def figcaptions(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def figure(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def figures(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -401,6 +653,20 @@ module Insite
 
     def fonts(*args)
       Insite::FontCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def footer(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def footers(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -476,7 +742,70 @@ module Insite
       )
     end
 
-    def h6s(*args)
+    def h1(*args)
+      Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h1s(*args)
+      Insite::HeadingCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h2(*args)
+      Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h2s(*args)
+      Insite::HeadingCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h3(*args)
+      Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h3s(*args)
+      Insite::HeadingCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h4(*args)
+      Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h4s(*args)
+      Insite::HeadingCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h5(*args)
+      Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h5s(*args)
       Insite::HeadingCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -485,6 +814,13 @@ module Insite
 
     def h6(*args)
       Insite::Heading.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def h6s(*args)
+      Insite::HeadingCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -506,6 +842,20 @@ module Insite
 
     def head(*args)
       Insite::Head.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def header(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def headers(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -553,6 +903,13 @@ module Insite
       )
     end
 
+    def i(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def iframe(*args)
       Insite::IFrame.new(
         @site,
@@ -581,6 +938,20 @@ module Insite
       )
     end
 
+    def img(*args)
+      Insite::Image.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def imgs(*args)
+      Insite::ImageCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def input(*args)
       Insite::Input.new(
         @site,
@@ -590,6 +961,41 @@ module Insite
 
     def inputs(*args)
       Insite::InputCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def ins(*args)
+      Insite::Mod.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def inses(*args)
+      Insite::ModCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def is(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def kbd(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def kbds(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -672,8 +1078,36 @@ module Insite
       )
     end
 
+    def link(*args)
+      Insite::Anchor.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def links(*args)
+      Insite::AnchorCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def lis(*args)
       Insite::LICollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def main(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def mains(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -693,6 +1127,13 @@ module Insite
       )
     end
 
+    def mark(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def marker(*args)
       Insite::Marker.new(
         @site,
@@ -702,6 +1143,13 @@ module Insite
 
     def markers(*args)
       Insite::MarkerCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def marks(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -828,6 +1276,34 @@ module Insite
 
     def meters(*args)
       Insite::MeterCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def nav(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def navs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def noscript(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def noscripts(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1029,6 +1505,20 @@ module Insite
       )
     end
 
+    def q(*args)
+      Insite::Quote.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def qs(*args)
+      Insite::QuoteCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def radial_gradient(*args)
       Insite::RadialGradient.new(
         @site,
@@ -1050,15 +1540,22 @@ module Insite
       )
     end
 
-    def radio_set(*args)
-      Insite::RadioSet.new(
+    def radios(*args)
+      Insite::RadioCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
     end
 
-    def radios(*args)
-      Insite::RadioCollection.new(
+    def rb(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rbs(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1078,6 +1575,83 @@ module Insite
       )
     end
 
+    def rp(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rps(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rt(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rtc(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rtcs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rts(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rubies(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def ruby(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def s(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def samp(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def samps(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def script(*args)
       Insite::Script.new(
         @site,
@@ -1092,6 +1666,27 @@ module Insite
       )
     end
 
+    def section(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def sections(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def select(*args)
+      Insite::Select.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def select_list(*args)
       Insite::Select.new(
         @site,
@@ -1101,6 +1696,27 @@ module Insite
 
     def select_lists(*args)
       Insite::SelectCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def selects(*args)
+      Insite::SelectCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def small(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def smalls(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1148,6 +1764,13 @@ module Insite
       )
     end
 
+    def ss(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def stop(*args)
       Insite::Stop.new(
         @site,
@@ -1162,6 +1785,20 @@ module Insite
       )
     end
 
+    def strong(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def strongs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def style(*args)
       Insite::Style.new(
         @site,
@@ -1171,6 +1808,48 @@ module Insite
 
     def styles(*args)
       Insite::StyleCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def sub(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def subs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def summaries(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def summary(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def sup(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def sups(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1232,14 +1911,14 @@ module Insite
       )
     end
 
-    def tfoot(*args)
+    def tbody(*args)
       Insite::TableSection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
     end
 
-    def theads(*args)
+    def tbodys(*args)
       Insite::TableSectionCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -1316,8 +1995,36 @@ module Insite
       )
     end
 
+    def tfoot(*args)
+      Insite::TableSection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def tfoots(*args)
+      Insite::TableSectionCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
     def th(*args)
       Insite::TableHeaderCell.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def thead(*args)
+      Insite::TableSection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def theads(*args)
+      Insite::TableSectionCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1393,7 +2100,7 @@ module Insite
       )
     end
 
-    def wbr(*args)
+    def u(*args)
       Insite::HTMLElement.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -1414,7 +2121,7 @@ module Insite
       )
     end
 
-    def wbrs(*args)
+    def us(*args)
       Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
@@ -1430,6 +2137,20 @@ module Insite
 
     def uses(*args)
       Insite::UseCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def var(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def vars(*args)
+      Insite::HTMLElementCollection.new(
         @site,
         @target.send(*args.unshift(__method__))
       )
@@ -1463,6 +2184,47 @@ module Insite
       )
     end
 
+    def wbr(*args)
+      Insite::HTMLElement.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def wbrs(*args)
+      Insite::HTMLElementCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def cell(*args)
+      Insite::Cell.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def cells(*args)
+      Insite::CellCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def row(*args)
+      Insite::Row.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
+
+    def rows(*args)
+      Insite::RowCollection.new(
+        @site,
+        @target.send(*args.unshift(__method__))
+      )
+    end
 
   end
 end

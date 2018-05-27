@@ -27,12 +27,18 @@ module Insite
     end
 
     # For page component code.
-    def method_missing(sym, *args, &block)
-      if @target.respond_to? sym
-        @target.send(sym, *args, &block)
+    def method_missing(mth, *args, &block)
+      if @target.respond_to? mth
+        @target.send(mth, *args, &block)
+      elsif @target.class.descendants.any? { |x| x.instance_methods.include? mth }
+        @target.to_subtype.send(mth, *args, &block)
       else
         super
       end
+    end
+
+    def respond_to_missing?(mth)
+      @target.respond_to? mth
     end
   end
 

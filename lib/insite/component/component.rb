@@ -7,9 +7,9 @@ require_relative '../methods/common_methods'
 # into components that can be reused across multiple pages.
 module Insite
   class Component
-    attr_reader :args, :browser, :non_relative, :selector, :site, :type, :target
+    attr_reader :args, :browser, :ngcontent, :non_relative, :selector, :site, :type, :target
     class_attribute :selector, default: {}
-    self.selector = self.selector.clone
+    self.selector  = self.selector.clone
 
     include Insite::CommonMethods
     extend  Insite::DOMMethods
@@ -20,7 +20,6 @@ module Insite
 
     class << self
       attr_reader :component_elements
-
 
       # - Don't allow the user to create a component with a name that matches a DOM
       #   element.
@@ -41,36 +40,6 @@ module Insite
     end # Self.
 
     extend Forwardable
-
-    def self.select_by(hsh = {})
-      tmp = selector.clone
-      hsh.each do |k, v|
-        if %i(css, xpath).include? k
-          raise ArgumentError, "The :#{k} selector argument is not currently allowed for component definitions."
-        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
-          raise(
-            ArgumentError,
-            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
-            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
-            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
-            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
-            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
-            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
-            "#{self} component.\n\n",
-            caller
-          )
-        elsif tmp[k].is_a?(Array)
-            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
-        else
-          tmp[k] = v
-        end
-      end
-      self.selector = tmp
-    end
-
-    def self.select_by!(hsh = {})
-      self.selector = hsh
-    end
 
     def self.inherited(subclass)
       name_string = subclass.name.demodulize.underscore
@@ -108,7 +77,6 @@ module Insite
 
         ComponentInstanceMethods.send(:define_method, nstring) do |*a|
           nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
-
           hsh = parse_args(a).merge(subclass.selector)
           dom_type = hsh.delete(:dom_type)
 
@@ -116,6 +84,36 @@ module Insite
         end
       end
     end # self.inherited
+
+    def self.select_by(hsh = {})
+      tmp = selector.clone
+      hsh.each do |k, v|
+        if %i(css, xpath).include? k
+          raise ArgumentError, "The :#{k} selector argument is not currently allowed for component definitions."
+        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
+          raise(
+            ArgumentError,
+            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
+            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
+            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
+            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
+            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
+            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
+            "#{self} component.\n\n",
+            caller
+          )
+        elsif tmp[k].is_a?(Array)
+            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
+        else
+          tmp[k] = v
+        end
+      end
+      self.selector = tmp
+    end
+
+    def self.select_by!(hsh = {})
+      self.selector = hsh
+    end
 
     def attributes
       nokogiri.xpath("//#{@selector[:tag_name]}")[0].attributes.values.map do |x|
@@ -143,6 +141,7 @@ module Insite
       @browser  = @site.browser
       @component_elements = self.class.component_elements
       @selector = self.class.selector
+      @ngcontent = nil
 
       if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
         @dom_type = nil
@@ -167,14 +166,6 @@ module Insite
           end
         end
 
-        # if !@non_relative
-        # #   @target = @browser.send(dom_type, *args)
-        # # elsif @parent.is_a? Component
-        #   @target = @parent.send(dom_type, *args)
-        # else
-        #   @target = @browser.send(dom_type, *args)
-        # end
-
         # New webdriver approach.
         begin
           @target.scroll.to
@@ -189,6 +180,15 @@ module Insite
       else
         raise "Unhandled exception."
       end
+    end
+
+    def ngcontent
+      @ngcontent ||=
+      attributes.keys.find { |k| k.match(/^_ngcontent-(.*)/) }.to_a[1]
+    end
+
+    def ngcontent
+      @ngcontent ||= attributes.keys.find { |k| k =~ /^\Sngcontent.+/ }
     end
 
     # Delegates method calls down to the component's wrapped element if the
@@ -207,7 +207,26 @@ module Insite
     #  # s.hosted_pages.refresh_urls
     def method_missing(mth, *args, &block)
       if @target.respond_to? mth
-        @target.send(mth, *args, &block)
+        out = @target.send(mth, *args, &block)
+        if klass = Insite::CLASS_MAP[out.class]
+          klass.new(@site, out)
+        else
+          out
+        end
+      elsif @target.respond_to?(:to_subtype) &&
+            ![
+              Watir::HTMLElement,
+              Watir::HTMLElementCollection
+            ].include?(@target.class) &&
+            @target.class.descendants.any? do |klass|
+              klass.instance_methods.include?(sym)
+            end
+        out = @target.to_subtype.send(sym, *args, &block)
+        if klass = Insite::CLASS_MAP[out.class]
+          klass.new(@site, out)
+        else
+          out
+        end
       else
         if args[0].is_a? Hash
           page_arguments = args[0]
@@ -347,9 +366,9 @@ module Insite
 
       tmp
     end
+
+    def process_value(value)
+      value.is_a?(Regexp) ? value : /^#{value}/i
+    end
   end
 end
-
-# # TODO: For legacy code, should be removed eventually.
-# class Component < Insite::Component
-# end

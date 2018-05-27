@@ -19,7 +19,7 @@ require "insite/element/generated/element_instance_methods"
 require "insite/element/element"
 require "insite/element/element_collection"
 require "insite/element/generated/element_classes"
-
+require "insite/element/generated/class_map"
 
 # Files for Insite::Component.
 require "insite/component/component_instance_methods"

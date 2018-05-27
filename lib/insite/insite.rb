@@ -277,6 +277,11 @@ EOF
     end
   end
 
+  def respond_to_missing?(mth, include_priv = false)
+    # TODO: Page context changes.
+    @most_recent_page.respond_to?(mth, include_priv)
+  end
+
   def text
     @browser.text
   end

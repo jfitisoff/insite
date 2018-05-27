@@ -1,627 +1,721 @@
-class Insite::Anchor < Insite::Element
-end
+module Insite
+  class Anchor < Insite::Element
+  end
 
-class Insite::AnchorCollection < Insite::ElementCollection
-end
+  class AnchorCollection < Insite::ElementCollection
+  end
 
-class Insite::Area < Insite::Element
-end
+  class Applet < Insite::Element
+  end
 
-class Insite::AreaCollection < Insite::ElementCollection
-end
+  class AppletCollection < Insite::ElementCollection
+  end
 
-class Insite::Audio < Insite::Element
-end
+  class Area < Insite::Element
+  end
 
-class Insite::AudioCollection < Insite::ElementCollection
-end
+  class AreaCollection < Insite::ElementCollection
+  end
 
-class Insite::BR < Insite::Element
-end
+  class Audio < Insite::Element
+  end
 
-class Insite::BRCollection < Insite::ElementCollection
-end
+  class AudioCollection < Insite::ElementCollection
+  end
 
-class Insite::Base < Insite::Element
-end
+  class BR < Insite::Element
+  end
 
-class Insite::BaseCollection < Insite::ElementCollection
-end
+  class BRCollection < Insite::ElementCollection
+  end
 
-class Insite::Body < Insite::Element
-end
+  class Base < Insite::Element
+  end
 
-class Insite::BodyCollection < Insite::ElementCollection
-end
+  class BaseCollection < Insite::ElementCollection
+  end
 
-class Insite::Button < Insite::Element
-end
+  class Body < Insite::Element
+  end
 
-class Insite::ButtonCollection < Insite::ElementCollection
-end
+  class BodyCollection < Insite::ElementCollection
+  end
 
-class Insite::Canvas < Insite::Element
-end
+  class Button < Insite::Element
+  end
 
-class Insite::CanvasCollection < Insite::ElementCollection
-end
+  class ButtonCollection < Insite::ElementCollection
+  end
 
-class Insite::CheckBox < Insite::Element
-end
+  class Canvas < Insite::Element
+  end
 
-class Insite::CheckBoxCollection < Insite::ElementCollection
-end
+  class CanvasCollection < Insite::ElementCollection
+  end
 
-class Insite::Circle < Insite::Element
-end
+  class Cell < Insite::Element
+  end
 
-class Insite::CircleCollection < Insite::ElementCollection
-end
+  class CellCollection < Insite::ElementCollection
+  end
 
-class Insite::Cursor < Insite::Element
-end
+  class CheckBox < Insite::Element
+  end
 
-class Insite::CursorCollection < Insite::ElementCollection
-end
+  class CheckBoxCollection < Insite::ElementCollection
+  end
 
-class Insite::DList < Insite::Element
-end
+  class Circle < Insite::Element
+  end
 
-class Insite::DListCollection < Insite::ElementCollection
-end
+  class CircleCollection < Insite::ElementCollection
+  end
 
-class Insite::Data < Insite::Element
-end
+  class Cursor < Insite::Element
+  end
 
-class Insite::DataCollection < Insite::ElementCollection
-end
+  class CursorCollection < Insite::ElementCollection
+  end
 
-class Insite::DataList < Insite::Element
-end
+  class DList < Insite::Element
+  end
 
-class Insite::DataListCollection < Insite::ElementCollection
-end
+  class DListCollection < Insite::ElementCollection
+  end
 
-class Insite::DateField < Insite::Element
-end
+  class Data < Insite::Element
+  end
 
-class Insite::DateFieldCollection < Insite::ElementCollection
-end
+  class DataCollection < Insite::ElementCollection
+  end
 
-class Insite::DateTimeField < Insite::Element
-end
+  class DataList < Insite::Element
+  end
 
-class Insite::DateTimeFieldCollection < Insite::ElementCollection
-end
+  class DataListCollection < Insite::ElementCollection
+  end
 
-class Insite::Defs < Insite::Element
-end
+  class DateField < Insite::Element
+  end
 
-class Insite::DefsCollection < Insite::ElementCollection
-end
+  class DateFieldCollection < Insite::ElementCollection
+  end
 
-class Insite::Desc < Insite::Element
-end
+  class DateTimeField < Insite::Element
+  end
 
-class Insite::DescCollection < Insite::ElementCollection
-end
+  class DateTimeFieldCollection < Insite::ElementCollection
+  end
 
-class Insite::Details < Insite::Element
-end
+  class Defs < Insite::Element
+  end
 
-class Insite::DetailsCollection < Insite::ElementCollection
-end
+  class DefsCollection < Insite::ElementCollection
+  end
 
-class Insite::Div < Insite::Element
-end
+  class Desc < Insite::Element
+  end
 
-class Insite::DivCollection < Insite::ElementCollection
-end
+  class DescCollection < Insite::ElementCollection
+  end
 
-class Insite::Ellipse < Insite::Element
-end
+  class Details < Insite::Element
+  end
 
-class Insite::EllipseCollection < Insite::ElementCollection
-end
+  class DetailsCollection < Insite::ElementCollection
+  end
 
-class Insite::Embed < Insite::Element
-end
+  class Directory < Insite::Element
+  end
 
-class Insite::EmbedCollection < Insite::ElementCollection
-end
+  class DirectoryCollection < Insite::ElementCollection
+  end
 
-class Insite::FieldSet < Insite::Element
-end
+  class Div < Insite::Element
+  end
 
-class Insite::FieldSetCollection < Insite::ElementCollection
-end
+  class DivCollection < Insite::ElementCollection
+  end
 
-class Insite::FileField < Insite::Element
-end
+  class Ellipse < Insite::Element
+  end
 
-class Insite::FileFieldCollection < Insite::ElementCollection
-end
+  class EllipseCollection < Insite::ElementCollection
+  end
 
-class Insite::Font < Insite::Element
-end
+  class Embed < Insite::Element
+  end
 
-class Insite::FontCollection < Insite::ElementCollection
-end
+  class EmbedCollection < Insite::ElementCollection
+  end
 
-class Insite::ForeignObject < Insite::Element
-end
+  class FieldSet < Insite::Element
+  end
 
-class Insite::ForeignObjectCollection < Insite::ElementCollection
-end
+  class FieldSetCollection < Insite::ElementCollection
+  end
 
-class Insite::Form < Insite::Element
-end
+  class FileField < Insite::Element
+  end
 
-class Insite::FormCollection < Insite::ElementCollection
-end
+  class FileFieldCollection < Insite::ElementCollection
+  end
 
-class Insite::Frame < Insite::Element
-end
+  class Font < Insite::Element
+  end
 
-class Insite::FrameCollection < Insite::ElementCollection
-end
+  class FontCollection < Insite::ElementCollection
+  end
 
-class Insite::FrameSet < Insite::Element
-end
+  class ForeignObject < Insite::Element
+  end
 
-class Insite::FrameSetCollection < Insite::ElementCollection
-end
+  class ForeignObjectCollection < Insite::ElementCollection
+  end
 
-class Insite::G < Insite::Element
-end
+  class Form < Insite::Element
+  end
 
-class Insite::GCollection < Insite::ElementCollection
-end
+  class FormCollection < Insite::ElementCollection
+  end
 
-class Insite::HR < Insite::Element
-end
+  class Frame < Insite::Element
+  end
 
-class Insite::HRCollection < Insite::ElementCollection
-end
+  class FrameCollection < Insite::ElementCollection
+  end
 
-class Insite::HTMLElement < Insite::Element
-end
+  class FrameSet < Insite::Element
+  end
 
-class Insite::HTMLElementCollection < Insite::ElementCollection
-end
+  class FrameSetCollection < Insite::ElementCollection
+  end
 
-class Insite::Hatchpath < Insite::Element
-end
+  class G < Insite::Element
+  end
 
-class Insite::HatchpathCollection < Insite::ElementCollection
-end
+  class GCollection < Insite::ElementCollection
+  end
 
-class Insite::Head < Insite::Element
-end
+  class Geometry < Insite::Element
+  end
 
-class Insite::HeadCollection < Insite::ElementCollection
-end
+  class GeometryCollection < Insite::ElementCollection
+  end
 
-class Insite::Heading < Insite::Element
-end
+  class Gradient < Insite::Element
+  end
 
-class Insite::HeadingCollection < Insite::ElementCollection
-end
+  class GradientCollection < Insite::ElementCollection
+  end
 
-class Insite::Hidden < Insite::Element
-end
+  class Graphics < Insite::Element
+  end
 
-class Insite::HiddenCollection < Insite::ElementCollection
-end
+  class GraphicsCollection < Insite::ElementCollection
+  end
 
-class Insite::HtmlCollection < Insite::ElementCollection
-end
+  class HR < Insite::Element
+  end
 
-class Insite::IFrame < Insite::Element
-end
+  class HRCollection < Insite::ElementCollection
+  end
 
-class Insite::IFrameCollection < Insite::ElementCollection
-end
+  class HTMLElement < Insite::Element
+  end
 
-class Insite::Image < Insite::Element
-end
+  class HTMLElementCollection < Insite::ElementCollection
+  end
 
-class Insite::ImageCollection < Insite::ElementCollection
-end
+  class Hatch < Insite::Element
+  end
 
-class Insite::Input < Insite::Element
-end
+  class HatchCollection < Insite::ElementCollection
+  end
 
-class Insite::InputCollection < Insite::ElementCollection
-end
+  class Hatchpath < Insite::Element
+  end
 
-class Insite::Keygen < Insite::Element
-end
+  class HatchpathCollection < Insite::ElementCollection
+  end
 
-class Insite::KeygenCollection < Insite::ElementCollection
-end
+  class Head < Insite::Element
+  end
 
-class Insite::LI < Insite::Element
-end
+  class HeadCollection < Insite::ElementCollection
+  end
 
-class Insite::LICollection < Insite::ElementCollection
-end
+  class Heading < Insite::Element
+  end
 
-class Insite::Label < Insite::Element
-end
+  class HeadingCollection < Insite::ElementCollection
+  end
 
-class Insite::LabelCollection < Insite::ElementCollection
-end
+  class Hidden < Insite::Element
+  end
 
-class Insite::Legend < Insite::Element
-end
+  class HiddenCollection < Insite::ElementCollection
+  end
 
-class Insite::LegendCollection < Insite::ElementCollection
-end
+  class Html < Insite::Element
+  end
 
-class Insite::Line < Insite::Element
-end
+  class HtmlCollection < Insite::ElementCollection
+  end
 
-class Insite::LineCollection < Insite::ElementCollection
-end
+  class IFrame < Insite::Element
+  end
 
-class Insite::LinearGradient < Insite::Element
-end
+  class IFrameCollection < Insite::ElementCollection
+  end
 
-class Insite::LinearGradientCollection < Insite::ElementCollection
-end
+  class Image < Insite::Element
+  end
 
-class Insite::Map < Insite::Element
-end
+  class ImageCollection < Insite::ElementCollection
+  end
 
-class Insite::MapCollection < Insite::ElementCollection
-end
+  class Input < Insite::Element
+  end
 
-class Insite::Marker < Insite::Element
-end
+  class InputCollection < Insite::ElementCollection
+  end
 
-class Insite::MarkerCollection < Insite::ElementCollection
-end
+  class Keygen < Insite::Element
+  end
 
-class Insite::Menu < Insite::Element
-end
+  class KeygenCollection < Insite::ElementCollection
+  end
 
-class Insite::MenuCollection < Insite::ElementCollection
-end
+  class LI < Insite::Element
+  end
 
-class Insite::MenuItem < Insite::Element
-end
+  class LICollection < Insite::ElementCollection
+  end
 
-class Insite::MenuItemCollection < Insite::ElementCollection
-end
+  class Label < Insite::Element
+  end
 
-class Insite::Mesh < Insite::Element
-end
+  class LabelCollection < Insite::ElementCollection
+  end
 
-class Insite::MeshCollection < Insite::ElementCollection
-end
+  class Legend < Insite::Element
+  end
 
-class Insite::MeshGradient < Insite::Element
-end
+  class LegendCollection < Insite::ElementCollection
+  end
 
-class Insite::MeshGradientCollection < Insite::ElementCollection
-end
+  class Line < Insite::Element
+  end
 
-class Insite::Meshpatch < Insite::Element
-end
+  class LineCollection < Insite::ElementCollection
+  end
 
-class Insite::MeshpatchCollection < Insite::ElementCollection
-end
+  class LinearGradient < Insite::Element
+  end
 
-class Insite::Meshrow < Insite::Element
-end
+  class LinearGradientCollection < Insite::ElementCollection
+  end
 
-class Insite::MeshrowCollection < Insite::ElementCollection
-end
+  class Map < Insite::Element
+  end
 
-class Insite::Meta < Insite::Element
-end
+  class MapCollection < Insite::ElementCollection
+  end
 
-class Insite::MetaCollection < Insite::ElementCollection
-end
+  class Marker < Insite::Element
+  end
 
-class Insite::Metadata < Insite::Element
-end
+  class MarkerCollection < Insite::ElementCollection
+  end
 
-class Insite::MetadataCollection < Insite::ElementCollection
-end
+  class Marquee < Insite::Element
+  end
 
-class Insite::Meter < Insite::Element
-end
+  class MarqueeCollection < Insite::ElementCollection
+  end
 
-class Insite::MeterCollection < Insite::ElementCollection
-end
+  class Media < Insite::Element
+  end
 
-class Insite::Mod < Insite::Element
-end
+  class MediaCollection < Insite::ElementCollection
+  end
 
-class Insite::ModCollection < Insite::ElementCollection
-end
+  class Menu < Insite::Element
+  end
 
-class Insite::OList < Insite::Element
-end
+  class MenuCollection < Insite::ElementCollection
+  end
 
-class Insite::OListCollection < Insite::ElementCollection
-end
+  class MenuItem < Insite::Element
+  end
 
-class Insite::Object < Insite::Element
-end
+  class MenuItemCollection < Insite::ElementCollection
+  end
 
-class Insite::ObjectCollection < Insite::ElementCollection
-end
+  class Mesh < Insite::Element
+  end
 
-class Insite::OptGroup < Insite::Element
-end
+  class MeshCollection < Insite::ElementCollection
+  end
 
-class Insite::OptGroupCollection < Insite::ElementCollection
-end
+  class MeshGradient < Insite::Element
+  end
 
-class Insite::Option < Insite::Element
-end
+  class MeshGradientCollection < Insite::ElementCollection
+  end
 
-class Insite::OptionCollection < Insite::ElementCollection
-end
+  class Meshpatch < Insite::Element
+  end
 
-class Insite::Output < Insite::Element
-end
+  class MeshpatchCollection < Insite::ElementCollection
+  end
 
-class Insite::OutputCollection < Insite::ElementCollection
-end
+  class Meshrow < Insite::Element
+  end
 
-class Insite::Paragraph < Insite::Element
-end
+  class MeshrowCollection < Insite::ElementCollection
+  end
 
-class Insite::ParagraphCollection < Insite::ElementCollection
-end
+  class Meta < Insite::Element
+  end
 
-class Insite::Param < Insite::Element
-end
+  class MetaCollection < Insite::ElementCollection
+  end
 
-class Insite::ParamCollection < Insite::ElementCollection
-end
+  class Metadata < Insite::Element
+  end
 
-class Insite::Path < Insite::Element
-end
+  class MetadataCollection < Insite::ElementCollection
+  end
 
-class Insite::PathCollection < Insite::ElementCollection
-end
+  class Meter < Insite::Element
+  end
 
-class Insite::Pattern < Insite::Element
-end
+  class MeterCollection < Insite::ElementCollection
+  end
 
-class Insite::PatternCollection < Insite::ElementCollection
-end
+  class Mod < Insite::Element
+  end
 
-class Insite::Picture < Insite::Element
-end
+  class ModCollection < Insite::ElementCollection
+  end
 
-class Insite::PictureCollection < Insite::ElementCollection
-end
+  class OList < Insite::Element
+  end
 
-class Insite::Polygon < Insite::Element
-end
+  class OListCollection < Insite::ElementCollection
+  end
 
-class Insite::PolygonCollection < Insite::ElementCollection
-end
+  class Object < Insite::Element
+  end
 
-class Insite::Polyline < Insite::Element
-end
+  class ObjectCollection < Insite::ElementCollection
+  end
 
-class Insite::PolylineCollection < Insite::ElementCollection
-end
+  class OptGroup < Insite::Element
+  end
 
-class Insite::Pre < Insite::Element
-end
+  class OptGroupCollection < Insite::ElementCollection
+  end
 
-class Insite::PreCollection < Insite::ElementCollection
-end
+  class Option < Insite::Element
+  end
 
-class Insite::Progress < Insite::Element
-end
+  class OptionCollection < Insite::ElementCollection
+  end
 
-class Insite::ProgressCollection < Insite::ElementCollection
-end
+  class Output < Insite::Element
+  end
 
-class Insite::Quote < Insite::Element
-end
+  class OutputCollection < Insite::ElementCollection
+  end
 
-class Insite::QuoteCollection < Insite::ElementCollection
-end
+  class Paragraph < Insite::Element
+  end
 
-class Insite::RadialGradient < Insite::Element
-end
+  class ParagraphCollection < Insite::ElementCollection
+  end
 
-class Insite::RadialGradientCollection < Insite::ElementCollection
-end
+  class Param < Insite::Element
+  end
 
-class Insite::Radio < Insite::Element
-end
+  class ParamCollection < Insite::ElementCollection
+  end
 
-class Insite::RadioCollection < Insite::ElementCollection
-end
+  class Path < Insite::Element
+  end
 
-class Insite::RadioSet < Insite::Element
-end
+  class PathCollection < Insite::ElementCollection
+  end
 
-class Insite::Rect < Insite::Element
-end
+  class Pattern < Insite::Element
+  end
 
-class Insite::RectCollection < Insite::ElementCollection
-end
+  class PatternCollection < Insite::ElementCollection
+  end
 
-class Insite::SVG < Insite::Element
-end
+  class Picture < Insite::Element
+  end
 
-class Insite::SVGCollection < Insite::ElementCollection
-end
+  class PictureCollection < Insite::ElementCollection
+  end
 
-class Insite::Script < Insite::Element
-end
+  class Polygon < Insite::Element
+  end
 
-class Insite::ScriptCollection < Insite::ElementCollection
-end
+  class PolygonCollection < Insite::ElementCollection
+  end
 
-class Insite::Select < Insite::Element
-end
+  class Polyline < Insite::Element
+  end
 
-class Insite::SelectCollection < Insite::ElementCollection
-end
+  class PolylineCollection < Insite::ElementCollection
+  end
 
-class Insite::Solidcolor < Insite::Element
-end
+  class Pre < Insite::Element
+  end
 
-class Insite::SolidcolorCollection < Insite::ElementCollection
-end
+  class PreCollection < Insite::ElementCollection
+  end
 
-class Insite::Source < Insite::Element
-end
+  class Progress < Insite::Element
+  end
 
-class Insite::SourceCollection < Insite::ElementCollection
-end
+  class ProgressCollection < Insite::ElementCollection
+  end
 
-class Insite::Span < Insite::Element
-end
+  class Quote < Insite::Element
+  end
 
-class Insite::SpanCollection < Insite::ElementCollection
-end
+  class QuoteCollection < Insite::ElementCollection
+  end
 
-class Insite::Stop < Insite::Element
-end
+  class RadialGradient < Insite::Element
+  end
 
-class Insite::StopCollection < Insite::ElementCollection
-end
+  class RadialGradientCollection < Insite::ElementCollection
+  end
 
-class Insite::Style < Insite::Element
-end
+  class Radio < Insite::Element
+  end
 
-class Insite::StyleCollection < Insite::ElementCollection
-end
+  class RadioCollection < Insite::ElementCollection
+  end
 
-class Insite::Switch < Insite::Element
-end
+  class Rect < Insite::Element
+  end
 
-class Insite::SwitchCollection < Insite::ElementCollection
-end
+  class RectCollection < Insite::ElementCollection
+  end
 
-class Insite::Symbol < Insite::Element
-end
+  class Row < Insite::Element
+  end
 
-class Insite::SymbolCollection < Insite::ElementCollection
-end
+  class RowCollection < Insite::ElementCollection
+  end
 
-class Insite::TSpan < Insite::Element
-end
+  class SVG < Insite::Element
+  end
 
-class Insite::TSpanCollection < Insite::ElementCollection
-end
+  class SVGCollection < Insite::ElementCollection
+  end
 
-class Insite::Table < Insite::Element
-end
+  class SVGElement < Insite::Element
+  end
 
-class Insite::TableCaption < Insite::Element
-end
+  class SVGElementCollection < Insite::ElementCollection
+  end
 
-class Insite::TableCaptionCollection < Insite::ElementCollection
-end
+  class Script < Insite::Element
+  end
 
-class Insite::TableCol < Insite::Element
-end
+  class ScriptCollection < Insite::ElementCollection
+  end
 
-class Insite::TableColCollection < Insite::ElementCollection
-end
+  class Select < Insite::Element
+  end
 
-class Insite::TableCollection < Insite::ElementCollection
-end
+  class SelectCollection < Insite::ElementCollection
+  end
 
-class Insite::TableDataCell < Insite::Element
-end
+  class Solidcolor < Insite::Element
+  end
 
-class Insite::TableDataCellCollection < Insite::ElementCollection
-end
+  class SolidcolorCollection < Insite::ElementCollection
+  end
 
-class Insite::TableHeaderCell < Insite::Element
-end
+  class Source < Insite::Element
+  end
 
-class Insite::TableHeaderCellCollection < Insite::ElementCollection
-end
+  class SourceCollection < Insite::ElementCollection
+  end
 
-class Insite::TableRow < Insite::Element
-end
+  class Span < Insite::Element
+  end
 
-class Insite::TableRowCollection < Insite::ElementCollection
-end
+  class SpanCollection < Insite::ElementCollection
+  end
 
-class Insite::TableSection < Insite::Element
-end
+  class Stop < Insite::Element
+  end
 
-class Insite::TableSectionCollection < Insite::ElementCollection
-end
+  class StopCollection < Insite::ElementCollection
+  end
 
-class Insite::Template < Insite::Element
-end
+  class Style < Insite::Element
+  end
 
-class Insite::TemplateCollection < Insite::ElementCollection
-end
+  class StyleCollection < Insite::ElementCollection
+  end
 
-class Insite::TextArea < Insite::Element
-end
+  class Switch < Insite::Element
+  end
 
-class Insite::TextAreaCollection < Insite::ElementCollection
-end
+  class SwitchCollection < Insite::ElementCollection
+  end
 
-class Insite::TextField < Insite::Element
-end
+  class Symbol < Insite::Element
+  end
 
-class Insite::TextFieldCollection < Insite::ElementCollection
-end
+  class SymbolCollection < Insite::ElementCollection
+  end
 
-class Insite::TextPath < Insite::Element
-end
+  class TSpan < Insite::Element
+  end
 
-class Insite::TextPathCollection < Insite::ElementCollection
-end
+  class TSpanCollection < Insite::ElementCollection
+  end
 
-class Insite::Time < Insite::Element
-end
+  class Table < Insite::Element
+  end
 
-class Insite::TimeCollection < Insite::ElementCollection
-end
+  class TableCaption < Insite::Element
+  end
 
-class Insite::TitleCollection < Insite::ElementCollection
-end
+  class TableCaptionCollection < Insite::ElementCollection
+  end
 
-class Insite::Track < Insite::Element
-end
+  class TableCell < Insite::Element
+  end
 
-class Insite::TrackCollection < Insite::ElementCollection
-end
+  class TableCellCollection < Insite::ElementCollection
+  end
 
-class Insite::UList < Insite::Element
-end
+  class TableCol < Insite::Element
+  end
 
-class Insite::UListCollection < Insite::ElementCollection
-end
+  class TableColCollection < Insite::ElementCollection
+  end
 
-class Insite::Use < Insite::Element
-end
+  class TableCollection < Insite::ElementCollection
+  end
 
-class Insite::UseCollection < Insite::ElementCollection
-end
+  class TableDataCell < Insite::Element
+  end
 
-class Insite::Video < Insite::Element
-end
+  class TableDataCellCollection < Insite::ElementCollection
+  end
 
-class Insite::VideoCollection < Insite::ElementCollection
-end
+  class TableHeaderCell < Insite::Element
+  end
 
-class Insite::View < Insite::Element
-end
+  class TableHeaderCellCollection < Insite::ElementCollection
+  end
 
-class Insite::ViewCollection < Insite::ElementCollection
-end
+  class TableRow < Insite::Element
+  end
+
+  class TableRowCollection < Insite::ElementCollection
+  end
 
+  class TableSection < Insite::Element
+  end
+
+  class TableSectionCollection < Insite::ElementCollection
+  end
+
+  class Template < Insite::Element
+  end
+
+  class TemplateCollection < Insite::ElementCollection
+  end
+
+  class TextArea < Insite::Element
+  end
+
+  class TextAreaCollection < Insite::ElementCollection
+  end
+
+  class TextContent < Insite::Element
+  end
+
+  class TextContentCollection < Insite::ElementCollection
+  end
+
+  class TextField < Insite::Element
+  end
+
+  class TextFieldCollection < Insite::ElementCollection
+  end
+
+  class TextPath < Insite::Element
+  end
+
+  class TextPathCollection < Insite::ElementCollection
+  end
+
+  class TextPositioning < Insite::Element
+  end
+
+  class TextPositioningCollection < Insite::ElementCollection
+  end
+
+  class Time < Insite::Element
+  end
+
+  class TimeCollection < Insite::ElementCollection
+  end
+
+  class Title < Insite::Element
+  end
+
+  class TitleCollection < Insite::ElementCollection
+  end
+
+  class Track < Insite::Element
+  end
+
+  class TrackCollection < Insite::ElementCollection
+  end
+
+  class UList < Insite::Element
+  end
+
+  class UListCollection < Insite::ElementCollection
+  end
+
+  class Unknown < Insite::Element
+  end
+
+  class UnknownCollection < Insite::ElementCollection
+  end
+
+  class Use < Insite::Element
+  end
+
+  class UseCollection < Insite::ElementCollection
+  end
+
+  class Video < Insite::Element
+  end
+
+  class VideoCollection < Insite::ElementCollection
+  end
+
+  class View < Insite::Element
+  end
+
+  class ViewCollection < Insite::ElementCollection
+  end
+end
