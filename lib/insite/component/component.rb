@@ -7,7 +7,7 @@ require_relative '../methods/common_methods'
 # into components that can be reused across multiple pages.
 module Insite
   class Component
-    attr_reader :args, :browser, :ngcontent, :non_relative, :selector, :site, :type, :target
+    attr_reader :args, :browser, :non_relative, :selector, :site, :type, :target
     class_attribute :selector, default: {}
     self.selector  = self.selector.clone
 
@@ -184,15 +184,6 @@ module Insite
       else
         raise "Unhandled exception."
       end
-    end
-
-    def ngcontent
-      @ngcontent ||=
-      attributes.keys.find { |k| k.match(/^_ngcontent-(.*)/) }.to_a[1]
-    end
-
-    def ngcontent
-      @ngcontent ||= attributes.keys.find { |k| k =~ /^\Sngcontent.+/ }
     end
 
     # Delegates method calls down to the component's wrapped element if the
