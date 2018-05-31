@@ -1,6 +1,8 @@
 module Insite
   class ComponentCollection
     attr_reader :args, :collection_member_type, :browser, :indentifiers, :site, :target
+
+
     include Enumerable
 
     def ==(other)
@@ -11,6 +13,10 @@ module Insite
     def[](idx)
       tmp = @target[idx]
       tmp ? @collection_member_type.new(@site, tmp) : nil
+    end
+
+    def collection?
+      true
     end
 
     def first

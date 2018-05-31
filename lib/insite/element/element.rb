@@ -7,6 +7,10 @@ module Insite
     include Insite::ElementInstanceMethods
     extend  Forwardable
 
+    def collection?
+      false
+    end
+
     def initialize(site, element)
       @site    = site
       @browser = @site.browser
@@ -37,8 +41,8 @@ module Insite
       end
     end
 
-    def respond_to_missing?(mth)
-      @target.respond_to? mth
+    def respond_to_missing?(mth, include_priv = false)
+      @target.respond_to?(mth, include_priv) || super
     end
   end
 

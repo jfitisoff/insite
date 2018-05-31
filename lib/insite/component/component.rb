@@ -121,6 +121,10 @@ module Insite
       end.to_h
     end
 
+    def collection?
+      false
+    end
+
     def classes
       attribute('class').split
     end
@@ -221,6 +225,7 @@ module Insite
             @target.class.descendants.any? do |klass|
               klass.instance_methods.include?(sym)
             end
+
         out = @target.to_subtype.send(sym, *args, &block)
         if klass = Insite::CLASS_MAP[out.class]
           klass.new(@site, out)
@@ -239,22 +244,27 @@ module Insite
         end
 
         if present?
-          # If it's a component we want to hover over it to ensure links are visible
-          # before trying to find them.
-          if self.is_a?(Component)
-            t = ::Time.now
-            loop do
-              begin
-                scroll.to
-                hover
-                sleep 0.2
-                break
-              rescue => e
-                break if ::Time.now > t + 10
-                sleep 0.2
-              end
-            end
-          end
+          # # TODO: Lame and overly specific.
+          # # If it's a component we want to hover over it to ensure links are visible
+          # # before trying to find them.
+          # if self.is_a?(Component)
+          #   t = ::Time.now
+          #   puts t
+          #   loop do
+          #     begin
+          #       scroll.to
+          #       hover
+          #       sleep 0.2
+          #       break
+          #     rescue => e
+          #       break if ::Time.now > t + 10
+          #       sleep 0.2
+          #     end
+          #
+          #     break if present?
+          #     break if ::Time.now > t + 10
+          #   end
+          # end
 
           # Dynamic helper method, returns DOM object for link (no validation).
           if mth.to_s =~ /_link$/
@@ -265,7 +275,7 @@ module Insite
           # Dynamic helper method for links. If a match is found, clicks on the
           # link and performs follow up actions. Start by seeing if there's a
           # matching button and treat it as a method call if so.
-          elsif elem = as.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i }
+        elsif !collection? && elem = as.to_a.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i }
             elem.click
             sleep 1
 
@@ -282,7 +292,7 @@ module Insite
               current_page = @site.page
             end
           # Dynamic helper method for buttons. If a match is found, clicks on the link and performs follow up actions.
-          elsif elem = buttons.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
+        elsif !collection? && elem = buttons.to_a.find { |x| x.text =~ /^#{mth.to_s.gsub('_', '.*')}/i } # See if there's a matching button and treat it as a method call if so.
             elem.click
             sleep 1
 

@@ -28,7 +28,7 @@ require "insite/component/component_collection"
 require "insite/component/component_methods"
 
 # Files for Insite::Feature.
-require "insite/feature/feature"
+# require "insite/feature/feature"
 
 # Files for pages (defined/undefined.)
 require "insite/page/defined_page"

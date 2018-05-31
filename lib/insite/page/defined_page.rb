@@ -33,37 +33,6 @@ module Insite
 
       end
 
-      # private
-      # def element_container(name, type, *args, &block)
-      #   tmpklass = Class.new(ElementContainer) do
-      #     self.class_eval(&block) if block_given?
-      #   end
-      #   cname = name.to_s.camelcase + 'Container'
-      #   const_set(cname, tmpklass) unless const_defined? cname
-      #
-      #   @page_elements ||= [name.to_sym]
-      #   # @page_elements << name.to_sym
-      #
-      #   define_method(name) do
-      #     self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))
-      #   end
-      # end
-      # public
-
-      # Creates a section within the page. TODO: section is a DOM element, rename this.
-      def feature(fname, klass = Insite::Feature, &block)
-        tmpklass = Class.new(klass) do
-          self.class_eval(&block) if block_given?
-        end
-
-        const_set(fname.to_s.camelcase, tmpklass) unless const_defined? fname.to_s.camelcase
-        @page_features ||= []
-        @page_features << fname.to_s.underscore.to_sym
-        define_method(fname.to_s.underscore) do
-          tmpklass.new(page = self)
-        end
-      end
-
       # Allows you to set special page attributes that affect page behavior. The two page
       # attributes currently supported are :navigation_disabled and :page_template:
       #
@@ -515,9 +484,5 @@ module Insite
       @site.most_recent_page = self
       self
     end
-
-    # def respond_to_missing?(mth, include_priv = false)
-    #   respond_to?(mth, include_priv)
-    # end
   end
 end

@@ -14,6 +14,10 @@ module Insite
       end
     end
 
+    def collection?
+      true
+    end
+
     def first
       self[0]
     end
