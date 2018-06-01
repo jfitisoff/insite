@@ -207,9 +207,9 @@ module Insite
     def parse_args(args)
       case args.length
       when 2
-        return { args[0] => args[1] }.symbolize_keys
+        return { args[0] => args[1] }
       when 1
-        obj = args.first.symbolize_keys
+        obj = args.first
       when 0
         return {}
       end
