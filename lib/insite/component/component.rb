@@ -59,7 +59,7 @@ module Insite
         pluralized_name_string => collection_class
       }.each do |nstring, klass|
         ComponentMethods.send(:define_method, nstring) do |mname, *a, &block|
-          nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
+          # nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
           unless nstring == 'Component'
             @component_elements ||= []
             unless @component_elements.include?(mname.to_sym)
@@ -67,20 +67,21 @@ module Insite
             end
 
             hsh = parse_args(a).merge(klass.selector)
-            dom_type = hsh.delete(:dom_type)
+            # dom_type = hsh.delete(:dom_type)
 
             define_method(mname) do
-              klass.new(self, dom_type || default_dom_type, **hsh, &block)
+              klass.new(self, *args, &block)
             end
           end
         end
 
         ComponentInstanceMethods.send(:define_method, nstring) do |*a|
-          nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
+          # nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
           hsh = parse_args(a).merge(subclass.selector)
-          dom_type = hsh.delete(:dom_type)
+          # dom_type = hsh.delete(:dom_type)
 
-          klass.new(self, dom_type || default_dom_type, **hsh)
+          klass.new(self, *a)
+          # klass.new(self, dom_type || default_dom_type, **hsh)
         end
       end
     end # self.inherited
@@ -116,7 +117,7 @@ module Insite
     end
 
     def attributes
-      nokogiri.xpath("//#{@selector[:tag_name]}")[0].attributes.values.map do |x|
+      nokogiri.xpath("//#{selector[:tag_name]}")[0].attributes.values.map do |x|
         x.name == 'class' ? [x.name, x.value.split] : [x.name, x.value]
       end.to_h
     end
@@ -139,34 +140,52 @@ module Insite
     # TODO: Needs a rewrite, lines between individual and collection are blurred
     # here and that makes the code more confusing. And there should be a proper
     # collection class for element collections, with possibly some AR-like accessors.
-    def initialize(parent, dom_type, *args)
+    def initialize(parent, *args)
       @parent   = parent
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
-      @selector = self.class.selector
-      @ngcontent = nil
+      # @selector = self.class.selector.merge(parse_args(args))
 
-      if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
+      if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
         @dom_type = nil
         @args     = nil
-        @target   = dom_type
-      elsif dom_type.is_a?(Watir::Element) || dom_type.is_a?(Watir::ElementCollection)
+        @target   = args[0]
+      elsif args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
         @dom_type = nil
         @args     = nil
-        @target   = dom_type
-      elsif [::String, ::Symbol].include? dom_type.class
-        @dom_type     = dom_type
-        @args         = merge_selector_args(parse_args(args))
+        @target   = args[0]
+      else
+      # elsif [::String, ::Symbol].include? dom_type.class
+        # @dom_type     = dom_type
+
+        tmp = self.class.selector.merge(parse_args(args))
+        # collection? ? dom_type = :elements : dom_type = :element
+
+        @selector     = tmp
+        @args         = @selector
+        # @args         = merge_selector_args(parse_args(args))
         @non_relative = @args.delete(:non_relative) || false
 
+        # if tmp = Watir.element_class_for(@selector[:tag_name])
+        #   klass = tmp
+        # elsif collection?
+        #   klass = Watir::HTMLElementCollection
+        # else
+        #   klass = Watir::HTMLElement
+        # end
+
+        collection? ? dom_type = :elements : dom_type = :element
         if @non_relative
-          @target = @browser.send(dom_type, **@args)
+          @target = @browser.send(**@args)
         else
           if @parent.is_a?(Component) || @parent.is_a?(Element)
-            @target = @parent.send(dom_type, **@args)
+# binding.pry
+#             @target = klass.new(@parent, **@args)
+            @target = @parent.target.send(dom_type, @args)
           else
-            @target = @browser.send(dom_type, **@args)
+            # @target = klass.new(@browser, **@args)
+            @target = @browser.send(dom_type, @args)
           end
         end
 
@@ -181,8 +200,8 @@ module Insite
             sleep 0.1
           end
         end
-      else
-        raise "Unhandled exception."
+      # else
+      #   raise "Unhandled exception."
       end
     end
 
@@ -304,10 +323,10 @@ module Insite
               end
             end
           else
-            raise NoMethodError, "undefined method `#{mth}' for #{self.class}."
+            raise NoMethodError, "undefined method `#{mth}' for #{self.class}.", caller
           end
         else
-          raise NoMethodError, "Unhandled method call `#{mth}' for #{self.class} (The component was not present in the DOM at the point that the method was called.)"
+          raise NoMethodError, "Unhandled method call `#{mth}' for #{self.class} (The component was not present in the DOM at the point that the method was called.)", caller
         end
 
         page_arguments.present? ? page_arguments : current_page

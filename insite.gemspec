@@ -39,8 +39,13 @@ Gem::Specification.new do |s|
     "lib/insite/constants.rb",
     "lib/insite/errors.rb",
     "lib/insite/insite.rb",
-    "lib/insite/version.rb"
-  ]
+    "lib/insite/version.rb",
+    "lib/insite/material_angular_io_site.rb"
+  ] +
+  %w(watir_mods site pages utils).map do |f|
+    "lib/insite/examples/material_angular_io/#{f}.rb"
+  end +
+  Dir["lib/insite/examples/material_angular_io/components/*.rb"]
 
   s.homepage    = 'https://github.com/jfitisoff/insite'
   s.license     = 'MIT'
