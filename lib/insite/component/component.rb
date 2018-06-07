@@ -42,26 +42,20 @@ module Insite
     extend Forwardable
 
     def self.inherited(subclass)
-      name_string            = subclass.name.demodulize.underscore
-      collection_name        = name_string + '_collection'
+      name_string     = subclass.name.demodulize.underscore
+      collection_name = name_string + '_collection'
 
       if name_string == name_string.pluralize
         collection_method_name = name_string + 'es'
       else
         collection_method_name = name_string.pluralize
       end
-      # pluralized_name_string = name_string.pluralize
-
-      # if name_string == pluralized_name_string
-      #   pluralized_name_string = name_string + 'es'
-      # end
 
       collection_class = Class.new(Insite::ComponentCollection) do
         attr_reader :collection_member_type
         @collection_member_type = subclass
       end
       Insite.const_set(collection_name.camelize, collection_class)
-      # Insite.const_set(pluralized_name_string.camelize, collection_class)
 
       {
         name_string => subclass,
