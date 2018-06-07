@@ -41,7 +41,7 @@ jobs:
           name: run tests
           command: |
             mkdir /tmp/test-results
-            bundle exec rspec spec/ruby_lang_spec.rb -f html -o /tmp/test-results/test_report.html
+            bundle exec rspec spec/material_angular_io_spec.rb -f html -o /tmp/test-results/test_report.html
 
       # collect reports
       - store_test_results:
