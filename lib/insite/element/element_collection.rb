@@ -1,5 +1,6 @@
 module Insite
   class ElementCollection < Element
+    attr_accessor :browser
 
     def ==(other)
       to_a == other.to_a

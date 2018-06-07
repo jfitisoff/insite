@@ -9,7 +9,7 @@ end
 class FooPage < MaterialAngularIO::Page
   set_url "/components/chips/overview"
 
-  mat_chip_lists :chipies, text: /fish/i
+  # mat_chip_lists :chipies, text: /fish/i
   mat_chip_list :foo, index: 1, text: /Lemon/
   mat_chip      :bar, index: 0, text: /Two fish/
 end
