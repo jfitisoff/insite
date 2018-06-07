@@ -7,6 +7,16 @@ module Insite
     include Insite::ElementInstanceMethods
     extend  Forwardable
 
+    def attributes
+      nokogiri.xpath("//#{selector[:tag_name]}")[0].attributes.values.map do |x|
+        [x.name, x.value]
+      end.to_h
+    end
+
+    def classes
+      attribute('class').split
+    end
+
     def collection?
       false
     end

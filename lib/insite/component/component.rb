@@ -115,16 +115,16 @@ module Insite
 
     def attributes
       nokogiri.xpath("//#{selector[:tag_name]}")[0].attributes.values.map do |x|
-        x.name == 'class' ? [x.name, x.value.split] : [x.name, x.value]
+        [x.name, x.value]
       end.to_h
-    end
-
-    def collection?
-      false
     end
 
     def classes
       attribute('class').split
+    end
+
+    def collection?
+      false
     end
 
     # This method gets used 2 different ways. Most of the time, dom_type and args
