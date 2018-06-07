@@ -250,6 +250,14 @@ module Insite
       true
     end
 
+    def driver
+      @browser.driver
+    end
+
+    def html
+      @browser.html
+    end
+
     # Initializes a new page object. There's no need to ever call this method directly.
     # Your site class (the one that includes the Insite module) will handle this for
     # you

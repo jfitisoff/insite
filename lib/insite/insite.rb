@@ -74,6 +74,10 @@ EOF
     browser?
   end
 
+  # def html
+  #   @browser.html
+  # end
+
   # Creates a site object, which will have accessor methods for all pages that
   # you have defined for the site. This object takes a hash argument. There is
   # only one required value (the base_url for the site.) Example:

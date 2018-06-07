@@ -1,7 +1,8 @@
 module Insite
   class ComponentCollection
     attr_reader :args, :collection_member_type, :browser, :indentifiers, :site, :target
-
+    class_attribute :selector, default: {}
+    self.selector  = self.selector.clone
 
     include Enumerable
 
@@ -31,32 +32,29 @@ module Insite
       length == 0
     end
 
-    def initialize(parent, dom_type, *args)
+    def initialize(parent, *args)
       @parent   = parent
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
       @selector = @collection_member_type.selector
 
-      if dom_type.is_a?(Insite::Element) || dom_type.is_a?(Insite::ElementCollection)
+      if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
         @dom_type = nil
         @args     = nil
-        @target   = dom_type
-      elsif dom_type.is_a?(Watir::Element) || dom_type.is_a?(Watir::ElementCollection)
-          @dom_type = nil
-          @args     = nil
-          @target   = dom_type
-      elsif [::String, ::Symbol].include? dom_type.class
-        @dom_type = dom_type
+        @target   = args[0].target
+      elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
+        @dom_type = nil
+        @args     = nil
+        @target   = args[0]
+      else
         @args     = args
 
         if @parent.is_a? Component
-          @target = @parent.send(dom_type, *args)
+          @target = @parent.send(:elements, *args)
         else
-          @target = @browser.send(dom_type, *args)
+          @target = @browser.send(:elements, *args)
         end
-      else
-        raise "Unhandled exception."
       end
     end
 

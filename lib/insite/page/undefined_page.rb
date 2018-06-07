@@ -33,6 +33,14 @@ module Insite
   EOF
     end
 
+    def driver
+      @browser.driver
+    end
+
+    def html
+      @browser.html
+    end
+
     def initialize(site)
       @site    = site
       @browser = process_browser

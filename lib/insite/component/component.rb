@@ -50,6 +50,7 @@ module Insite
       end
 
       collection_class = Class.new(Insite::ComponentCollection) do
+        attr_reader :collection_member_type
         @collection_member_type = subclass
       end
       Insite.const_set(pluralized_name_string.camelize, collection_class)
@@ -59,7 +60,6 @@ module Insite
         pluralized_name_string => collection_class
       }.each do |nstring, klass|
         ComponentMethods.send(:define_method, nstring) do |mname, *a, &block|
-          # nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
           unless nstring == 'Component'
             @component_elements ||= []
             unless @component_elements.include?(mname.to_sym)
@@ -67,21 +67,16 @@ module Insite
             end
 
             hsh = parse_args(a).merge(klass.selector)
-            # dom_type = hsh.delete(:dom_type)
 
             define_method(mname) do
-              klass.new(self, *args, &block)
+              klass.new(self, hsh, &block)
             end
           end
         end
 
         ComponentInstanceMethods.send(:define_method, nstring) do |*a|
-          # nstring == name_string ? default_dom_type = :element : default_dom_type = :elements
           hsh = parse_args(a).merge(subclass.selector)
-          # dom_type = hsh.delete(:dom_type)
-
-          klass.new(self, *a)
-          # klass.new(self, dom_type || default_dom_type, **hsh)
+          klass.new(self, hsh)
         end
       end
     end # self.inherited
@@ -145,46 +140,29 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
-      # @selector = self.class.selector.merge(parse_args(args))
 
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
         @dom_type = nil
         @args     = nil
-        @target   = args[0]
+        @target   = args[0].target
       elsif args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
         @dom_type = nil
         @args     = nil
         @target   = args[0]
       else
-      # elsif [::String, ::Symbol].include? dom_type.class
-        # @dom_type     = dom_type
-
         tmp = self.class.selector.merge(parse_args(args))
-        # collection? ? dom_type = :elements : dom_type = :element
 
         @selector     = tmp
         @args         = @selector
-        # @args         = merge_selector_args(parse_args(args))
         @non_relative = @args.delete(:non_relative) || false
-
-        # if tmp = Watir.element_class_for(@selector[:tag_name])
-        #   klass = tmp
-        # elsif collection?
-        #   klass = Watir::HTMLElementCollection
-        # else
-        #   klass = Watir::HTMLElement
-        # end
 
         collection? ? dom_type = :elements : dom_type = :element
         if @non_relative
           @target = @browser.send(**@args)
         else
           if @parent.is_a?(Component) || @parent.is_a?(Element)
-# binding.pry
-#             @target = klass.new(@parent, **@args)
             @target = @parent.target.send(dom_type, @args)
           else
-            # @target = klass.new(@browser, **@args)
             @target = @browser.send(dom_type, @args)
           end
         end
@@ -200,8 +178,6 @@ module Insite
             sleep 0.1
           end
         end
-      # else
-      #   raise "Unhandled exception."
       end
     end
 

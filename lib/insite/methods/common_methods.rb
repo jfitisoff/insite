@@ -1,23 +1,16 @@
 # TODO: A lot of this should be handled via delegation.
 module Insite
   module CommonMethods
-    # Returns a Watir::Browser object.
-    def browser
-      @browser
-    end
-
-    # Returns a Selenium::WebDriver::Driver object.
-    def driver
-      @browser.driver
-    end
-
-    # Don't override the default if it's already there.
-    unless defined? :html
-      # Returns current HTML for the object.
-      def html
-        @browser.html
+    # Returns a Nokogiri document for the object ONLY. So no need to specify a
+    # relative path.
+    def document(xpath = nil)
+      if xpath
+        Nokogiri::HTML(html).xpath(xpath)
+      else
+        Nokogiri::HTML(html)
       end
     end
+    alias nokogiri document
 
     # Returns a string representation of the page.
     def inspect
@@ -194,13 +187,6 @@ module Insite
       sleep 1
       hash_args
     end
-
-    # Returns a Nokogiri document for the object ONLY. So no need to specify a
-    # relative path.
-    def nokogiri
-      Nokogiri::HTML(html)
-    end
-    alias document nokogiri
 
     # Duplicates Watir DOM element argument parsing for element methods.
     private

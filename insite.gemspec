@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
     "lib/insite/errors.rb",
     "lib/insite/insite.rb",
     "lib/insite/version.rb",
-    "lib/insite/material_angular_io_site.rb"
+    "lib/insite/examples/material_angular_io_site.rb"
   ] +
   %w(watir_mods site pages utils).map do |f|
     "lib/insite/examples/material_angular_io/#{f}.rb"
