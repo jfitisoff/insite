@@ -58,6 +58,11 @@ module Insite
       end
     end
 
+    def inspect
+      @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+      "#<#{self.class}: @parent: #{@parent}; @selector=#{s}>"
+    end
+
     def last
       self[-1]
     end

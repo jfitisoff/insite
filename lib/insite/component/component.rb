@@ -160,7 +160,7 @@ module Insite
 
         collection? ? dom_type = :elements : dom_type = :element
         if @non_relative
-          @target = @browser.send(**@args)
+          @target = @browser.send(@args)
         else
           if @parent.is_a?(Component) || @parent.is_a?(Element)
             @target = @parent.target.send(dom_type, @args)
@@ -181,6 +181,11 @@ module Insite
           end
         end
       end
+    end
+
+    def inspect
+      @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+      "#<#{self.class}: located: #{!!@target.element}; @selector=#{s}>"
     end
 
     # Delegates method calls down to the component's wrapped element if the

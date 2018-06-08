@@ -28,8 +28,16 @@ describe "https://material.angular.io" do
         expect(s.mat_chip_lists[1].mat_input.exist?).to eq true
       end
 
-      it "supports text input" do
-        expect(s.mat_chip_lists[1].mat_input.exist?).to eq true
+      it "adds a chip" do
+        s.mat_chip_lists[1].add 'foo'
+        expect(s.mat_chip_lists[1].mat_chips.last.text).to match(/^foo/)
+      end
+
+      it "deletes a chip" do
+        length = s.mat_chip_lists[1].mat_chips.length
+        expect(length).to be > 0
+        s.mat_chip_lists[1].mat_chips.last.remove
+        expect(s.mat_chip_lists[1].mat_chips.length).to eq length - 1
       end
     end
   end

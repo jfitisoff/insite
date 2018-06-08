@@ -1,6 +1,7 @@
 module Insite
   class ElementCollection < Element
     attr_accessor :browser
+    attr_reader :selector
 
     def ==(other)
       to_a == other.to_a
@@ -29,6 +30,11 @@ module Insite
 
     def empty?
       length == 0
+    end
+
+    def inspect
+      @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+      "#<#{self.class}: @parent: #{@parent}; @selector=#{s}>"
     end
 
     def last

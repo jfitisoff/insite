@@ -2,7 +2,9 @@
   require "insite/examples/material_angular_io/#{f}"
 end
 
-%w(angular_material_component mat_input mat_chip mat_chip_list).each do |c|
+
+%w(mat_chip_list mat_chip mat_form_field mat_input mat_option
+   mat_select_content mat_select).each do |c|
   require "insite/examples/material_angular_io/components/#{c}"
 end
 
