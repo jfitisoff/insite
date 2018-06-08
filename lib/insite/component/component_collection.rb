@@ -13,7 +13,7 @@ module Insite
 
     def[](idx)
       tmp = @target[idx]
-      tmp ? @collection_member_type.new(@site, tmp) : nil
+      tmp ? @collection_member_type.new(@site, index: idx) : nil
     end
 
     def collection?
@@ -74,9 +74,11 @@ module Insite
     alias size length
 
     def to_a
-      @target.to_a.map do |elem|
-        @collection_member_type.new(self, elem)
+      out = []
+      @target.to_a.each_with_index do |elem, idx|
+        out << @collection_member_type.new(self, index: idx)
       end
+      out
     end
   end
 end

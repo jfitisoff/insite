@@ -39,9 +39,9 @@ module Insite
         @args     = args
 
         if @parent.is_a? Component
-          @target = @parent.send(args)
+          @target = @parent.send(parse_args(args))
         else
-          @target = @browser.send(args)
+          @target = @browser.send(parse_args(args))
         end
       end
     end
