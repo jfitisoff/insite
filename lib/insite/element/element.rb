@@ -27,21 +27,19 @@ module Insite
       @browser  = @site.browser
 
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
-        @args     = nil
         @target   = args[0].target
         @selector = @target.selector
+        @args     = @selector
       elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
-        @dom_type = nil
         @args     = nil
-        @target   = args[0]
         @selector = @target.instance_variable_get(:@selector)
+        @args     = @selector
       else
-        @args     = args
-
+        @args     = parse_args(args)
         if @parent.is_a? Component
-          @target = @parent.send(parse_args(args))
+          @target = Insite::CLASS_MAP.key(self.class).new(@parent, args)
         else
-          @target = @browser.send(parse_args(args))
+          @target = Insite::CLASS_MAP.key(self.class).new(@browser, args)
         end
       end
     end
