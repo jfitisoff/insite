@@ -41,6 +41,10 @@ module Insite
 
     extend Forwardable
 
+    def self.collection?
+      false
+    end
+
     def self.inherited(subclass)
       name_string     = subclass.name.demodulize.underscore
       collection_name = name_string + '_collection'
@@ -205,21 +209,18 @@ module Insite
     def method_missing(mth, *args, &block)
       if @target.respond_to? mth
         out = @target.send(mth, *args, &block)
-        if klass = Insite::CLASS_MAP[out.class]
-          klass.new(@site, out)
+        if out == @target
+          self
+        elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
+          Insite::CLASS_MAP[out.class].new(@parent, out, )
         else
           out
         end
       elsif @target.respond_to?(:to_subtype) &&
-            ![
-              Watir::HTMLElement,
-              Watir::HTMLElementCollection
-            ].include?(@target.class) &&
             @target.class.descendants.any? do |klass|
-              klass.instance_methods.include?(sym)
+              klass.instance_methods.include?(mth)
             end
-
-        out = @target.to_subtype.send(sym, *args, &block)
+        out = @target.to_subtype.send(mth, *args, &block)
         if klass = Insite::CLASS_MAP[out.class]
           klass.new(@site, out)
         else

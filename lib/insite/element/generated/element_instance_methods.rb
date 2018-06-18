@@ -1,2229 +1,1593 @@
 module Insite
   module ElementInstanceMethods
     def a(*args)
-      Insite::Anchor.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Anchor.new(obj, *args)
     end
 
     def abbr(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def abbrs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def address(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def addresses(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def area(*args)
-      Insite::Area.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Area.new(obj, *args)
     end
 
     def areas(*args)
-      Insite::AreaCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::AreaCollection.new(obj, *args)
     end
 
     def article(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def articles(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def as(*args)
-      Insite::AnchorCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::AnchorCollection.new(obj, *args)
     end
 
     def aside(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def asides(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def audio(*args)
-      Insite::Audio.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Audio.new(obj, *args)
     end
 
     def audios(*args)
-      Insite::AudioCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::AudioCollection.new(obj, *args)
     end
 
     def b(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def base(*args)
-      Insite::Base.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Base.new(obj, *args)
     end
 
     def bases(*args)
-      Insite::BaseCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::BaseCollection.new(obj, *args)
     end
 
     def bdi(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def bdis(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def bdo(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def bdos(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def blockquote(*args)
-      Insite::Quote.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Quote.new(obj, *args)
     end
 
     def blockquotes(*args)
-      Insite::QuoteCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::QuoteCollection.new(obj, *args)
     end
 
     def body(*args)
-      Insite::Body.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Body.new(obj, *args)
     end
 
     def bodys(*args)
-      Insite::BodyCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::BodyCollection.new(obj, *args)
     end
 
     def br(*args)
-      Insite::BR.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::BR.new(obj, *args)
     end
 
     def brs(*args)
-      Insite::BRCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::BRCollection.new(obj, *args)
     end
 
     def bs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def button(*args)
-      Insite::Button.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Button.new(obj, *args)
     end
 
     def buttons(*args)
-      Insite::ButtonCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ButtonCollection.new(obj, *args)
     end
 
     def canvas(*args)
-      Insite::Canvas.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Canvas.new(obj, *args)
     end
 
     def canvases(*args)
-      Insite::CanvasCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CanvasCollection.new(obj, *args)
     end
 
     def caption(*args)
-      Insite::TableCaption.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableCaption.new(obj, *args)
     end
 
     def captions(*args)
-      Insite::TableCaptionCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableCaptionCollection.new(obj, *args)
     end
 
     def checkbox(*args)
-      Insite::CheckBox.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CheckBox.new(obj, *args)
     end
 
     def checkboxes(*args)
-      Insite::CheckBoxCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CheckBoxCollection.new(obj, *args)
     end
 
     def circle(*args)
-      Insite::Circle.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Circle.new(obj, *args)
     end
 
     def circles(*args)
-      Insite::CircleCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CircleCollection.new(obj, *args)
     end
 
     def cite(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def cites(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def code(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def codes(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def col(*args)
-      Insite::TableCol.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableCol.new(obj, *args)
     end
 
     def colgroup(*args)
-      Insite::TableCol.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableCol.new(obj, *args)
     end
 
     def colgroups(*args)
-      Insite::TableColCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableColCollection.new(obj, *args)
     end
 
     def cols(*args)
-      Insite::TableColCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableColCollection.new(obj, *args)
     end
 
     def cursor(*args)
-      Insite::Cursor.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Cursor.new(obj, *args)
     end
 
     def cursors(*args)
-      Insite::CursorCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CursorCollection.new(obj, *args)
     end
 
     def data(*args)
-      Insite::Data.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Data.new(obj, *args)
     end
 
     def datalist(*args)
-      Insite::DataList.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DataList.new(obj, *args)
     end
 
     def datalists(*args)
-      Insite::DataListCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DataListCollection.new(obj, *args)
     end
 
     def datas(*args)
-      Insite::DataCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DataCollection.new(obj, *args)
     end
 
     def date_field(*args)
-      Insite::DateField.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DateField.new(obj, *args)
     end
 
     def date_fields(*args)
-      Insite::DateFieldCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DateFieldCollection.new(obj, *args)
     end
 
     def date_time_field(*args)
-      Insite::DateTimeField.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DateTimeField.new(obj, *args)
     end
 
     def date_time_fields(*args)
-      Insite::DateTimeFieldCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DateTimeFieldCollection.new(obj, *args)
     end
 
     def dd(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def dds(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def defs(*args)
-      Insite::Defs.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Defs.new(obj, *args)
     end
 
     def defss(*args)
-      Insite::DefsCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DefsCollection.new(obj, *args)
     end
 
     def del(*args)
-      Insite::Mod.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Mod.new(obj, *args)
     end
 
     def dels(*args)
-      Insite::ModCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ModCollection.new(obj, *args)
     end
 
     def desc(*args)
-      Insite::Desc.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Desc.new(obj, *args)
     end
 
     def descs(*args)
-      Insite::DescCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DescCollection.new(obj, *args)
     end
 
     def details(*args)
-      Insite::Details.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Details.new(obj, *args)
     end
 
     def detailses(*args)
-      Insite::DetailsCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DetailsCollection.new(obj, *args)
     end
 
     def dfn(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def dfns(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def div(*args)
-      Insite::Div.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Div.new(obj, *args)
     end
 
     def divs(*args)
-      Insite::DivCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DivCollection.new(obj, *args)
     end
 
     def dl(*args)
-      Insite::DList.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DList.new(obj, *args)
     end
 
     def dls(*args)
-      Insite::DListCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::DListCollection.new(obj, *args)
     end
 
     def dt(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def dts(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def element(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def elements(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def ellipse(*args)
-      Insite::Ellipse.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Ellipse.new(obj, *args)
     end
 
     def ellipses(*args)
-      Insite::EllipseCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::EllipseCollection.new(obj, *args)
     end
 
     def em(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def embed(*args)
-      Insite::Embed.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Embed.new(obj, *args)
     end
 
     def embeds(*args)
-      Insite::EmbedCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::EmbedCollection.new(obj, *args)
     end
 
     def ems(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def field_set(*args)
-      Insite::FieldSet.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FieldSet.new(obj, *args)
     end
 
     def field_sets(*args)
-      Insite::FieldSetCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FieldSetCollection.new(obj, *args)
     end
 
     def fieldset(*args)
-      Insite::FieldSet.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FieldSet.new(obj, *args)
     end
 
     def fieldsets(*args)
-      Insite::FieldSetCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FieldSetCollection.new(obj, *args)
     end
 
     def figcaption(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def figcaptions(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def figure(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def figures(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def file_field(*args)
-      Insite::FileField.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FileField.new(obj, *args)
     end
 
     def file_fields(*args)
-      Insite::FileFieldCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FileFieldCollection.new(obj, *args)
     end
 
     def font(*args)
-      Insite::Font.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Font.new(obj, *args)
     end
 
     def fonts(*args)
-      Insite::FontCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FontCollection.new(obj, *args)
     end
 
     def footer(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def footers(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def foreign_object(*args)
-      Insite::ForeignObject.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ForeignObject.new(obj, *args)
     end
 
     def foreign_objects(*args)
-      Insite::ForeignObjectCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ForeignObjectCollection.new(obj, *args)
     end
 
     def form(*args)
-      Insite::Form.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Form.new(obj, *args)
     end
 
     def forms(*args)
-      Insite::FormCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FormCollection.new(obj, *args)
     end
 
     def frame(*args)
-      Insite::Frame.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Frame.new(obj, *args)
     end
 
     def frames(*args)
-      Insite::FrameCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FrameCollection.new(obj, *args)
     end
 
     def frameset(*args)
-      Insite::FrameSet.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FrameSet.new(obj, *args)
     end
 
     def framesets(*args)
-      Insite::FrameSetCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::FrameSetCollection.new(obj, *args)
     end
 
     def g(*args)
-      Insite::G.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::G.new(obj, *args)
     end
 
     def gs(*args)
-      Insite::GCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::GCollection.new(obj, *args)
     end
 
     def h1(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h1s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def h2(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h2s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def h3(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h3s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def h4(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h4s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def h5(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h5s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def h6(*args)
-      Insite::Heading.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Heading.new(obj, *args)
     end
 
     def h6s(*args)
-      Insite::HeadingCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadingCollection.new(obj, *args)
     end
 
     def hatchpath(*args)
-      Insite::Hatchpath.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Hatchpath.new(obj, *args)
     end
 
     def hatchpaths(*args)
-      Insite::HatchpathCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HatchpathCollection.new(obj, *args)
     end
 
     def head(*args)
-      Insite::Head.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Head.new(obj, *args)
     end
 
     def header(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def headers(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def heads(*args)
-      Insite::HeadCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HeadCollection.new(obj, *args)
     end
 
     def hidden(*args)
-      Insite::Hidden.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Hidden.new(obj, *args)
     end
 
     def hiddens(*args)
-      Insite::HiddenCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HiddenCollection.new(obj, *args)
     end
 
     def hr(*args)
-      Insite::HR.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HR.new(obj, *args)
     end
 
     def hrs(*args)
-      Insite::HRCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HRCollection.new(obj, *args)
     end
 
     def htmls(*args)
-      Insite::HtmlCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HtmlCollection.new(obj, *args)
     end
 
     def i(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def iframe(*args)
-      Insite::IFrame.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::IFrame.new(obj, *args)
     end
 
     def iframes(*args)
-      Insite::IFrameCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::IFrameCollection.new(obj, *args)
     end
 
     def image(*args)
-      Insite::Image.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Image.new(obj, *args)
     end
 
     def images(*args)
-      Insite::ImageCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ImageCollection.new(obj, *args)
     end
 
     def img(*args)
-      Insite::Image.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Image.new(obj, *args)
     end
 
     def imgs(*args)
-      Insite::ImageCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ImageCollection.new(obj, *args)
     end
 
     def input(*args)
-      Insite::Input.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Input.new(obj, *args)
     end
 
     def inputs(*args)
-      Insite::InputCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::InputCollection.new(obj, *args)
     end
 
     def ins(*args)
-      Insite::Mod.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Mod.new(obj, *args)
     end
 
     def inses(*args)
-      Insite::ModCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ModCollection.new(obj, *args)
     end
 
     def is(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def kbd(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def kbds(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def keygen(*args)
-      Insite::Keygen.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Keygen.new(obj, *args)
     end
 
     def keygens(*args)
-      Insite::KeygenCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::KeygenCollection.new(obj, *args)
     end
 
     def label(*args)
-      Insite::Label.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Label.new(obj, *args)
     end
 
     def labels(*args)
-      Insite::LabelCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LabelCollection.new(obj, *args)
     end
 
     def legend(*args)
-      Insite::Legend.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Legend.new(obj, *args)
     end
 
     def legends(*args)
-      Insite::LegendCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LegendCollection.new(obj, *args)
     end
 
     def li(*args)
-      Insite::LI.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LI.new(obj, *args)
     end
 
     def line(*args)
-      Insite::Line.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Line.new(obj, *args)
     end
 
     def linear_gradient(*args)
-      Insite::LinearGradient.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LinearGradient.new(obj, *args)
     end
 
     def linear_gradients(*args)
-      Insite::LinearGradientCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LinearGradientCollection.new(obj, *args)
     end
 
     def lines(*args)
-      Insite::LineCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LineCollection.new(obj, *args)
     end
 
     def link(*args)
-      Insite::Anchor.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Anchor.new(obj, *args)
     end
 
     def links(*args)
-      Insite::AnchorCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::AnchorCollection.new(obj, *args)
     end
 
     def lis(*args)
-      Insite::LICollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::LICollection.new(obj, *args)
     end
 
     def main(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def mains(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def map(*args)
-      Insite::Map.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Map.new(obj, *args)
     end
 
     def maps(*args)
-      Insite::MapCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MapCollection.new(obj, *args)
     end
 
     def mark(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def marker(*args)
-      Insite::Marker.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Marker.new(obj, *args)
     end
 
     def markers(*args)
-      Insite::MarkerCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MarkerCollection.new(obj, *args)
     end
 
     def marks(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def menu(*args)
-      Insite::Menu.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Menu.new(obj, *args)
     end
 
     def menuitem(*args)
-      Insite::MenuItem.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MenuItem.new(obj, *args)
     end
 
     def menuitems(*args)
-      Insite::MenuItemCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MenuItemCollection.new(obj, *args)
     end
 
     def menus(*args)
-      Insite::MenuCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MenuCollection.new(obj, *args)
     end
 
     def mesh(*args)
-      Insite::Mesh.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Mesh.new(obj, *args)
     end
 
     def meshes(*args)
-      Insite::MeshCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeshCollection.new(obj, *args)
     end
 
     def meshgradient(*args)
-      Insite::MeshGradient.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeshGradient.new(obj, *args)
     end
 
     def meshgradients(*args)
-      Insite::MeshGradientCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeshGradientCollection.new(obj, *args)
     end
 
     def meshpatch(*args)
-      Insite::Meshpatch.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Meshpatch.new(obj, *args)
     end
 
     def meshpatches(*args)
-      Insite::MeshpatchCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeshpatchCollection.new(obj, *args)
     end
 
     def meshrow(*args)
-      Insite::Meshrow.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Meshrow.new(obj, *args)
     end
 
     def meshrows(*args)
-      Insite::MeshrowCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeshrowCollection.new(obj, *args)
     end
 
     def meta(*args)
-      Insite::Meta.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Meta.new(obj, *args)
     end
 
     def metadata(*args)
-      Insite::Metadata.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Metadata.new(obj, *args)
     end
 
     def metadatas(*args)
-      Insite::MetadataCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MetadataCollection.new(obj, *args)
     end
 
     def metas(*args)
-      Insite::MetaCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MetaCollection.new(obj, *args)
     end
 
     def meter(*args)
-      Insite::Meter.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Meter.new(obj, *args)
     end
 
     def meters(*args)
-      Insite::MeterCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::MeterCollection.new(obj, *args)
     end
 
     def nav(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def navs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def noscript(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def noscripts(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def object(*args)
-      Insite::Object.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Object.new(obj, *args)
     end
 
     def objects(*args)
-      Insite::ObjectCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ObjectCollection.new(obj, *args)
     end
 
     def ol(*args)
-      Insite::OList.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OList.new(obj, *args)
     end
 
     def ols(*args)
-      Insite::OListCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OListCollection.new(obj, *args)
     end
 
     def optgroup(*args)
-      Insite::OptGroup.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OptGroup.new(obj, *args)
     end
 
     def optgroups(*args)
-      Insite::OptGroupCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OptGroupCollection.new(obj, *args)
     end
 
     def option(*args)
-      Insite::Option.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Option.new(obj, *args)
     end
 
     def options(*args)
-      Insite::OptionCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OptionCollection.new(obj, *args)
     end
 
     def output(*args)
-      Insite::Output.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Output.new(obj, *args)
     end
 
     def outputs(*args)
-      Insite::OutputCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::OutputCollection.new(obj, *args)
     end
 
     def p(*args)
-      Insite::Paragraph.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Paragraph.new(obj, *args)
     end
 
     def param(*args)
-      Insite::Param.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Param.new(obj, *args)
     end
 
     def params(*args)
-      Insite::ParamCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ParamCollection.new(obj, *args)
     end
 
     def path(*args)
-      Insite::Path.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Path.new(obj, *args)
     end
 
     def paths(*args)
-      Insite::PathCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PathCollection.new(obj, *args)
     end
 
     def pattern(*args)
-      Insite::Pattern.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Pattern.new(obj, *args)
     end
 
     def patterns(*args)
-      Insite::PatternCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PatternCollection.new(obj, *args)
     end
 
     def picture(*args)
-      Insite::Picture.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Picture.new(obj, *args)
     end
 
     def pictures(*args)
-      Insite::PictureCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PictureCollection.new(obj, *args)
     end
 
     def polygon(*args)
-      Insite::Polygon.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Polygon.new(obj, *args)
     end
 
     def polygons(*args)
-      Insite::PolygonCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PolygonCollection.new(obj, *args)
     end
 
     def polyline(*args)
-      Insite::Polyline.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Polyline.new(obj, *args)
     end
 
     def polylines(*args)
-      Insite::PolylineCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PolylineCollection.new(obj, *args)
     end
 
     def pre(*args)
-      Insite::Pre.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Pre.new(obj, *args)
     end
 
     def pres(*args)
-      Insite::PreCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::PreCollection.new(obj, *args)
     end
 
     def progress(*args)
-      Insite::Progress.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Progress.new(obj, *args)
     end
 
     def progresses(*args)
-      Insite::ProgressCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ProgressCollection.new(obj, *args)
     end
 
     def ps(*args)
-      Insite::ParagraphCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ParagraphCollection.new(obj, *args)
     end
 
     def q(*args)
-      Insite::Quote.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Quote.new(obj, *args)
     end
 
     def qs(*args)
-      Insite::QuoteCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::QuoteCollection.new(obj, *args)
     end
 
     def radial_gradient(*args)
-      Insite::RadialGradient.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::RadialGradient.new(obj, *args)
     end
 
     def radial_gradients(*args)
-      Insite::RadialGradientCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::RadialGradientCollection.new(obj, *args)
     end
 
     def radio(*args)
-      Insite::Radio.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Radio.new(obj, *args)
     end
 
     def radios(*args)
-      Insite::RadioCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::RadioCollection.new(obj, *args)
     end
 
     def rb(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def rbs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def rect(*args)
-      Insite::Rect.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Rect.new(obj, *args)
     end
 
     def rects(*args)
-      Insite::RectCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::RectCollection.new(obj, *args)
     end
 
     def rp(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def rps(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def rt(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def rtc(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def rtcs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def rts(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def rubies(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def ruby(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def s(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def samp(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def samps(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def script(*args)
-      Insite::Script.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Script.new(obj, *args)
     end
 
     def scripts(*args)
-      Insite::ScriptCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ScriptCollection.new(obj, *args)
     end
 
     def section(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def sections(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def select(*args)
-      Insite::Select.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Select.new(obj, *args)
     end
 
     def select_list(*args)
-      Insite::Select.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Select.new(obj, *args)
     end
 
     def select_lists(*args)
-      Insite::SelectCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SelectCollection.new(obj, *args)
     end
 
     def selects(*args)
-      Insite::SelectCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SelectCollection.new(obj, *args)
     end
 
     def small(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def smalls(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def solidcolor(*args)
-      Insite::Solidcolor.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Solidcolor.new(obj, *args)
     end
 
     def solidcolors(*args)
-      Insite::SolidcolorCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SolidcolorCollection.new(obj, *args)
     end
 
     def source(*args)
-      Insite::Source.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Source.new(obj, *args)
     end
 
     def sources(*args)
-      Insite::SourceCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SourceCollection.new(obj, *args)
     end
 
     def span(*args)
-      Insite::Span.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Span.new(obj, *args)
     end
 
     def spans(*args)
-      Insite::SpanCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SpanCollection.new(obj, *args)
     end
 
     def ss(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def stop(*args)
-      Insite::Stop.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Stop.new(obj, *args)
     end
 
     def stops(*args)
-      Insite::StopCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::StopCollection.new(obj, *args)
     end
 
     def strong(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def strongs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def style(*args)
-      Insite::Style.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Style.new(obj, *args)
     end
 
     def styles(*args)
-      Insite::StyleCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::StyleCollection.new(obj, *args)
     end
 
     def sub(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def subs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def summaries(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def summary(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def sup(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def sups(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def svg(*args)
-      Insite::SVG.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SVG.new(obj, *args)
     end
 
     def svgs(*args)
-      Insite::SVGCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SVGCollection.new(obj, *args)
     end
 
     def switch(*args)
-      Insite::Switch.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Switch.new(obj, *args)
     end
 
     def switches(*args)
-      Insite::SwitchCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SwitchCollection.new(obj, *args)
     end
 
     def symbol(*args)
-      Insite::Symbol.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Symbol.new(obj, *args)
     end
 
     def symbols(*args)
-      Insite::SymbolCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::SymbolCollection.new(obj, *args)
     end
 
     def table(*args)
-      Insite::Table.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Table.new(obj, *args)
     end
 
     def tables(*args)
-      Insite::TableCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableCollection.new(obj, *args)
     end
 
     def tbody(*args)
-      Insite::TableSection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSection.new(obj, *args)
     end
 
     def tbodys(*args)
-      Insite::TableSectionCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSectionCollection.new(obj, *args)
     end
 
     def td(*args)
-      Insite::TableDataCell.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableDataCell.new(obj, *args)
     end
 
     def tds(*args)
-      Insite::TableDataCellCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableDataCellCollection.new(obj, *args)
     end
 
     def template(*args)
-      Insite::Template.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Template.new(obj, *args)
     end
 
     def templates(*args)
-      Insite::TemplateCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TemplateCollection.new(obj, *args)
     end
 
     def text_field(*args)
-      Insite::TextField.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextField.new(obj, *args)
     end
 
     def text_fields(*args)
-      Insite::TextFieldCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextFieldCollection.new(obj, *args)
     end
 
     def text_path(*args)
-      Insite::TextPath.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextPath.new(obj, *args)
     end
 
     def text_paths(*args)
-      Insite::TextPathCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextPathCollection.new(obj, *args)
     end
 
     def textarea(*args)
-      Insite::TextArea.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextArea.new(obj, *args)
     end
 
     def textareas(*args)
-      Insite::TextAreaCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TextAreaCollection.new(obj, *args)
     end
 
     def tfoot(*args)
-      Insite::TableSection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSection.new(obj, *args)
     end
 
     def tfoots(*args)
-      Insite::TableSectionCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSectionCollection.new(obj, *args)
     end
 
     def th(*args)
-      Insite::TableHeaderCell.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableHeaderCell.new(obj, *args)
     end
 
     def thead(*args)
-      Insite::TableSection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSection.new(obj, *args)
     end
 
     def theads(*args)
-      Insite::TableSectionCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableSectionCollection.new(obj, *args)
     end
 
     def ths(*args)
-      Insite::TableHeaderCellCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableHeaderCellCollection.new(obj, *args)
     end
 
     def time(*args)
-      Insite::Time.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Time.new(obj, *args)
     end
 
     def times(*args)
-      Insite::TimeCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TimeCollection.new(obj, *args)
     end
 
     def titles(*args)
-      Insite::TitleCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TitleCollection.new(obj, *args)
     end
 
     def tr(*args)
-      Insite::TableRow.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableRow.new(obj, *args)
     end
 
     def track(*args)
-      Insite::Track.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Track.new(obj, *args)
     end
 
     def tracks(*args)
-      Insite::TrackCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TrackCollection.new(obj, *args)
     end
 
     def trs(*args)
-      Insite::TableRowCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TableRowCollection.new(obj, *args)
     end
 
     def tspan(*args)
-      Insite::TSpan.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TSpan.new(obj, *args)
     end
 
     def tspans(*args)
-      Insite::TSpanCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::TSpanCollection.new(obj, *args)
     end
 
     def u(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def ul(*args)
-      Insite::UList.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::UList.new(obj, *args)
     end
 
     def uls(*args)
-      Insite::UListCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::UListCollection.new(obj, *args)
     end
 
     def us(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def use(*args)
-      Insite::Use.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Use.new(obj, *args)
     end
 
     def uses(*args)
-      Insite::UseCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::UseCollection.new(obj, *args)
     end
 
     def var(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def vars(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def video(*args)
-      Insite::Video.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Video.new(obj, *args)
     end
 
     def videos(*args)
-      Insite::VideoCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::VideoCollection.new(obj, *args)
     end
 
     def view(*args)
-      Insite::View.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::View.new(obj, *args)
     end
 
     def views(*args)
-      Insite::ViewCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::ViewCollection.new(obj, *args)
     end
 
     def wbr(*args)
-      Insite::HTMLElement.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElement.new(obj, *args)
     end
 
     def wbrs(*args)
-      Insite::HTMLElementCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::HTMLElementCollection.new(obj, *args)
     end
 
     def cell(*args)
-      Insite::Cell.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Cell.new(obj, *args)
     end
 
     def cells(*args)
-      Insite::CellCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::CellCollection.new(obj, *args)
     end
 
     def row(*args)
-      Insite::Row.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::Row.new(obj, *args)
     end
 
     def rows(*args)
-      Insite::RowCollection.new(
-        @site,
-        @target.send(*args.unshift(__method__))
-      )
+      respond_to?(:target) ? obj = self : obj = @browser
+      Insite::RowCollection.new(obj, *args)
     end
 
   end

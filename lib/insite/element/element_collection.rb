@@ -3,6 +3,10 @@ module Insite
     attr_accessor :browser
     attr_reader :collection_member_type, :selector
 
+    def self.collection?
+      true
+    end
+
     def ==(other)
       to_a == other.to_a
     end
@@ -36,13 +40,22 @@ module Insite
         @target   = args[0]
         @selector = @target.instance_variable_get(:@selector)
       else
-        @args     = args
-
         if @parent.is_a? Component
-          @target = @parent.send(parse_args(args))
+          @args   = parse_args(args)
+          @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
         else
-          @target = @browser.send(parse_args(args))
+          @args   = parse_args(args).merge(
+            tag_name: Insite.class_to_tag(self.class)
+          )
+          @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
         end
+        # @args     = args
+        # @args     = args
+        # if @parent.is_a? Component
+        #   @target = @parent.send(parse_args(args))
+        # else
+        #   @target = @browser.send(parse_args(args))
+        # end
       end
     end
 
@@ -80,11 +93,5 @@ module Insite
       end
       out
     end
-    # def to_a
-    #   # TODO: Do this in a more efficient way.
-    #   @target.to_a.map do |elem|
-    #     "Insite::#{@target.element_class_name}".constantize.new(self, elem)
-    #   end
-    # end
   end
 end

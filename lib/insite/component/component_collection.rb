@@ -4,7 +4,16 @@ module Insite
     class_attribute :selector, default: {}
     self.selector  = self.selector.clone
 
+    include Insite::CommonMethods
+    extend  Insite::DOMMethods
+    include Insite::ElementInstanceMethods
+    extend  Insite::ComponentMethods
+    include Insite::ComponentInstanceMethods
     include Enumerable
+
+    def self.collection?
+      true
+    end
 
     def ==(other)
       to_a == other.to_a
@@ -13,7 +22,7 @@ module Insite
 
     def[](idx)
       tmp = @target[idx]
-      tmp ? @collection_member_type.new(@site, index: idx) : nil
+      tmp ? @collection_member_type.new(@parent, index: idx) : nil
     end
 
     def collection?
@@ -48,13 +57,43 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
-        @args     = args
 
-        if @parent.is_a? Component
-          @target = @parent.send(:elements, *args)
+        @args = parse_args(args)
+        # See if there's a Watir DOM method for the class. If not, then
+        # initialize using the default collection.
+        if watir_class = Insite::CLASS_MAP.key(self.class)
+          @target = watir_class.new(@parent, @args)
         else
-          @target = @browser.send(:elements, *args)
+          @target = Watir::HTMLElementCollection.new(@parent, @args)
         end
+
+        # if @parent.is_a? Component
+        #   @args   = parse_args(args)
+        #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
+        # else
+        #   if tag = Insite.class_to_tag(self.class)
+        #     @args.merge!(tag_name: tag)
+        #   end
+        #
+        #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
+        # end
+        # if @parent.is_a? Component
+        #   @args   = parse_args(args)
+        #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
+        # else
+        #   if tag = Insite.class_to_tag(self.class)
+        #     @args.merge!(tag_name: tag)
+        #   end
+        #
+        #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
+        # end
+        # @args     = args
+        #
+        # if @parent.is_a? Component
+        #   @target = @parent.send(:elements, *args)
+        # else
+        #   @target = @browser.send(:elements, *args)
+        # end
       end
     end
 

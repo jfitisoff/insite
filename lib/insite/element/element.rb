@@ -7,6 +7,10 @@ module Insite
     include Insite::ElementInstanceMethods
     extend  Forwardable
 
+    def self.collection?
+      false
+    end
+
     def attributes
       nokogiri.xpath("//#{selector[:tag_name]}")[0].attributes.values.map do |x|
         [x.name, x.value]
@@ -35,11 +39,14 @@ module Insite
         @selector = @target.instance_variable_get(:@selector)
         @args     = @selector
       else
-        @args     = parse_args(args)
         if @parent.is_a? Component
-          @target = Insite::CLASS_MAP.key(self.class).new(@parent, args)
+          @args   = parse_args(args)
+          @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
         else
-          @target = Insite::CLASS_MAP.key(self.class).new(@browser, args)
+          @args   = parse_args(args).merge(
+            tag_name: Insite.class_to_tag(self.class)
+          )
+          @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
         end
       end
     end
@@ -64,24 +71,41 @@ module Insite
     # end
 
     def inspect
-      @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+      if @target.selector.present?
+        s = @selector.to_s
+      else
+        s = '{element: (selenium element)}'
+      end
       "#<#{self.class}: located: #{!!@target.element}; @selector=#{s}>"
     end
 
     # For page component code.
     def method_missing(mth, *args, &block)
       if @target.respond_to? mth
-        @target.send(mth, *args, &block)
+        out = @target.send(mth, *args, &block)
       elsif @target.class.descendants.any? { |x| x.instance_methods.include? mth }
-        @target.to_subtype.send(mth, *args, &block)
+        out = @target.to_subtype.send(mth, *args, &block)
       else
         super
+      end
+
+      if out == @target
+        self
+      elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
+         Insite::CLASS_MAP[out.class].new(@parent, out)
+      else
+        out
       end
     end
 
     def respond_to_missing?(mth, include_priv = false)
       @target.respond_to?(mth, include_priv) || super
     end
+
+#     def to_subtype
+# binding.pry
+#       Insite::CLASS_MAP[@target.class].new(@parent, @selector)
+#     end
   end
 
 end

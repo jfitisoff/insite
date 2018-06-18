@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "activesupport", [">=4.2.5"]
   s.add_runtime_dependency "addressable", [">=2.5.1"]
+  s.add_runtime_dependency "highline", [">=2.0.0"]
   s.add_runtime_dependency "nokogiri", [">=1.7.0"]
   s.add_runtime_dependency "watir", [">=6.0.0"]
   s.add_runtime_dependency "watir-scroll", [">=0.2.0"]
