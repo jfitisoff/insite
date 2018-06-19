@@ -75,6 +75,10 @@ module Insite
             hsh = parse_args(a).merge(klass.selector)
 
             define_method(mname) do
+# binding.pry
+              respond_to?(:target) ? obj = self : obj = @site
+#               @parent.respond_to?(:target) ? obj = self : obj = @site
+#               klass.new(obj, hsh, &block)
               klass.new(self, hsh, &block)
             end
           end
@@ -162,15 +166,39 @@ module Insite
         @args         = @selector
         @non_relative = @args.delete(:non_relative) || false
 
-        collection? ? dom_type = :elements : dom_type = :element
+        # collection? ? dom_type = :elements : dom_type = :element
         if @non_relative
           @target = @browser.send(@args)
         else
-          if @parent.is_a?(Component) || @parent.is_a?(Element)
-            @target = @parent.target.send(dom_type, @args)
+          @args = parse_args(args)
+
+          # Figure out the correct query scope.
+          @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
+          # @parent.respond_to?(:target) ? obj = self : obj = @browser
+
+          # See if there's a Watir DOM method for the class. If not, then
+          # initialize using the default collection.
+# binding.pry
+          if watir_class = Insite::CLASS_MAP.key(self.class)
+            @target = watir_class.new(obj, @args)
           else
-            @target = @browser.send(dom_type, @args)
+            @target = Watir::HTMLElement.new(obj, @args)
           end
+          # if @parent.is_a? Component
+          #   @args   = parse_args(args)
+          #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
+          # else
+          #   @args   = parse_args(args).merge(
+          #     tag_name: Insite.class_to_tag(self.class)
+          #   )
+          #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
+          # end
+
+          # if @parent.is_a?(Component) || @parent.is_a?(Element)
+          #   @target = @parent.target.send(dom_type, @args)
+          # else
+          #   @target = @browser.send(dom_type, @args)
+          # end
         end
 
         # New webdriver approach.
@@ -188,9 +216,18 @@ module Insite
     end
 
     def inspect
-      @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+      if @target.selector.present?
+        s = @selector.to_s
+      else
+        s = '{element: (selenium element)}'
+      end
       "#<#{self.class}: located: #{!!@target.element}; @selector=#{s}>"
     end
+
+    # def inspect
+    #   @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
+    #   "#<#{self.class}: located: #{!!@target.element}; @selector=#{s}>"
+    # end
 
     # Delegates method calls down to the component's wrapped element if the
     # element supports the method being called.
@@ -212,7 +249,7 @@ module Insite
         if out == @target
           self
         elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
-          Insite::CLASS_MAP[out.class].new(@parent, out, )
+          Insite::CLASS_MAP[out.class].new(@parent, out)
         else
           out
         end

@@ -21,8 +21,7 @@ module Insite
     alias eql? ==
 
     def[](idx)
-      tmp = @target[idx]
-      tmp ? @collection_member_type.new(@parent, index: idx) : nil
+      to_a[idx]
     end
 
     def collection?
@@ -30,7 +29,7 @@ module Insite
     end
 
     def first
-      self[0]
+      to_a[0]
     end
 
     def each(&block)
@@ -57,43 +56,18 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
-
         @args = parse_args(args)
+
+        # Figure out the correct query scope to initialize the Watir collection.
+        @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
+
         # See if there's a Watir DOM method for the class. If not, then
         # initialize using the default collection.
         if watir_class = Insite::CLASS_MAP.key(self.class)
-          @target = watir_class.new(@parent, @args)
+          @target = watir_class.new(obj, @args)
         else
-          @target = Watir::HTMLElementCollection.new(@parent, @args)
+          @target = Watir::HTMLElementCollection.new(obj, @args)
         end
-
-        # if @parent.is_a? Component
-        #   @args   = parse_args(args)
-        #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
-        # else
-        #   if tag = Insite.class_to_tag(self.class)
-        #     @args.merge!(tag_name: tag)
-        #   end
-        #
-        #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
-        # end
-        # if @parent.is_a? Component
-        #   @args   = parse_args(args)
-        #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
-        # else
-        #   if tag = Insite.class_to_tag(self.class)
-        #     @args.merge!(tag_name: tag)
-        #   end
-        #
-        #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
-        # end
-        # @args     = args
-        #
-        # if @parent.is_a? Component
-        #   @target = @parent.send(:elements, *args)
-        # else
-        #   @target = @browser.send(:elements, *args)
-        # end
       end
     end
 
@@ -103,7 +77,7 @@ module Insite
     end
 
     def last
-      self[-1]
+      to_a[-1]
     end
 
     def length
@@ -115,7 +89,10 @@ module Insite
     def to_a
       out = []
       @target.to_a.each_with_index do |elem, idx|
-        out << @collection_member_type.new(self, index: idx)
+        out << @collection_member_type.new(
+          @parent,
+          @args.merge!(index: idx)
+        )
       end
       out
     end

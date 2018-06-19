@@ -12,7 +12,7 @@ class MatChipList < AngularMaterialComponent
   end
 
   def remove(value)
-    mat_input(ngcontent => true).set(value + "\n")
+    mat_input(ngcontent => true).mat_icon.click
   end
 
   def set_input(value)
