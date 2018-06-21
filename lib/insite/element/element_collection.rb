@@ -41,11 +41,9 @@ module Insite
         @args     = @target.instance_variable_get(:@selector).dup
         @selector   = @args
       else
-# binding.pry
-        # TODO: Shouldn't have both.
         if [Insite::ElementCollection,
              Insite::HTMLElementCollection
-           ].include?(self.class)
+           ].include?(self.class) || !Insite.class_to_tag(@collection_member_type)
           @args     = parse_args(args)
           @selector = @args
           @target   = Watir::HTMLElementCollection.new(@parent.target, @args)

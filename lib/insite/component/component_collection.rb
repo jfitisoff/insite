@@ -59,20 +59,7 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
-# binding.pry
         @args = parse_args(args)
-
-        # # Figure out the correct query scope to initialize the Watir collection.
-        # @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
-
-        # See if there's a Watir DOM method for the class. If not, then
-        # initialize using the default collection.
-
-        # if @parent.respond_to?(:target)
-        #   @target = watir_class.new(@parent.target, @args)
-        # else
-        #   @target = watir_class.new(@browser, @args)
-        # end
 
         if watir_class = Insite::CLASS_MAP.key(self.class)
           if @parent.respond_to?(:target)
@@ -80,14 +67,12 @@ module Insite
           else
             @target = watir_class.new(@browser, @args)
           end
-          # @target = watir_class.new(@parent, @args)
         else
           if @parent.respond_to?(:target)
             @target = Watir::HTMLElementCollection.new(@parent.target, @args)
           else
             @target = Watir::HTMLElementCollection.new(@browser, @args)
           end
-          # @target = Watir::HTMLElementCollection.new(obj, @args)
         end
       end
     end
