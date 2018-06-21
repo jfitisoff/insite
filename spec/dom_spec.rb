@@ -118,7 +118,7 @@ describe "dom objects" do
   end
 
   context "element collection" do
-    subject { Insite::ElementCollection.new(s, tag_name: 'mat-chip-list') }
+    subject { Insite::HTMLElementCollection.new(s, tag_name: 'mat-chip-list') }
 
     it "returns the correct number of elements" do
       expect(subject.length).to eq(3)
@@ -130,7 +130,7 @@ describe "dom objects" do
     end
 
     context "element collection member" do
-      subject { Insite::ElementCollection.new(s, tag_name: 'mat-chip-list')[1] }
+      subject { Insite::HTMLElementCollection.new(s, tag_name: 'mat-chip-list')[1] }
 
       it "responds properly to an element method" do
         expect(subject.input.attributes["_ngcontent-c22"]).to eq ""

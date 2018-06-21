@@ -52,10 +52,12 @@ module Insite
       else
         if [Insite::Element, Insite::HTMLElement].include?(self.class)
           @args = parse_args(args.dup)
-        else
+        elsif Insite.class_to_tag(self.class)
           @args = parse_args(args.dup).merge(
             tag_name: Insite.class_to_tag(self.class)
           )
+        else
+          @args = parse_args(args.dup)
         end
         @selector = @args
 

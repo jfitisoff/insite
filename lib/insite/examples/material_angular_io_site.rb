@@ -17,10 +17,20 @@ end
 class ChipsOverviewPage < MaterialAngularIO::Page
   set_url "/components/chips/overview"
 
-  elements :examples, tag_name: 'example-viewer'
-  divs :divs, class: /^mat-/
+  elements :examples_collection, tag_name: 'example-viewer'
+  elements :modified_examples_collection, tag_name: 'example-viewer' do
+    def test_method
+      'output'
+    end
+  end
 
-  element :chip, tag_name: 'mat-chip'
+  element :chip_element, tag_name: 'mat-chip'
+
+  element :modified_chip_element, tag_name: 'mat-chip' do
+    def test_method
+      text
+    end
+  end
 
   mat_chip_list :basic_chips, index: 0
   mat_chip_list :chips_with_input, index: 1

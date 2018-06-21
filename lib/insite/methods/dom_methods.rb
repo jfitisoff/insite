@@ -11,18 +11,27 @@ module Insite
           c = c.first.to_s.demodulize
           base_class = "Insite::#{c}".constantize
 
-          new_class_name = name.to_s.camelcase + 'Element'
-          unless self.class.const_defined? new_class_name
-            klass = Class.new(base_class) do
-              @predefined_selector = parse_args(args)
-              class_eval(&block) if block
+          if block
+# binding.pry
+            new_class_name = "#{c}For#{name.to_s.camelcase}"
+            unless self.class.const_defined? new_class_name
+              klass = Class.new(base_class) do
+                @predefined_selector = parse_args(args)
+                class_eval(&block) if block
+              end
+              const_set(new_class_name, klass)
             end
-            const_set(new_class_name, klass)
-          end
 
-          define_method(name) do |*args|
-            if @site && @browser
-              klass.new(@site, **klass.predefined_selector)
+            define_method(name) do
+              if @site && @browser
+                klass.new(@site, parse_args(args))
+              end
+            end
+          else
+            define_method(name) do
+              if @site && @browser
+                base_class.new(@site, parse_args(args))
+              end
             end
           end
 

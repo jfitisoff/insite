@@ -75,7 +75,6 @@ module Insite
             hsh = parse_args(a).merge(klass.selector)
 
             define_method(mname) do
-# binding.pry
               if respond_to?(:target)
                 obj = self
               elsif @parent.respond_to?(:target)
@@ -84,7 +83,6 @@ module Insite
                 obj = @site
               end
               klass.new(obj, hsh, &block)
-              # klass.new(self, hsh, &block)
             end
           end
         end

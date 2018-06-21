@@ -1,7 +1,7 @@
 module Insite
   class ElementCollection < Element
     attr_accessor :browser
-    attr_reader :collection_member_type, :selector
+    attr_reader :selector
 
     def self.collection?
       true
@@ -21,11 +21,21 @@ module Insite
     end
 
     def self.collection_member_type
-      self.class.to_s.gsub('Collection', '')
+      # unless @collection_member_type
+        if Insite::CLASS_MAP.values.include?(self)
+          @collection_member_type = self.to_s.gsub('Collection', '').constantize
+        elsif Insite::CLASS_MAP.values.include?(self.superclass)
+          @collection_member_type = self.superclass.to_s.gsub('Collection', '').constantize
+        else
+          raise "Unable to determine collection member type for #{self}."
+        end
+      # end
+      # klass.to_s.gsub('Collection', '')
     end
 
     def initialize(parent, *args)
-      @collection_member_type = self.class.to_s.gsub('Collection', '').constantize
+# binding.pry
+      @collection_member_type = self.class.collection_member_type
 
       # Figure out the correct query scope.
       parent.respond_to?(:target) ? obj = parent : obj = parent.site
@@ -41,9 +51,7 @@ module Insite
         @args     = @target.instance_variable_get(:@selector).dup
         @selector   = @args
       else
-        if [Insite::ElementCollection,
-             Insite::HTMLElementCollection
-           ].include?(self.class) || !Insite.class_to_tag(@collection_member_type)
+        if @collection_member_type == Insite::HTMLElement
           @args     = parse_args(args)
           @selector = @args
           @target   = Watir::HTMLElementCollection.new(@parent.target, @args)
@@ -56,6 +64,25 @@ module Insite
         end
       end
     end
+#         if [Insite::ElementCollection,
+#              Insite::HTMLElementCollection
+#            ].include?(self.class) || !Insite.class_to_tag(@collection_member_type)
+#           @args     = parse_args(args)
+#           @selector = @args
+#           @target   = Watir::HTMLElementCollection.new(@parent.target, @args)
+#         elsif
+#           @args   = parse_args(args).merge(
+#             tag_name: Insite.class_to_tag(@collection_member_type)
+#           )
+#           @selector = @args
+# begin
+#           @target   = Insite::CLASS_MAP.key(self.class).new(@parent.target, @args)
+# rescue => e
+#   binding.pry
+# end
+#         end
+    #   end
+    # end
 
     def first
       to_a[0]
