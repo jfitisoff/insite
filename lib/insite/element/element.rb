@@ -1,10 +1,19 @@
+require_relative '../component/component_methods.rb'
+require_relative '../component/component_instance_methods.rb'
+
 module Insite
   class Element
     attr_reader :target, :site
 
+    class << self
+      attr_reader :predefined_selector
+    end
+
     include Insite::CommonMethods
     extend  Insite::DOMMethods
     include Insite::ElementInstanceMethods
+    extend  Insite::ComponentMethods
+    include Insite::ComponentInstanceMethods
     extend  Forwardable
 
     def self.collection?
@@ -26,27 +35,34 @@ module Insite
     end
 
     def initialize(parent, *args)
-      @parent   = parent
+      parent.respond_to?(:target) ? obj = parent : obj = parent.site
+      @parent   = obj
+
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
 
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
         @target   = args[0].target
-        @selector = @target.selector
+        @selector = @target.selector.dup
         @args     = @selector
       elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
         @args     = nil
-        @selector = @target.instance_variable_get(:@selector)
+        @selector = @target.instance_variable_get(:@selector).dup
         @args     = @selector
       else
-        if @parent.is_a? Component
-          @args   = parse_args(args)
-          @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
+        if [Insite::Element, Insite::HTMLElement].include?(self.class)
+          @args = parse_args(args.dup)
         else
-          @args   = parse_args(args).merge(
+          @args = parse_args(args.dup).merge(
             tag_name: Insite.class_to_tag(self.class)
           )
-          @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
+        end
+        @selector = @args
+
+        if watir_class = Insite::CLASS_MAP.key(self.class)
+          @target = watir_class.new(@parent.target, @args)
+        else
+          @target = Watir::HTMLElement.new(@parent.target, @args)
         end
       end
     end
@@ -95,6 +111,27 @@ module Insite
          Insite::CLASS_MAP[out.class].new(@parent, out)
       else
         out
+      end
+    end
+
+    def present?
+      sleep 0.1
+      begin
+        if @parent
+          if @parent.respond_to?(:present?) && @parent.present? && @target.present?
+            true
+          else
+            false
+          end
+        else
+          if @target.present?
+            true
+          else
+            false
+          end
+        end
+      rescue => e
+        false
       end
     end
 

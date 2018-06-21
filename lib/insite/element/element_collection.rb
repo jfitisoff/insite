@@ -13,54 +13,54 @@ module Insite
     alias eql? ==
 
     def[](idx)
-      if tmp = @target[idx]
-        "Insite::#{@target.element_class_name}".constantize.new(self, index: idx)
-      else
-        nil
-      end
+      to_a[idx]
     end
 
     def collection?
       true
     end
 
+    def self.collection_member_type
+      self.class.to_s.gsub('Collection', '')
+    end
+
     def initialize(parent, *args)
       @collection_member_type = self.class.to_s.gsub('Collection', '').constantize
-      @parent   = parent
+
+      # Figure out the correct query scope.
+      parent.respond_to?(:target) ? obj = parent : obj = parent.site
+      @parent   = obj
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
-
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
-        @args     = nil
         @target   = args[0].target
-        @selector = @target.selector
+        @args     = @target.selector.dup
+        @selector = @args
       elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
-        @dom_type = nil
-        @args     = nil
         @target   = args[0]
-        @selector = @target.instance_variable_get(:@selector)
+        @args     = @target.instance_variable_get(:@selector).dup
+        @selector   = @args
       else
-        if @parent.is_a? Component
-          @args   = parse_args(args)
-          @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
+# binding.pry
+        # TODO: Shouldn't have both.
+        if [Insite::ElementCollection,
+             Insite::HTMLElementCollection
+           ].include?(self.class)
+          @args     = parse_args(args)
+          @selector = @args
+          @target   = Watir::HTMLElementCollection.new(@parent.target, @args)
         else
           @args   = parse_args(args).merge(
-            tag_name: Insite.class_to_tag(self.class)
+            tag_name: Insite.class_to_tag(@collection_member_type)
           )
-          @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
+          @selector = @args
+          @target   = Insite::CLASS_MAP.key(self.class).new(@parent.target, @args)
         end
-        # @args     = args
-        # @args     = args
-        # if @parent.is_a? Component
-        #   @target = @parent.send(parse_args(args))
-        # else
-        #   @target = @browser.send(parse_args(args))
-        # end
       end
     end
 
     def first
-      self[0]
+      to_a[0]
     end
 
     def each(&block)
@@ -77,7 +77,7 @@ module Insite
     end
 
     def last
-      self[-1]
+      to_a[-1]
     end
 
     def length
@@ -90,8 +90,8 @@ module Insite
       out = []
       @target.to_a.each_with_index do |elem, idx|
         out << @collection_member_type.new(
-          self,
-          @args.merge!(index: idx)
+          @parent,
+          @args.merge(index: idx)
         )
       end
       out

@@ -76,10 +76,15 @@ module Insite
 
             define_method(mname) do
 # binding.pry
-              respond_to?(:target) ? obj = self : obj = @site
-#               @parent.respond_to?(:target) ? obj = self : obj = @site
-#               klass.new(obj, hsh, &block)
-              klass.new(self, hsh, &block)
+              if respond_to?(:target)
+                obj = self
+              elsif @parent.respond_to?(:target)
+                obj = @parent
+              else
+                obj = @site
+              end
+              klass.new(obj, hsh, &block)
+              # klass.new(self, hsh, &block)
             end
           end
         end
@@ -146,7 +151,11 @@ module Insite
     # here and that makes the code more confusing. And there should be a proper
     # collection class for element collections, with possibly some AR-like accessors.
     def initialize(parent, *args)
-      @parent   = parent
+      # Figure out the correct query scope.
+      parent.respond_to?(:target) ? obj = parent : obj = parent.site
+      @parent   = obj
+
+      # @parent   = parent
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
@@ -160,45 +169,31 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
-        tmp = self.class.selector.merge(parse_args(args))
-
-        @selector     = tmp
+# binding.pry
+        # tmp = self.class.selector.merge(parse_args(args))
+        # @selector     = tmp
+        @selector     = self.class.selector.merge(parse_args(args))
         @args         = @selector
         @non_relative = @args.delete(:non_relative) || false
 
-        # collection? ? dom_type = :elements : dom_type = :element
         if @non_relative
+          # @args = parse_args(args)
+          # @selector = @args
           @target = @browser.send(@args)
         else
-          @args = parse_args(args)
+          # @args = parse_args(args)
 
-          # Figure out the correct query scope.
-          @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
-          # @parent.respond_to?(:target) ? obj = self : obj = @browser
+          # # Figure out the correct query scope.
+          # @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
 
           # See if there's a Watir DOM method for the class. If not, then
           # initialize using the default collection.
-# binding.pry
           if watir_class = Insite::CLASS_MAP.key(self.class)
-            @target = watir_class.new(obj, @args)
+            @target = watir_class.new(@parent.target, @args)
+            # @target = watir_class.new(obj, @args)
           else
-            @target = Watir::HTMLElement.new(obj, @args)
+            @target = Watir::HTMLElement.new(@parent.target, @args)
           end
-          # if @parent.is_a? Component
-          #   @args   = parse_args(args)
-          #   @target = Insite::CLASS_MAP.key(self.class).new(@parent, @args)
-          # else
-          #   @args   = parse_args(args).merge(
-          #     tag_name: Insite.class_to_tag(self.class)
-          #   )
-          #   @target = Insite::CLASS_MAP.key(self.class).new(@browser, @args)
-          # end
-
-          # if @parent.is_a?(Component) || @parent.is_a?(Element)
-          #   @target = @parent.target.send(dom_type, @args)
-          # else
-          #   @target = @browser.send(dom_type, @args)
-          # end
         end
 
         # New webdriver approach.

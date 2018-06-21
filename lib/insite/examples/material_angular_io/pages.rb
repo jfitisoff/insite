@@ -1,5 +1,6 @@
 require_relative 'site'
 
+# Auto-generates some of material.angular.io pages
 %w(autocomplete checkbox datepicker form-field input radio
   select slider slide-toggle menu sidenav toolbar card divider
   expansion grid-list list stepper tabs tree button button-toggle

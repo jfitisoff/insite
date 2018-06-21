@@ -11,25 +11,28 @@ module Insite
           c = c.first.to_s.demodulize
           base_class = "Insite::#{c}".constantize
 
-          if block
-            new_class_name = name.to_s.camelcase
-            if self.class.const_defined? name.to_s.camelcase
-              klass = self.class.const_get(name.to_s.camelcase.constantize)
-            else
-              klass = Class.new(base_class) { class_eval(&block) }
-              self.class.const_set(new_class_name, klass)
+          new_class_name = name.to_s.camelcase + 'Element'
+          unless self.class.const_defined? new_class_name
+            klass = Class.new(base_class) do
+              @predefined_selector = parse_args(args)
+              class_eval(&block) if block
             end
-          else
-            klass = base_class
+            const_set(new_class_name, klass)
           end
 
-          # Constructs a page element accessor method for page instances using
-          # the arguments provided to the class-level method..
           define_method(name) do |*args|
             if @site && @browser
-              klass.new(@site, @browser.send(*args.unshift(mth)))
+              klass.new(@site, **klass.predefined_selector)
             end
           end
+
+          # # Constructs a page element accessor method for page instances using
+          # # the arguments provided to the class-level method..
+          # define_method(name) do |*args|
+          #   if @site && @browser
+          #     klass.new(@site, @browser.send(*args.unshift(mth)))
+          #   end
+          # end
         end
       end
 

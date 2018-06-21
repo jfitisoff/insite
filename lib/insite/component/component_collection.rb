@@ -41,7 +41,10 @@ module Insite
     end
 
     def initialize(parent, *args)
-      @parent   = parent
+      # Figure out the correct query scope.
+      parent.respond_to?(:target) ? obj = parent : obj = parent.site
+      @parent   = obj
+
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
@@ -56,17 +59,35 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
+# binding.pry
         @args = parse_args(args)
 
-        # Figure out the correct query scope to initialize the Watir collection.
-        @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
+        # # Figure out the correct query scope to initialize the Watir collection.
+        # @parent.respond_to?(:target) ? obj = @parent.target : obj = @browser
 
         # See if there's a Watir DOM method for the class. If not, then
         # initialize using the default collection.
+
+        # if @parent.respond_to?(:target)
+        #   @target = watir_class.new(@parent.target, @args)
+        # else
+        #   @target = watir_class.new(@browser, @args)
+        # end
+
         if watir_class = Insite::CLASS_MAP.key(self.class)
-          @target = watir_class.new(obj, @args)
+          if @parent.respond_to?(:target)
+            @target = watir_class.new(@parent.target, @args)
+          else
+            @target = watir_class.new(@browser, @args)
+          end
+          # @target = watir_class.new(@parent, @args)
         else
-          @target = Watir::HTMLElementCollection.new(obj, @args)
+          if @parent.respond_to?(:target)
+            @target = Watir::HTMLElementCollection.new(@parent.target, @args)
+          else
+            @target = Watir::HTMLElementCollection.new(@browser, @args)
+          end
+          # @target = Watir::HTMLElementCollection.new(obj, @args)
         end
       end
     end
@@ -86,7 +107,12 @@ module Insite
     alias count length
     alias size length
 
+    def text
+      to_a.map(&:text)
+    end
+
     def to_a
+# binding.pry
       out = []
       @target.to_a.each_with_index do |elem, idx|
         out << @collection_member_type.new(

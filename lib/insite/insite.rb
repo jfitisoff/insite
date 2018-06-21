@@ -13,7 +13,8 @@ module Insite
   def self.class_to_tag(klass)
     if klass.respond_to?(:collection) && klass.collection?
       Watir.tag_to_class.key(klass) ||
-      Watir.tag_to_class.key(CLASS_MAP.key(klass))
+      Watir.tag_to_class.key(CLASS_MAP.key(klass)) ||
+      Watir.tag_to_class.key(CLASS_MAP.key(klass.collection_member_class))
     else
       Watir.tag_to_class.key(klass) ||
       Watir.tag_to_class.key(CLASS_MAP.key(klass))
@@ -37,6 +38,16 @@ module Insite
 
     klass = Class.new(UndefinedPage)
     base.const_set('UndefinedPage', klass)
+
+    class << base
+      attr_reader :custom_tags
+      @custom_tags = []
+    end
+
+    base.define_singleton_method(:set_custom_tags) do |*tags|
+      @custom_tags ||= []
+      tags.sort.each { |t| @custom_tags << t.to_s.downcase.dasherize }
+    end
   end
 
   # Returns true if there's an open browser (that's also responding.) False if not.
@@ -328,6 +339,10 @@ EOF
   def respond_to_missing?(mth, include_priv = false)
     # TODO: Page context changes.
     @most_recent_page.respond_to?(mth, include_priv) || super
+  end
+
+  def target
+    @browser
   end
 
   def text
