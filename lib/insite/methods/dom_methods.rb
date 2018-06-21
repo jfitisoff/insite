@@ -12,7 +12,6 @@ module Insite
           base_class = "Insite::#{c}".constantize
 
           if block
-# binding.pry
             new_class_name = "#{c}For#{name.to_s.camelcase}"
             unless self.class.const_defined? new_class_name
               klass = Class.new(base_class) do
@@ -34,14 +33,6 @@ module Insite
               end
             end
           end
-
-          # # Constructs a page element accessor method for page instances using
-          # # the arguments provided to the class-level method..
-          # define_method(name) do |*args|
-          #   if @site && @browser
-          #     klass.new(@site, @browser.send(*args.unshift(mth)))
-          #   end
-          # end
         end
       end
 

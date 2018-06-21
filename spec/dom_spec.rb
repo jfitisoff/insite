@@ -9,33 +9,6 @@ describe "dom objects" do
   after(:all)  { @s.close }
   let(:s)      { @s }
 
-  # context "element" do
-  #   subject { @s.mat_chip_lists[1] }
-  #
-  #   it "responds properly to an element method" do
-  #     expect(subject.input).to be_present
-  #     expect(subject.input.attributes["_ngcontent-c22"]).to eq ""
-  #   end
-  #
-  #   it "responds properly to an element collection method" do
-  #     expect(subject.inputs.length).to eq(1)
-  #     expect(subject.inputs.first.attributes["_ngcontent-c22"]).to eq ""
-  #   end
-  #
-  #   it "responds properly to a component method" do
-  #     expect(subject.mat_chip).to be_present
-  #     expect(subject.mat_chip.text).to eq "Lemon\ncancel"
-  #   end
-  #
-  #   it "responds properly to an component collection method" do
-  #     expect(subject.mat_chips.length).to eq(3)
-  #     expect(subject.mat_chips[1].text).to eq "Lime\ncancel"
-  #   end
-  # end
-
-  # context "element collection" do
-  # end
-  #
   context "component" do
     subject { @s.mat_chip_list }
 

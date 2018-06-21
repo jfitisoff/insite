@@ -21,20 +21,16 @@ module Insite
     end
 
     def self.collection_member_type
-      # unless @collection_member_type
-        if Insite::CLASS_MAP.values.include?(self)
-          @collection_member_type = self.to_s.gsub('Collection', '').constantize
-        elsif Insite::CLASS_MAP.values.include?(self.superclass)
-          @collection_member_type = self.superclass.to_s.gsub('Collection', '').constantize
-        else
-          raise "Unable to determine collection member type for #{self}."
-        end
-      # end
-      # klass.to_s.gsub('Collection', '')
+      if Insite::CLASS_MAP.values.include?(self)
+        @collection_member_type = self.to_s.gsub('Collection', '').constantize
+      elsif Insite::CLASS_MAP.values.include?(self.superclass)
+        @collection_member_type = self.superclass.to_s.gsub('Collection', '').constantize
+      else
+        raise "Unable to determine collection member type for #{self}."
+      end
     end
 
     def initialize(parent, *args)
-# binding.pry
       @collection_member_type = self.class.collection_member_type
 
       # Figure out the correct query scope.
@@ -64,25 +60,6 @@ module Insite
         end
       end
     end
-#         if [Insite::ElementCollection,
-#              Insite::HTMLElementCollection
-#            ].include?(self.class) || !Insite.class_to_tag(@collection_member_type)
-#           @args     = parse_args(args)
-#           @selector = @args
-#           @target   = Watir::HTMLElementCollection.new(@parent.target, @args)
-#         elsif
-#           @args   = parse_args(args).merge(
-#             tag_name: Insite.class_to_tag(@collection_member_type)
-#           )
-#           @selector = @args
-# begin
-#           @target   = Insite::CLASS_MAP.key(self.class).new(@parent.target, @args)
-# rescue => e
-#   binding.pry
-# end
-#         end
-    #   end
-    # end
 
     def first
       to_a[0]
