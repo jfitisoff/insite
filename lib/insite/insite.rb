@@ -144,13 +144,15 @@ EOF
 
     # Build generic components for custom tags, which are defined
     # using Site.custom_tags.
-    self.class.custom_tags.each do |tag|
-      # TODO: Ditch string interpolation.
-      self.class.class_eval %Q{
-        class #{tag.underscore.camelize} < Component
-          select_by tag_name: "#{tag}"
-        end
-      }
+    if self.class.custom_tags
+      self.class.custom_tags.each do |tag|
+        # TODO: Ditch string interpolation.
+        self.class.class_eval %Q{
+          class #{tag.underscore.camelize} < Component
+            select_by tag_name: "#{tag}"
+          end
+        }
+      end
     end
 
     # Set up accessor methods for each page and page checking methods..
