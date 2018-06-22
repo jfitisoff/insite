@@ -11,6 +11,8 @@ module Insite
     include Insite::ComponentInstanceMethods
     include Enumerable
 
+    # Returns true if the class represents a collection, false if not.
+    # @return [true, false]
     def self.collection?
       true
     end
