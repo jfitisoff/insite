@@ -55,12 +55,25 @@ module Insite
         collection_method_name = name_string.pluralize
       end
 
+      # Create a collection class for a component when a component is defined.
       collection_class = Class.new(Insite::ComponentCollection) do
         attr_reader :collection_member_type
         @collection_member_type = subclass
       end
       Insite.const_set(collection_name.camelize, collection_class)
 
+      # Defines class-level methods for defining component accessor methods.
+      # Does this for both the individual instance of the component AND the
+      # collection. When these methods are call within page objects, they define
+      # accessor methods for components and component collections when an
+      # INSTANCE of the page object is being used.
+      #
+      # If a block is provided when using a method to provide access to a
+      # component a MODIFIED version of the component class is created within
+      # the page object where the method is invoked.
+      #
+      # If no block is provided, the base component class is used without
+      # modifications.
       {
         name_string => subclass,
         collection_method_name => collection_class
@@ -74,7 +87,40 @@ module Insite
 
             hsh = parse_args(a).merge(klass.selector)
 
+            # Instance method gets defined here.
             define_method(mname) do
+              # If a block is provided then we need to create a modified version
+              # of the component or component collection to contain the added
+              # functionality. This new class gets created within the page object
+              # class and its name is different from the base class.
+              if block
+                # Create the modified class UNLESS it's already there.
+                new_class_name = "#{c}For#{name.to_s.camelcase}"
+                unless self.class.const_defined? new_class_name
+                  new_klass = Class.new(klass) do
+                    class_eval(&block) if block
+                  end
+                  const_set(new_class_name, new_klass)
+                end
+
+                # Instance method that calls the new version of the component or
+                # component collection that has the block modifications.
+                define_method(name) do
+                  if @site && @browser
+                    new_klass.new(self, parse_args(args))
+                  end
+                end
+              else
+                # In this simpler, more common case, there were no modifications
+                # (no block was # provided) and so the base component or component
+                # collection is used.
+                define_method(name) do
+                  if @site && @browser
+                    klass.new(self, parse_args(args))
+                  end
+                end
+              end
+
               if respond_to?(:target)
                 obj = self
               elsif @parent.respond_to?(:target)
@@ -93,6 +139,56 @@ module Insite
         end
       end
     end # self.inherited
+
+    # # ORIGINAL
+    # def self.inherited(subclass)
+    #   name_string     = subclass.name.demodulize.underscore
+    #   collection_name = name_string + '_collection'
+    #
+    #   if name_string == name_string.pluralize
+    #     collection_method_name = name_string + 'es'
+    #   else
+    #     collection_method_name = name_string.pluralize
+    #   end
+    #
+    #   collection_class = Class.new(Insite::ComponentCollection) do
+    #     attr_reader :collection_member_type
+    #     @collection_member_type = subclass
+    #   end
+    #   Insite.const_set(collection_name.camelize, collection_class)
+    #
+    #   {
+    #     name_string => subclass,
+    #     collection_method_name => collection_class
+    #   }.each do |nstring, klass|
+    #     ComponentMethods.send(:define_method, nstring) do |mname, *a, &block|
+    #       unless nstring == 'Component'
+    #         @component_elements ||= []
+    #         unless @component_elements.include?(mname.to_sym)
+    #           @component_elements << mname.to_sym
+    #         end
+    #
+    #         hsh = parse_args(a).merge(klass.selector)
+    #
+    #         define_method(mname) do
+    #           if respond_to?(:target)
+    #             obj = self
+    #           elsif @parent.respond_to?(:target)
+    #             obj = @parent
+    #           else
+    #             obj = @site
+    #           end
+    #           klass.new(obj, hsh, &block)
+    #         end
+    #       end
+    #     end
+    #
+    #     ComponentInstanceMethods.send(:define_method, nstring) do |*a|
+    #       hsh = parse_args(a).merge(subclass.selector)
+    #       klass.new(self, hsh)
+    #     end
+    #   end
+    # end # self.inherited
 
     def self.select_by(hsh = {})
       tmp = selector.clone

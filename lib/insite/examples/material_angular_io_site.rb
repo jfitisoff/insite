@@ -4,8 +4,8 @@
 end
 
 # Require hand-crafted artisanal components.
-%w(mat_chip_list mat_chip mat_form_field mat_input mat_option
-   mat_select_content mat_select).each do |c|
+%w(example_viewer mat_chip_list mat_chip mat_icon mat_form_field
+   mat_input mat_option mat_select_content mat_select).each do |c|
   require "insite/examples/material_angular_io/components/#{c}"
 end
 
@@ -17,6 +17,13 @@ end
 class ChipsOverviewPage < MaterialAngularIO::Page
   set_url "/components/chips/overview"
 
+  elements :mat_examples_collection, tag_name: 'example-viewer'
+  elements :modified_mat_examples_collection, tag_name: 'example-viewer' do
+    def test_method
+      'output'
+    end
+  end
+
   elements :examples_collection, tag_name: 'example-viewer'
   elements :modified_examples_collection, tag_name: 'example-viewer' do
     def test_method
@@ -24,8 +31,14 @@ class ChipsOverviewPage < MaterialAngularIO::Page
     end
   end
 
-  element :chip_element, tag_name: 'mat-chip'
+  mat_chip :chip, tag_name: 'mat-chip'
+  element :modified_chip, tag_name: 'mat-chip' do
+    def test_method
+      text
+    end
+  end
 
+  element :chip_element, tag_name: 'mat-chip'
   element :modified_chip_element, tag_name: 'mat-chip' do
     def test_method
       text
