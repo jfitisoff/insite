@@ -1,18 +1,19 @@
-# TODO: Title matcher
+# TODO: Title matcher?
 # TODO: Add page query methods.
 module Insite
   class DefinedPage
-    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :widget_elements
+    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :component_elements
 
     include Insite::CommonMethods
+    extend  Insite::ComponentMethods
+    include Insite::ComponentInstanceMethods
+    extend  Insite::DOMMethods
+
     alias_method :update_page, :update_object
 
     class << self
       attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_template
-      attr_accessor :widget_elements
-
-      include Insite::DOMMethods
-      include Insite::WidgetMethods
+      attr_accessor :component_elements
 
       def describe
     puts <<-EOF
@@ -24,43 +25,12 @@ module Insite
 
     Page Elements:\n#{@page_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
-    Widgets:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+    Components:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
-    Features:\n#{@widget_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
+    Features:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
 
     EOF
 
-      end
-
-      private
-      def element_container(name, type, *args, &block)
-        tmpklass = Class.new(ElementContainer) do
-          self.class_eval(&block) if block_given?
-        end
-        cname = name.to_s.camelcase + 'Container'
-        const_set(cname, tmpklass) unless const_defined? cname
-
-        @page_elements ||= []
-        @page_elements << name.to_sym
-
-        define_method(name) do
-          self.class.const_get(cname).send(:new, @site, @browser.send(type, *args))
-        end
-      end
-      public
-
-      # Creates a section within the page. TODO: section is a DOM element, rename this.
-      def feature(fname, klass = Insite::Feature, &block)
-        tmpklass = Class.new(klass) do
-          self.class_eval(&block) if block_given?
-        end
-
-        const_set(fname.to_s.camelcase, tmpklass) unless const_defined? fname.to_s.camelcase
-        @page_features ||= []
-        @page_features << fname.to_s.underscore.to_sym
-        define_method(fname.to_s.underscore) do
-          tmpklass.new(page = self)
-        end
       end
 
       # Allows you to set special page attributes that affect page behavior. The two page
@@ -260,14 +230,14 @@ module Insite
         end
       end
 
-      def widget_method(method_name, widget_symbol, widget_method, target_element)
-        @widget_methods ||= []
-        @widget_methods << method_name.to_sym unless @widget_methods.include?(method_name.to_sym)
+      def component_method(method_name, component_symbol, component_method, target_element)
+        @component_methods ||= []
+        @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
 
         define_method(method_name) do |*args, &block|
-          self.class.const_get(widget_symbol.to_s.camelize)
+          self.class.const_get(component_symbol.to_s.camelize)
           .new(@site, @site.send(target_element))
-          .send(widget_method, *args, &block)
+          .send(component_method, *args, &block)
         end
       end
     end # Self.
@@ -280,6 +250,14 @@ module Insite
       true
     end
 
+    def driver
+      @browser.driver
+    end
+
+    def html
+      @browser.html
+    end
+
     # Initializes a new page object. There's no need to ever call this method directly.
     # Your site class (the one that includes the Insite module) will handle this for
     # you
@@ -287,7 +265,7 @@ module Insite
       @site               = site
       @browser            = process_browser
 
-      @widget_elements    = self.class.widget_elements ||= []
+      @component_elements = self.class.component_elements ||= []
       @browser            = @site.browser
       @page_attributes    = self.class.page_attributes
       @page_url           = self.class.page_url

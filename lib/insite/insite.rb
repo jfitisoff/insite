@@ -10,19 +10,44 @@ module Insite
   attr_reader :base_url, :unique_methods, :browser_type
   attr_accessor :pages, :browser, :arguments, :most_recent_page
 
+  def self.class_to_tag(klass)
+    if klass.respond_to?(:collection) && klass.collection?
+      Watir.tag_to_class.key(klass) ||
+      Watir.tag_to_class.key(CLASS_MAP.key(klass)) ||
+      Watir.tag_to_class.key(CLASS_MAP.key(klass.collection_member_class))
+    else
+      Watir.tag_to_class.key(klass) ||
+      Watir.tag_to_class.key(CLASS_MAP.key(klass))
+    end
+  end
+
+  def self.tag_to_class(tag)
+    CLASS_MAP[Watir.tag_to_class[tag]] || Insite::HTMLElement
+  end
+
   # Automatically sets up a Page class when Insite is included. Probably overkill
   # but it protects against the case where two different sites are used at the
   # same time: Each site will use its own page objects only.
   def self.included(base)
     mod = Module.new
-    base.const_set('WidgetMethods', mod)
+    base.const_set('ComponentMethods', mod)
 
     klass = Class.new(DefinedPage)
     base.const_set('Page', klass)
-    base::send(:extend, WidgetMethods)
+    base::send(:extend, ComponentMethods)
 
     klass = Class.new(UndefinedPage)
     base.const_set('UndefinedPage', klass)
+
+    class << base
+      attr_reader :custom_tags
+      @custom_tags = []
+    end
+
+    base.define_singleton_method(:set_custom_tags) do |*tags|
+      @custom_tags ||= []
+      tags.sort.each { |t| @custom_tags << t.to_s.downcase.dasherize }
+    end
   end
 
   # Returns true if there's an open browser (that's also responding.) False if not.
@@ -74,6 +99,23 @@ EOF
     browser?
   end
 
+  def generate_tag_classes
+    tags = []
+    cli = Highline.new
+
+    loop do
+      tags = (tags + find_non_standard_tags).uniq.sort
+      cli.choose do |menu|
+        menu.prompt "Found #{tags.length} non-standard tags. Choose one of the following options:"
+        menu.choice(:list_tags) { puts tags.join(",\n") + "\n" }
+        menu.choice(:continue)  {}
+        menu.choice(:write_to_console) do
+        end
+        menu.choice(:exist_without_writing) { break }
+
+      end
+    end
+  end
   # Creates a site object, which will have accessor methods for all pages that
   # you have defined for the site. This object takes a hash argument. There is
   # only one required value (the base_url for the site.) Example:
@@ -144,6 +186,23 @@ EOF
     "@most_recent_page=#{@most_recent_page}>"
   end
 
+  def find_non_standard_tags
+    @browser.elements(xpath: non_standard_tag_xpath).map do |e|
+      e.html.match(/<(\S+?(?=[\s,>]))/)[1]
+    end.uniq.sort
+  end
+
+  def html_tags
+    %i(html title head body) + Insite::METHOD_MAP.values.flatten.each do |mth|
+      elem = @browser.send(mth)
+      elem.respond_to?(:selector) ? elem.selector.values.first.to_s : nil
+    end.sort
+  end
+
+  def non_standard_tag_xpath
+    "//*[#{html_tags.map { |sym| "not(local-name(.) = '#{sym}')" }.join(" and ") }]"
+  end
+
   # In cases where Insite doesn't recognize a method call it will try to do the following:
   # - Delegate the method call to the most recently accessed page, which is stored in
   #   Insite#most_recent_page.
@@ -162,10 +221,11 @@ EOF
       if new_page.respond_to?(sym)
         page.public_send(sym, *args, &block)
       else
+        # TODO: Make it clearer where the method got called.
         raise(
           NoMethodError,
-          "Unable to apply #{sym}. The site object doesn't support it and the" \
-          "currently displayed page doesn't support it either.\n" \
+          "Unable to apply method call :#{sym}. The site object doesn't support it. " \
+          "The currently displayed page (#{new_page}) doesn't support it either.\n" \
           "Page:\t\t#{new_page.class}\n" \
           "Current URL:\t#{@browser.url}\n\n",
           caller
@@ -274,6 +334,15 @@ EOF
     else
       return UndefinedPage.new(self)
     end
+  end
+
+  def respond_to_missing?(mth, include_priv = false)
+    # TODO: Page context changes.
+    @most_recent_page.respond_to?(mth, include_priv) || super
+  end
+
+  def target
+    @browser
   end
 
   def text

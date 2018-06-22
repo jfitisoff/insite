@@ -3,6 +3,9 @@ module Insite
     attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher
 
     include Insite::CommonMethods
+    extend  Insite::ComponentMethods
+    include Insite::ComponentInstanceMethods
+    # TODO: DOM methods.
 
     # Always returns false.
     def defined?
@@ -28,6 +31,14 @@ module Insite
 
   Page Elements:\tNA
   EOF
+    end
+
+    def driver
+      @browser.driver
+    end
+
+    def html
+      @browser.html
     end
 
     def initialize(site)
@@ -59,7 +70,7 @@ module Insite
     def page_elements
       []
     end
-    alias_method :widget_elements, :page_elements
+    alias_method :component_elements, :page_elements
 
     # Returns the current URL.
     def url

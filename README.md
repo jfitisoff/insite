@@ -38,7 +38,7 @@ But when we work with a web application the pages fade into the background. We'r
 
 What if you took the same sort of approach with test automation? Maybe by creating some additional level of organization *above* your page objects, some wrapper class that ties all of the pages together and is intended to represent the site itself?
 
-### Wat?
+### Why Bother?
 Let's call the wrapper class mentioned above a "site object." What could you do with it?
 
 For a start, page object initialization could be simplified. The site object could implement a method for each page that you've defined for your site:
@@ -122,7 +122,7 @@ s.page
 => #<UndefinedPage:0x00007fbf099afb30>
 ```
 
-Let's do one last thing with this page identification and navigation support: Add some code to the site object to automatically use it in cases where the URL is expected to change. This behavior would be more passive and focused on loading and caching the correct page object rather than actively navigating. 
+Let's do one last thing with this page identification and navigation support: Add some code to the site object to automatically use it in cases where the URL is expected to change. This behavior would be more passive and focused on loading and caching the correct page object rather than actively navigating.
 
 At this point, the site object starts looking a little more like... ...a browser. You could click through the site like a user -- albeit programmatically -- and the site object would keep up with you, automatically loading the correct page object as you navigate through the application.
 
@@ -387,12 +387,12 @@ class RubyLangSite
   include Insite
 end
 
-# Reusable widget.
-class MenuBar < RubyLangSite::Widget
+# Reusable component.
+class MenuBar < RubyLangSite::Component
 end
 
-# Reusable widget.
-class Post < RubyLangSite::Widget
+# Reusable component.
+class Post < RubyLangSite::Component
   def title
     h3.text
   end

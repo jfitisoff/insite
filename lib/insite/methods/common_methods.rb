@@ -1,23 +1,16 @@
 # TODO: A lot of this should be handled via delegation.
 module Insite
   module CommonMethods
-    # Returns a Watir::Browser object.
-    def browser
-      @browser
-    end
-
-    # Returns a Selenium::WebDriver::Driver object.
-    def driver
-      @browser.driver
-    end
-
-    # Don't override the default if it's already there.
-    unless defined? :html
-      # Returns current HTML for the object.
-      def html
-        @browser.html
+    # Returns a Nokogiri document for the object ONLY. So no need to specify a
+    # relative path.
+    def document(xpath = nil)
+      if xpath
+        Nokogiri::HTML(html).xpath(xpath)
+      else
+        Nokogiri::HTML(html)
       end
     end
+    alias nokogiri document
 
     # Returns a string representation of the page.
     def inspect
@@ -79,11 +72,11 @@ module Insite
           if @page_elements.include?(k)
             elem = public_send(k)
 
-            if [Watir::Alert, Watir::FileField, Watir::TextField, Watir::TextArea].include? elem.class
+            if [Insite::Alert, Insite::FileField, Insite::TextField, Insite::TextArea].include? elem.class
               elem.set v
-            elsif [Watir::Select].include? elem.class
+            elsif [Insite::Select].include? elem.class
               elem.select v
-            elsif [Watir::Anchor, Watir::Button].include? elem.class
+            elsif [Insite::Anchor, Insite::Button].include? elem.class
               case v
               when Symbol
                 elem.public_send v
@@ -94,7 +87,7 @@ module Insite
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif elem.is_a?(Watir::Radio)
+            elsif elem.is_a?(Insite::Radio)
               case v
               when Symbol
                 elem.public_send v
@@ -110,7 +103,7 @@ module Insite
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif elem.is_a?(Watir::CheckBox)
+            elsif elem.is_a?(Insite::CheckBox)
               case v
               when Symbol
                 elem.public_send v
@@ -130,17 +123,6 @@ module Insite
               else
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
-            elsif elem.is_a?(Watir::RadioCollection)
-              # TODO: Remove, not appropriate as a general use case.
-              rb = elem.to_a.find do |r|
-                r.text =~ /#{Regexp.escape(v)}/i || r.parent.text =~ /#{Regexp.escape(v)}/i
-              end
-
-              if rb
-                rb.click
-              else
-                raise "No matching radio button could be detected for '#{val}' for #{elem}."
-              end
             else
               case v
               when Symbol
@@ -153,7 +135,7 @@ module Insite
                 raise ArgumentError, "Unsupported argument for #{elem.class}: '#{v}'"
               end
             end
-          elsif @widget_elements.include?(k)
+          elsif @component_elements.include?(k)
             w = public_send(k)
 
             begin
@@ -206,11 +188,18 @@ module Insite
       hash_args
     end
 
-    # Returns a Nokogiri document for the object ONLY. So no need to specify a
-    # relative path.
-    def nokogiri
-      Nokogiri::HTML(html)
+    # Duplicates Watir DOM element argument parsing for element methods.
+    private
+    def parse_args(args)
+      case args.length
+      when 2
+        return { args[0] => args[1] }
+      when 1
+        obj = args.first
+      when 0
+        return {}
+      end
     end
-    alias document nokogiri
+    public
   end
 end
