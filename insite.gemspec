@@ -13,14 +13,14 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "addressable", [">=2.5.1"]
   s.add_runtime_dependency "highline", [">=2.0.0"]
   s.add_runtime_dependency "nokogiri", [">=1.7.0"]
-  s.add_runtime_dependency "watir", [">=6.0.0"]
+  s.add_runtime_dependency "watir", [">=6.11.0"]
   s.add_runtime_dependency "watir-scroll", [">=0.2.0"]
 
-  s.add_development_dependency "coveralls"
-  s.add_development_dependency "simplecov"
-  s.add_development_dependency "pry"
-  s.add_development_dependency "rake"
-  s.add_development_dependency "rspec"
+  s.add_development_dependency "coveralls", [">=0.8.21"]
+  s.add_development_dependency "simplecov", [">=0.16.1"]
+  s.add_development_dependency "pry", [">=0.11.3"]
+  s.add_development_dependency "rake", [">=12.3.1"]
+  s.add_development_dependency "rspec", [">=3.7.0"]
 
   s.files = [
     "lib/insite.rb",
