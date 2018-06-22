@@ -5,6 +5,5 @@ pkg/*
 coverage
 rdoc
 .yardoc
-Gemfile.lock
 /doc
 .ruby-version
