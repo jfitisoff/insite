@@ -101,12 +101,30 @@ module Watir
     def generate_element_instance_methods
       hsh = {}
       str = method_map.map do |k, v|
-        <<-EOS.gsub(/^\s{8}(?!\S|\n|$)/, '')
-            def #{k}(*args)
-              respond_to?(:target) ? obj = self : obj = @browser
-              #{v}.new(obj, *args)
-            end
-        EOS
+        if respond_to?(k)
+          if tag = send(k).instance_variable_get(:@selector)[:tag_name]
+            <<-EOS.gsub(/^\s{12}(?!\S|\n|$)/, '')
+                def #{k}(*args)
+                  # respond_to?(:target) ? obj = self : obj = @browser
+                  #{v}.new(self, parse_args(args).merge(tag_name: "#{tag}"))
+                end
+            EOS
+          else
+            <<-EOS.gsub(/^\s{12}(?!\S|\n|$)/, '')
+                def #{k}(*args)
+                  # respond_to?(:target) ? obj = self : obj = @browser
+                  #{v}.new(self, parse_args(args))
+                end
+            EOS
+          end
+        else
+          <<-EOS.gsub(/^\s{10}(?!\S|\n|$)/, '')
+              def #{k}(*args)
+                # respond_to?(:target) ? obj = self : obj = @browser
+                #{v}.new(self, parse_args(args))
+              end
+          EOS
+        end
       end.join("\n")
 
       f = File.new("./lib/insite/element/generated/element_instance_methods.rb", 'w+')

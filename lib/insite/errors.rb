@@ -6,6 +6,7 @@ module Insite
     class Insite::Errors::BrowserNotOpenError             < StandardError; end
     class Insite::Errors::BrowserNotValidError            < StandardError; end
     class Insite::Errors::BrowserResponseError            < StandardError; end
+    class Insite::Errors::ComponentReferenceError         < StandardError; end
     class Insite::Errors::PageConfigError                 < StandardError; end
     class Insite::Errors::PageInitError                   < StandardError; end
     class Insite::Errors::PageNavigationError             < StandardError; end
