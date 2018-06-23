@@ -1,3 +1,5 @@
+require_relative 'support/spec_helper'
+
 require 'insite'
 require 'insite/examples/material_angular_io_site.rb'
 

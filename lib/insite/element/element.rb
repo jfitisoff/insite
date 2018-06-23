@@ -52,6 +52,8 @@ module Insite
       else
         if [Insite::Element, Insite::HTMLElement].include?(self.class)
           @args = parse_args(args.dup)
+        elsif tag = parse_args(args)[:tag_name]
+          @args = parse_args(args.dup)
         elsif Insite.class_to_tag(self.class)
           @args = parse_args(args.dup).merge(
             tag_name: Insite.class_to_tag(self.class)

@@ -2,7 +2,7 @@ require_relative 'component_methods'
 require_relative 'component_collection'
 require_relative 'component_instance_methods'
 require_relative '../methods/common_methods'
-
+require 'pry'
 # Allows the page object developer to encapsulate common web application features
 # into components that can be reused across multiple pages.
 module Insite
@@ -85,9 +85,23 @@ module Insite
               @component_elements << mname.to_sym
             end
 
-            hsh = parse_args(a).merge(klass.selector)
+            # One way or another there must be some arguments to identify the
+            # component.
+            if klass.selector
+              hsh = parse_args(a.to_a).merge(klass.selector)
+            elsif a.present?
+              hsh = parse_args(a)
+            else
+              raise(
+                Insite::Errors::ComponentReferenceError,
+                "Unable to initialize #{nstring}. Base selector options were " \
+                "not defined in the component's class definition and no " \
+                "selector options were defined in the class or class instance " \
+                "method call."
+              )
+            end
 
-            # Instance method gets defined here.
+            # Accessor instance method gets defined here.
             define_method(mname) do
               # If a block is provided then we need to create a modified version
               # of the component or component collection to contain the added
@@ -97,38 +111,16 @@ module Insite
                 # Create the modified class UNLESS it's already there.
                 new_class_name = "#{c}For#{name.to_s.camelcase}"
                 unless self.class.const_defined? new_class_name
-                  new_klass = Class.new(klass) do
+                  target_class = Class.new(klass) do
                     class_eval(&block) if block
                   end
                   const_set(new_class_name, new_klass)
                 end
-
-                # Instance method that calls the new version of the component or
-                # component collection that has the block modifications.
-                define_method(name) do
-                  if @site && @browser
-                    new_klass.new(self, parse_args(args))
-                  end
-                end
               else
-                # In this simpler, more common case, there were no modifications
-                # (no block was # provided) and so the base component or component
-                # collection is used.
-                define_method(name) do
-                  if @site && @browser
-                    klass.new(self, parse_args(args))
-                  end
-                end
+                target_class = klass
               end
 
-              if respond_to?(:target)
-                obj = self
-              elsif @parent.respond_to?(:target)
-                obj = @parent
-              else
-                obj = @site
-              end
-              klass.new(obj, hsh, &block)
+              target_class.new(self, hsh)
             end
           end
         end
@@ -139,56 +131,6 @@ module Insite
         end
       end
     end # self.inherited
-
-    # # ORIGINAL
-    # def self.inherited(subclass)
-    #   name_string     = subclass.name.demodulize.underscore
-    #   collection_name = name_string + '_collection'
-    #
-    #   if name_string == name_string.pluralize
-    #     collection_method_name = name_string + 'es'
-    #   else
-    #     collection_method_name = name_string.pluralize
-    #   end
-    #
-    #   collection_class = Class.new(Insite::ComponentCollection) do
-    #     attr_reader :collection_member_type
-    #     @collection_member_type = subclass
-    #   end
-    #   Insite.const_set(collection_name.camelize, collection_class)
-    #
-    #   {
-    #     name_string => subclass,
-    #     collection_method_name => collection_class
-    #   }.each do |nstring, klass|
-    #     ComponentMethods.send(:define_method, nstring) do |mname, *a, &block|
-    #       unless nstring == 'Component'
-    #         @component_elements ||= []
-    #         unless @component_elements.include?(mname.to_sym)
-    #           @component_elements << mname.to_sym
-    #         end
-    #
-    #         hsh = parse_args(a).merge(klass.selector)
-    #
-    #         define_method(mname) do
-    #           if respond_to?(:target)
-    #             obj = self
-    #           elsif @parent.respond_to?(:target)
-    #             obj = @parent
-    #           else
-    #             obj = @site
-    #           end
-    #           klass.new(obj, hsh, &block)
-    #         end
-    #       end
-    #     end
-    #
-    #     ComponentInstanceMethods.send(:define_method, nstring) do |*a|
-    #       hsh = parse_args(a).merge(subclass.selector)
-    #       klass.new(self, hsh)
-    #     end
-    #   end
-    # end # self.inherited
 
     def self.select_by(hsh = {})
       tmp = selector.clone
@@ -291,16 +233,16 @@ module Insite
         end
 
         # New webdriver approach.
-        begin
-          @target.scroll.to
-          sleep 0.1
-        rescue => e
-          t = ::Time.now + 2
-          while ::Time.now <= t do
-            break if @target.present?
-            sleep 0.1
-          end
-        end
+        # begin
+        #   @target.scroll.to
+        #   sleep 0.1
+        # rescue => e
+        #   t = ::Time.now + 2
+        #   while ::Time.now <= t do
+        #     break if @target.present?
+        #     sleep 0.1
+        #   end
+        # end
       end
     end
 
@@ -335,6 +277,7 @@ module Insite
     def method_missing(mth, *args, &block)
       if @target.respond_to? mth
         out = @target.send(mth, *args, &block)
+
         if out == @target
           self
         elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
@@ -356,7 +299,7 @@ module Insite
         if args[0].is_a? Hash
           page_arguments = args[0]
         elsif args.empty?
-          # Do nothing.
+          raise NoMethodError, "undefined method `#{k}' for #{self}: #{self.class}."
         elsif args[0].nil?
           raise ArgumentError, "Optional argument for :#{mth} must be a hash. Got NilClass."
         else

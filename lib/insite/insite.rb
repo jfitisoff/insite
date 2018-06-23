@@ -142,6 +142,19 @@ EOF
     @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
     @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
 
+    # Build generic components for custom tags, which are defined
+    # using Site.custom_tags.
+    if self.class.custom_tags
+      self.class.custom_tags.each do |tag|
+        # TODO: Ditch string interpolation.
+        self.class.class_eval %Q{
+          class #{tag.underscore.camelize} < Component
+            select_by tag_name: "#{tag}"
+          end
+        }
+      end
+    end
+
     # Set up accessor methods for each page and page checking methods..
     @pages.each do |current_page|
       unless current_page.page_template?

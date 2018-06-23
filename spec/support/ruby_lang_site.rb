@@ -1,17 +1,5 @@
 require 'insite'
 
-require 'coveralls'
-Coveralls.wear!
-
-# save to CircleCI's artifacts directory if we're on CircleCI
-require 'simplecov'
-if ENV['CIRCLE_ARTIFACTS']
-  dir = File.join(ENV['CIRCLE_ARTIFACTS'], "coverage")
-  SimpleCov.coverage_dir(dir)
-end
-
-SimpleCov.start
-
 def new_session
   s = RubyLangSite.new 'https://www.ruby-lang.org', language_code: 'en'
   s.open
@@ -25,22 +13,24 @@ class RubyLangSite
   include Insite
 end
 
-# class MenuBar < RubyLangSite::Component
-# end
-#
-# class Post < RubyLangSite::Component
-#   def title
-#     h3.text
-#   end
-#
-#   def summary
-#     element(xpath: ".//p").text
-#   end
-#
-#   def info
-#     element(:class, 'post-info').text
-#   end
-# end
+class MenuBar < RubyLangSite::Component
+end
+
+class Post < RubyLangSite::Component
+  select_by tag_name: 'div', class: 'post'
+
+  def post_title
+    h3.text
+  end
+
+  def summary
+    element(xpath: ".//p").text
+  end
+
+  def info
+    element(:class, 'post-info').text
+  end
+end
 
 # Page Template. This is just a container class to store common features. Because
 # it's a template it can't be accessed directly -- no page accessor method gets
@@ -49,8 +39,8 @@ end
 class RubyLangTemplate < RubyLangSite::Page
   set_attributes :page_template # Page template, so no accessor method for this page
 
-  # menu_bar :header, :div, id: 'header_content'
-  # menu_bar :footer, :div, id: 'footer'
+  menu_bar :page_header, tag_name: 'div', id: 'header_content'
+  menu_bar :page_footer, tag_name: 'div', id: 'footer'
 end
 
 # Models the page that users first see when they access the site. The landing page will
@@ -73,7 +63,6 @@ class NewsPage < RubyLangTemplate
   # Sets a templated URL that will be used for navigation (and for URL matching if a URL
   # matcher isn't provided.) See HeaderBar and FooterBar page features defined above.
   set_url "/{language_code}/news/"
-
 
   # Use the Posts component defined earlier.
   # posts :posts, :divs, :class, 'post'

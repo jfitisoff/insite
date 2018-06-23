@@ -1,3 +1,4 @@
+require_relative 'support/spec_helper'
 require_relative 'support/ruby_lang_site'
 
 describe "https://www.ruby-lang.org" do
@@ -6,31 +7,31 @@ describe "https://www.ruby-lang.org" do
 
   let(:s) { @s }
 
-  xit "shows 4 news posts on the landing page" do
+  it "shows 4 news posts on the landing page" do
     expect(s.home_page.posts.length).to be >= 4
   end
 
   xit "has a link to the News page in the header bar links" do
-    expect(s.home_page.header.news_link.present?).to eq(true)
+    expect(s.home_page.page_header.news_link.present?).to eq(true)
   end
 
   xit "drills down to the News page via the header bar" do
-    s.home_page.header.news
+    s.home_page.page_header.news
     expect(s.news_page?).to eq(true)
   end
 
   xit "has a link to the News page in the footer bar links" do
-    expect(s.home_page.footer.news_link.present?).to eq(true)
+    expect(s.home_page.page_footer.news_link.present?).to eq(true)
   end
 
   xit "drills down to the News page via the footer bar" do
-    s.home_page.footer.news
+    s.home_page.page_footer.news
     expect(s.news_page?).to eq(true)
   end
 
-  xit "has same title for most recent post as the news page does" do
-    home_page_title = s.home_page.posts[0].title
-    news_page_title = s.news_page.posts[0].title
+  it "has same title for most recent post as the news page does" do
+    home_page_title = s.home_page.posts[0].post_title
+    news_page_title = s.news_page.posts[0].post_title
     expect(home_page_title).to eq(news_page_title)
   end
 
