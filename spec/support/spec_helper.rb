@@ -1,11 +1,10 @@
-require 'coveralls'
-Coveralls.wear_merged!
-
-# save to CircleCI's artifacts directory if we're on CircleCI
-require 'simplecov'
+# CircleCI
 if ENV['CIRCLE_ARTIFACTS']
+  require 'simplecov'
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], "coverage")
   SimpleCov.coverage_dir(dir)
-end
+  SimpleCov.start
 
-SimpleCov.start
+  require 'coveralls'
+  Coveralls.wear_merged!
+end
