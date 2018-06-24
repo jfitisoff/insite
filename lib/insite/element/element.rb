@@ -142,11 +142,6 @@ module Insite
     def respond_to_missing?(mth, include_priv = false)
       @target.respond_to?(mth, include_priv) || super
     end
-
-#     def to_subtype
-# binding.pry
-#       Insite::CLASS_MAP[@target.class].new(@parent, @selector)
-#     end
   end
 
 end

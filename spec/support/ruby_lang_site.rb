@@ -1,7 +1,7 @@
 require 'insite'
 
 def new_session
-  s = RubyLangSite.new 'https://www.ruby-lang.org', language_code: 'en'
+  s = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en'
   s.open
   s.home_page(language_code: 'en')
   s
@@ -18,6 +18,8 @@ end
 
 class Post < RubyLangSite::Component
   select_by tag_name: 'div', class: 'post'
+
+  h3 :post_heading #, index: 0
 
   def post_title
     h3.text
@@ -53,8 +55,21 @@ class HomePage < RubyLangTemplate
   # matcher isn't provided.)
   set_url "/{language_code}/"
 
-  # Use the Posts component defined earlier.
-  # posts :posts, :divs, :class, 'post'
+  def args_and_block(*args, &block)
+    __method__
+  end
+
+  def args_only(*args)
+    __method__
+  end
+
+  def block_only(&block)
+    __method__
+  end
+
+  def method_only
+    __method__
+  end
 end
 
 # Models the news page, which shows summaries of the last ten most recent posts. The user
@@ -83,4 +98,98 @@ class NewsPostPage < RubyLangTemplate
   end
   a :d, index: 0
   # post :post, :div, :class, 'post'
+end
+
+class FooAttrPage < RubyLangTemplate
+  set_url "/{language}/{foo}"
+end
+
+class NoAttrPage < RubyLangTemplate
+  set_url "/en/"
+end
+
+class TestingPageNavDisabledOld < RubyLangTemplate
+  set_attributes :navigation_disabled
+  set_url "/en/security/"
+end
+
+class TestingPageNavDisabledNew < RubyLangTemplate
+  set_attributes :navigation_disabled
+  set_url "/en/security/"
+end
+
+class TestingPageNoArgs < RubyLangTemplate
+  set_url "/en/"
+end
+
+class TestingPageHasFrag < RubyLangTemplate
+  set_url "/en/test#frag"
+end
+
+class TestingPageBadMatcher < RubyLangTemplate
+  set_url_matcher /invalid/
+end
+
+class TestingPageFullURL < RubyLangTemplate
+  set_url "https://rubygems.org"
+  set_url_matcher /rubygems.org/
+end
+
+class BadSite
+  include Insite
+end
+
+# class BadPage < BadSite::Page
+#   set_url_matcher 'invalid'
+# end
+
+class EmptySite
+  include Insite
+end
+
+class GoogleSite
+  include Insite
+end
+
+class SearchPage < GoogleSite::Page
+end
+
+class GithubSite
+  include Insite
+end
+
+class ExplorePage < GithubSite::Page
+  set_url '/explore'
+end
+
+class TestingPageEmptyURL < GithubSite::Page
+  # set_url ''
+end
+
+class StripeSite
+  include Insite
+end
+
+class StripeConnectPage < StripeSite::Page
+  set_url "https://connect.stripe.com/oauth/authorize{?params*}"
+  set_attributes :navigation_disabled
+
+  link :sign_in, text: /Sign in/i
+end
+
+class Lang
+  attr_accessor :language
+
+  def initialize(language)
+    @language = language
+  end
+end
+
+# This class adds a little bit of functionality to the Post class it inherits
+# from.
+class PostSummary < Post
+
+  def continue_reading
+    links.last
+  end
 end

@@ -205,9 +205,6 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
-# binding.pry
-        # tmp = self.class.selector.merge(parse_args(args))
-        # @selector     = tmp
         @selector     = self.class.selector.merge(parse_args(args))
         @args         = @selector
         @non_relative = @args.delete(:non_relative) || false

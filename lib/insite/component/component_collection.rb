@@ -99,7 +99,6 @@ module Insite
     end
 
     def to_a
-# binding.pry
       out = []
       @target.to_a.each_with_index do |elem, idx|
         out << @collection_member_type.new(

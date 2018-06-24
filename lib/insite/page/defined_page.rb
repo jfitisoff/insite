@@ -186,16 +186,25 @@ module Insite
       # The set_url method is not mandatory. when defining a page. If you don't use set_url in the page
       # definition then the page will defined the base_url as the page's URL.
       def set_url(url)
-        url ? @page_url = url : nil
+        url ? @page_url = url.gsub(/(?<!:)\/\/+/, '/') : nil
       end
 
       def set_url_template(base_url)
         case @page_url
+        when nil, ''
+          @url_template = Addressable::Template.new(base_url)
         when /(http:\/\/|https:\/\/)/i
-          @url_template = Addressable::Template.new(@page_url)
+          @url_template = Addressable::Template.new(
+            @page_url.gsub(/(?<!:)\/\/+/, '/')
+          )
         else
-          @url_template = Addressable::Template.new(Addressable::URI.parse("#{base_url}#{@page_url}"))
+          @url_template = Addressable::Template.new(
+            Addressable::URI.parse(
+              "#{base_url}#{@page_url}".gsub(/(?<!:)\/\/+/, '/')
+            )
+          )
         end
+
         @has_fragment = @url_template.pattern =~ /#/
       end
 
@@ -306,7 +315,7 @@ module Insite
 
             if args[arg] #The hash has the required argument.
               @arguments[arg]= args[arg]
-            elsif match.keys.include?(arg.to_s)
+            elsif match && match.keys.include?(arg.to_s)
               @arguments[arg] = match[arg.to_s]
             elsif @site.respond_to?(arg)
               @arguments[arg] = site.public_send(arg)
@@ -484,7 +493,7 @@ module Insite
           raise(
             Insite::Errors::WrongPageError,
             "Navigation check failed after attempting to access the #{self.class.name} page. " \
-            "Current URL #{@browser.url} did not match #{@url_template.pattern}"
+            "Current URL #{@browser.url} did not match #{@url_template.expand(@arguments)}"
           )
         end
       end
