@@ -61,7 +61,7 @@ module Insite
 
   # Closes the site object's browser/driver.
   def close
-    @browser.close
+    @browser.close if browser?
   end
 
   def describe
@@ -136,7 +136,7 @@ EOF
   #  site.bar
   #  => 1
   # TODO: Sort args.
-  def initialize(base_url, **hsh)
+  def initialize(base_url = nil, hsh={})
     @arguments       = hsh.with_indifferent_access
     @base_url        = base_url
     @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
@@ -225,19 +225,22 @@ EOF
   #
   # If delegation doesn't work then a NoMethodError will be raised with some details about
   # what was attempted.
-  def method_missing(sym, *args, &block)
+  def method_missing(mth, *args, &block)
     original_page = @most_recent_page
-    if original_page.respond_to?(sym)
-      original_page.public_send(sym, *args, &block)
+    if original_page.respond_to?(mth)
+      original_page.public_send(mth, *args, &block)
     else
       new_page = page
-      if new_page.respond_to?(sym)
-        page.public_send(sym, *args, &block)
+      if new_page.respond_to?(mth)
+        page.public_send(mth, *args, &block)
+      elsif !new_page.defined?
+        raise NoMethodError, "Could not apply #{mth}. The current page could not be " \
+        "recognized. Current URL #{@browser.url}"
       else
         # TODO: Make it clearer where the method got called.
         raise(
           NoMethodError,
-          "Unable to apply method call :#{sym}. The site object doesn't support it. " \
+          "Unable to apply method call :#{mth}. The site object doesn't support it. " \
           "The currently displayed page (#{new_page}) doesn't support it either.\n" \
           "Page:\t\t#{new_page.class}\n" \
           "Current URL:\t#{@browser.url}\n\n",

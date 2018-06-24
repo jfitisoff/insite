@@ -4,10 +4,20 @@ Gem::Specification.new do |s|
   s.name        = 'insite'
   s.version     = Insite::VERSION
   s.date        = Time.now.strftime("%Y-%m-%d")
-  s.summary     = %q{Wraps page objects up into a site object, which provides some introspection and navigation capabilities that page objects don't provide. Works with Watir and Selenium.}
-  s.description = "Page object library."
+  doc = "Insite is a page object library that's geared towards writing reusable " \
+   "code for component-based web applications. It allows you to write reusable " \
+   "test components that model your application components. These components are " \
+   "interchangable with regular DOM objects. Insite uses a \"Site Object Model.\" " \
+   "You create a site object class and define pages and components for the site. " \
+   "You then use the site object as the interface to your application instead of " \
+   "declaring individual pages each time that the site context changes. Think of " \
+   "the site object as a browser for page objects."
+  s.summary     = doc
+  s.description = doc
   s.authors     = ["John Fitisoff"]
   s.email       = 'jfitisoff@yahoo.com'
+
+  s.required_ruby_version = ">=2.3.0"
 
   s.add_runtime_dependency "activesupport", [">=4.2.5"]
   s.add_runtime_dependency "addressable", [">=2.5.1"]
