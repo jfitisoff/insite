@@ -3,11 +3,11 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://coveralls.io/repos/jfitisoff/insite/badge.svg?nocache)](https://coveralls.io/r/jfitisoff/insite)
 
-Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc., allowing you to write test framework components that model recurring features in the application under test. This allows you to write code *once* for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
+Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc., allowing you to write test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
 
-This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a *site object*. This site object can be thought of as a *browser* for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
+This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
-All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) *or* as Components. Elements and Components are interchangable, meaning that they are designed to interact with each other.
+All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_ as Components. Elements and Components are interchangable, meaning that they are designed to interact with each other.
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
@@ -61,7 +61,7 @@ s = MySite.new "https://mysite.com"
 s.open
 
 # Log into the site. Note that there's no explicit navigation. If the login page
-# isn't displayed, navigation is *automatic*. If the page *is* being displayed
+# isn't displayed, navigation is _automatic_ If the page _is_ being displayed
 # then navigation doesn't occur since you're already there.
 s.login_page.login(email: "foo@bar.com", "P@ssword123")
 ```
@@ -126,7 +126,7 @@ class SomeComponent < MySite::Component
 end
 ```
 
-When defining the component, you'll usually want to defined how to *identify* it. This is done using the select_by method. This method is used to specify a base set of attributes (a "selector") that will be used to identify the Component:
+When defining the component, you'll usually want to defined how to _identify_ it. This is done using the select_by method. This method is used to specify a base set of attributes (a "selector") that will be used to identify the Component:
 
 ```ruby
 class SomeComponent < MySite::Component
@@ -134,7 +134,7 @@ class SomeComponent < MySite::Component
 end
 ```
 
-The selector attributes are locked. You can't overwrite them but you *can* add to them:
+The selector attributes are locked. You can't overwrite them but you _can_ add to them:
 ```ruby
 class ComponentExamplePage < MySite::Page
   set_url "/foo"
