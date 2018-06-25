@@ -5,7 +5,7 @@ end
 
 # Require hand-crafted artisanal components.
 %w(example_viewer mat_chip_list mat_chip mat_icon mat_form_field
-   mat_input mat_option mat_select_content mat_select).each do |c|
+   mat_input mat_option mat_select_content mat_select no_selector).each do |c|
   require "insite/examples/material_angular_io/components/#{c}"
 end
 
@@ -16,6 +16,9 @@ end
 # in some of the automated tests.
 class ChipsOverviewPage < MaterialAngularIO::Page
   set_url "/components/chips/overview"
+
+  no_selector :test_no_selector
+  no_selector :test_no_selector_with_args, tag_name: :div, index: 3
 
   elements :mat_examples_collection, tag_name: 'example-viewer'
   elements :modified_mat_examples_collection, tag_name: 'example-viewer' do

@@ -11,6 +11,7 @@ module Insite
     class Insite::Errors::PageInitError                   < StandardError; end
     class Insite::Errors::PageNavigationError             < StandardError; end
     class Insite::Errors::PageNavigationNotAllowedError   < StandardError; end
+    class Insite::Errors::ComponentSelectorError          < StandardError; end
     class Insite::Errors::SiteInitError                   < StandardError; end
     class Insite::Errors::WrongPageError                  < StandardError; end
   end

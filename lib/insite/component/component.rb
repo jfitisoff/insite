@@ -205,6 +205,16 @@ module Insite
         @args     = nil
         @target   = args[0]
       else
+        unless self.class.selector.present? || parse_args(args).present?
+          raise(
+            Insite::Errors::ComponentSelectorError,
+            "Unable to initialize a #{self.class} Component for #{parent.class}. " \
+            "A Component selector wasn't defined in this Component's class " \
+            "definition and the method call did not include selector arguments.",
+            caller
+          )
+        end
+
         @selector     = self.class.selector.merge(parse_args(args))
         @args         = @selector
         @non_relative = @args.delete(:non_relative) || false
@@ -296,7 +306,7 @@ module Insite
         if args[0].is_a? Hash
           page_arguments = args[0]
         elsif args.empty?
-          raise NoMethodError, "undefined method `#{k}' for #{self}: #{self.class}."
+          raise NoMethodError, "undefined method `#{mth}' for #{self}: #{self.class}."
         elsif args[0].nil?
           raise ArgumentError, "Optional argument for :#{mth} must be a hash. Got NilClass."
         else
