@@ -53,6 +53,7 @@ end
 **Note:** Components that are defined in this manner won't have any special functionality. You'll just get named methods that can be used to define and access HTML elements that use the custom tag. See below for information on how to build more complicated Components.
 
 # Usage in page definition:
+```ruby
 class ExamplePage < MySite::Page
   set_url "/foo"
 
