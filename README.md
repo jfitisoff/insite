@@ -39,7 +39,7 @@ class MySite
 end
 ```
 
-If your web application uses custom HTML tags, you can add support for these tags in the site's class definition using the set_custom_tags method, which is used to define an array of custom tag names:
+If your web application uses custom HTML tags, you can add support for these tags in the site's class definition using the set_custom_tags method, which takes an array of custom tag names and creates Components for each tag name:
 ```ruby
 class MySite
   include Insite
@@ -49,6 +49,8 @@ class MySite
   # the default attribute for selection.
   set_custom_tags "custom-tag1", "custom-tag2"
 end
+```
+**Note:** Components that are defined in this manner won't have any special functionality. You'll just get named methods that can be used to define and access HTML elements that use the custom tag. See below for information on how to build more complicated Components.
 
 # Usage in page definition:
 class ExamplePage < MySite::Page
