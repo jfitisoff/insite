@@ -4,6 +4,7 @@ Gem::Specification.new do |s|
   s.name        = 'insite'
   s.version     = Insite::VERSION
   s.date        = Time.now.strftime("%Y-%m-%d")
+  s.description = "Page object library with support for component-based web frameworks"
   doc = "Insite is a page object library that's geared towards writing reusable " \
    "code for component-based web applications. It allows you to write reusable " \
    "test components that model your application components. These components are " \
@@ -13,7 +14,6 @@ Gem::Specification.new do |s|
    "declaring individual pages each time that the site context changes. Think of " \
    "the site object as a browser for page objects."
   s.summary     = doc
-  s.description = doc
   s.authors     = ["John Fitisoff"]
   s.email       = 'jfitisoff@yahoo.com'
 
