@@ -11,6 +11,14 @@ All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
+# Sample Code
+Some sample code for material.angular.io can be found here:
+[angular.material.io](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io)
+
+Some support for content projection and reverse host projection (ngcontent/nghost) will be added in the next release.
+
+**Note:** This is not an Angular-specific library.
+
 # Installation:
 ```
  gem install insite
@@ -22,6 +30,7 @@ All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_
 # Basic Usage
 
 ## Creating a site object
+You just need to require the gem and then create a site class that includes the Insite module.
 ```ruby
 require 'insite'
 
@@ -30,7 +39,38 @@ class MySite
 end
 ```
 
-## Creating a page for a site
+If your web application uses custom HTML tags, you can add support for these tags in the site's class definition using the set_custom_tags method, which is used to define an array of custom tag names:
+```ruby
+class MySite
+  include Insite
+
+  # When the site is initialized, a Component will be created for
+  # each of these tags. The Component uses the specified tag as
+  # the default attribute for selection.
+  set_custom_tags "custom-tag1", "custom-tag2"
+end
+
+# Usage in page definition:
+class ExamplePage < MySite::Page
+  set_url "/foo"
+
+  custom_tag1 :accessor_for_custom_tag1, id: "foo"
+end
+
+# Named accessor method for ExamplePage:
+s.example_page.accessor_for_custom_tag1
+=> #<CustomTag1: located: true; @selector={:tag_name: "custom-tag1", :id=>"foo"}>
+
+# Default Component accessor method with arguments:
+s.custom_tag1(text: "Foo")
+=> #<CustomTag1: located: true; @selector={"custom-tag1", :text=>"Foo"}>
+
+# Collection accessor:
+s.custom_tag1s
+=> #<CustomTag1Collection: located: true; @selector={"custom-tag1", :text=>"Foo"}>
+```
+
+## Creating Page Objects
 ```ruby
 # A site's pages should inherit from the site's Page class.
 class LoginPage < MySite::Page
@@ -52,7 +92,7 @@ class LoginPage < MySite::Page
 end
 ```
 
-## Using the new site object
+## Using the Site Object
 ```ruby
 # Create a new instance of the site object.
 s = MySite.new "https://mysite.com"
@@ -166,7 +206,7 @@ class ExampleComponent < MySite::Component
 end
 ```
 
-### Creating a Component
+### Components with Custom Functionality
 ```ruby
 # Components should inherit from the site's Component class.
 class MatChip < MaterialAngularIO::Component
