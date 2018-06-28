@@ -104,9 +104,9 @@ class FooAttrPage < RubyLangTemplate
   set_url "/{language}/{foo}"
 end
 
-class NoAttrPage < RubyLangTemplate
-  set_url "/en/"
-end
+# class NoAttrPage < RubyLangTemplate
+#   set_url "/en/noattr/"
+# end
 
 class TestingPageNavDisabledOld < RubyLangTemplate
   set_attributes :navigation_disabled
