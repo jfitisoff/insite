@@ -22,7 +22,7 @@ module Insite
   end
 
   def self.tag_to_class(tag)
-    CLASS_MAP[Watir.tag_to_class[tag]] || Insite::HTMLElement
+    CLASS_MAP[Watir.tag_to_class[tag.to_sym]] || Insite::HTMLElement
   end
 
   # Automatically sets up a Page class when Insite is included. Probably overkill
