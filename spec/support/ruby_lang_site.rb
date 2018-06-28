@@ -55,6 +55,7 @@ class HomePage < RubyLangTemplate
   # matcher isn't provided.)
   set_url "/{language_code}/"
 
+
   def args_and_block(*args, &block)
     __method__
   end
@@ -104,9 +105,9 @@ class FooAttrPage < RubyLangTemplate
   set_url "/{language}/{foo}"
 end
 
-# class NoAttrPage < RubyLangTemplate
-#   set_url "/en/noattr/"
-# end
+class NoAttrPage < RubyLangTemplate
+  set_url "/en/community/"
+end
 
 class TestingPageNavDisabledOld < RubyLangTemplate
   set_attributes :navigation_disabled
