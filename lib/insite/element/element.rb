@@ -41,11 +41,11 @@ module Insite
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
 
-      if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
+      if args[0].is_a?(Insite::Element) || args[0].is_a?(Watir::Element)
         @target   = args[0].target
         @selector = @target.selector.dup
         @args     = @selector
-      elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
+      elsif  args[0].is_a?(Insite::ElementCollection) || args[0].is_a?(Watir::ElementCollection)
         @args     = nil
         @selector = @target.instance_variable_get(:@selector).dup
         @args     = @selector
@@ -60,6 +60,15 @@ module Insite
           )
         else
           @args = parse_args(args.dup)
+        end
+
+        # Figure out the correct query scope.
+        @non_relative = @args.delete(:non_relative) || false
+        if @non_relative
+          @parent = parent.site
+        else
+          parent.respond_to?(:target) ? obj = parent : obj = parent.site
+          @parent = obj
         end
         @selector = @args
 

@@ -1,6 +1,6 @@
 module Insite
   class ComponentCollection
-    attr_reader :args, :collection_member_type, :browser, :indentifiers, :site, :target
+    attr_reader :args, :collection_member_type, :browser, :indentifiers, :parent, :site, :target
     class_attribute :selector, default: {}
     self.selector  = self.selector.clone
 
@@ -43,38 +43,36 @@ module Insite
     end
 
     def initialize(parent, *args)
-      # Figure out the correct query scope.
-      parent.respond_to?(:target) ? obj = parent : obj = parent.site
-      @parent   = obj
-
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
       @selector = @collection_member_type.selector
 
-      if args[0].is_a?(Insite::Element) || args[0].is_a?(Insite::ElementCollection)
+      if args[0].is_a?(Insite::Element) || args[0].is_a?(Watir::Element)
         @dom_type = nil
         @args     = nil
         @target   = args[0].target
-      elsif  args[0].is_a?(Watir::Element) || args[0].is_a?(Watir::ElementCollection)
+      elsif  args[0].is_a?(Insite::ElementCollection) || args[0].is_a?(Watir::ElementCollection)
         @dom_type = nil
         @args     = nil
         @target   = args[0]
       else
-        @args = parse_args(args)
+
+        @args     = parse_args(args)
+        @selector = @args
+
+        @non_relative = @args.delete(:non_relative) || false
+        if @non_relative
+          @parent = parent.site
+        else
+          parent.respond_to?(:target) ? obj = parent : obj = parent.site
+          @parent = obj
+        end
 
         if watir_class = Insite::CLASS_MAP.key(self.class)
-          if @parent.respond_to?(:target)
-            @target = watir_class.new(@parent.target, @args)
-          else
-            @target = watir_class.new(@browser, @args)
-          end
+          @target = watir_class.new(@parent.target, @args)
         else
-          if @parent.respond_to?(:target)
-            @target = Watir::HTMLElementCollection.new(@parent.target, @args)
-          else
-            @target = Watir::HTMLElementCollection.new(@browser, @args)
-          end
+          @target = Watir::HTMLElementCollection.new(@parent.target, @args)
         end
       end
     end

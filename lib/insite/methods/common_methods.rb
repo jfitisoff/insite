@@ -190,7 +190,8 @@ module Insite
 
     # Duplicates Watir DOM element argument parsing for element methods.
     private
-    def parse_args(args)
+    def parse_args(*args)
+      args = args.flatten if args.is_a?(Array)
       case args.length
       when 2
         return { args[0] => args[1] }
