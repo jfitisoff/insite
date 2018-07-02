@@ -1,6 +1,6 @@
 if ENV['CIRCLE_ARTIFACTS']
   require 'coveralls'
-  Coveralls.wear!
+  Coveralls.wear_merged!
 
   # save to CircleCI's artifacts directory if we're on CircleCI
   require 'simplecov'
@@ -8,7 +8,7 @@ if ENV['CIRCLE_ARTIFACTS']
 
   SimpleCov.start do
     coverage_dir dir
-    add_filter   'spec'
+    add_filter   'spec', 'examples'
   end
 end
 
