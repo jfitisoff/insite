@@ -64,31 +64,6 @@ module Insite
     @browser.close if browser?
   end
 
-  def describe
-puts <<-EOF
-Wrapper class for all pages defined for the site.
-Site:\t#{self.class} (#{__FILE__})
-Base URL:\t#{@base_url}
-Browser:\t#{@browser}
-Current Page:\t#{page.class}
-
-Page Accessor Methods (Use '?' with name to check for presence.)
------------------------------------------------------------------
-#{
-  tmp = []
-  max = pages.map(&:to_s).max { |x| x.length }
-  if max.length > 40
-    pages.map(&:to_s).sort.map(&:underscore).join("\n")
-  else
-    pages.map(&:to_s).sort.map(&:underscore).each_slice(2) do |arr|
-      tmp << arr[0].to_s.ljust(40) + arr[1].to_s.ljust(40)
-    end
-    tmp.join("\n")
-  end
-}
-EOF
-  end
-
   # Returns a Selenium driver object.
   def driver
     @browser.driver
@@ -99,23 +74,24 @@ EOF
     browser?
   end
 
-  def generate_tag_classes
-    tags = []
-    cli = Highline.new
+  # def generate_tag_classes
+  #   tags = []
+  #   cli = Highline.new
+  #
+  #   loop do
+  #     tags = (tags + find_non_standard_tags).uniq.sort
+  #     cli.choose do |menu|
+  #       menu.prompt "Found #{tags.length} non-standard tags. Choose one of the following options:"
+  #       menu.choice(:list_tags) { puts tags.join(",\n") + "\n" }
+  #       menu.choice(:continue)  {}
+  #       menu.choice(:write_to_console) do
+  #       end
+  #       menu.choice(:exist_without_writing) { break }
+  #
+  #     end
+  #   end
+  # end
 
-    loop do
-      tags = (tags + find_non_standard_tags).uniq.sort
-      cli.choose do |menu|
-        menu.prompt "Found #{tags.length} non-standard tags. Choose one of the following options:"
-        menu.choice(:list_tags) { puts tags.join(",\n") + "\n" }
-        menu.choice(:continue)  {}
-        menu.choice(:write_to_console) do
-        end
-        menu.choice(:exist_without_writing) { break }
-
-      end
-    end
-  end
   # Creates a site object, which will have accessor methods for all pages that
   # you have defined for the site. This object takes a hash argument. There is
   # only one required value (the base_url for the site.) Example:

@@ -12,27 +12,6 @@ module Insite
       false
     end
 
-    def describe
-  puts <<-EOF
-  Page Class:\t#{name} (#{__FILE__})
-  URL Template:\tNA
-  URL Matcher:\tNA
-
-  Page class for any page that hasn't been defined (or that Insite doesn't recognize.)
-
-  Note: If there is a page class that is defined for this page that isn't getting
-  loaded, try the following:
-   - Review the pages URL template for problems. A URL template is *not* an interpolated
-     string -- it just looks like one. See the documentation for more details.
-   - If the URL template seems to be designed correctly for loading the page, but the
-     page's URL changes after the load, you will need to look at adding a URL matcher,
-     which overrides the URL template for purposes of checking whether the page object
-     is matching the currently displayed page after it has been loaded.
-
-  Page Elements:\tNA
-  EOF
-    end
-
     def driver
       @browser.driver
     end
@@ -50,8 +29,8 @@ module Insite
     # TODO: Do the same cache check that's done for a defined page and reapply the
     # method if the cache is updated and the new page DOES respond to the method.
     def method_missing(mth, *args, &block)
-      raise NoMethodError, "Could not apply #{mth}. The current page could not be " \
-      "recognized. Current URL #{@browser.url}"
+      raise NoMethodError, "Could not apply #{mth}. The current page couldn't " \
+      "be recognized. Current URL #{@browser.url}"
     end
 
     # Returns a Nokogiri object for the page HTML.

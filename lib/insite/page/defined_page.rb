@@ -220,25 +220,6 @@ module Insite
         regexp ? @url_matcher = regexp : nil
       end
 
-      # Used to import page features for use within the page. Example:
-      #
-      #  class ConfigPage < MySite::Page
-      #    use_features :footer, :sidebar
-      #  end
-      #
-      # Then, once the page object has been initialized:
-      #
-      #  site.config_page.footer.about.click
-      #
-      # Use the PageFeature class to define page features.
-      def use_features(*args)
-        if @page_features
-          @page_feature += args
-        else
-          @page_features = args
-        end
-      end
-
       def component_method(method_name, component_symbol, component_method, target_element)
         @component_methods ||= []
         @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
@@ -499,7 +480,6 @@ module Insite
       end
 
       @site.most_recent_page = self
-      self
     end
   end
 end
