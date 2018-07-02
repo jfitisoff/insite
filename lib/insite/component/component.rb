@@ -32,11 +32,6 @@ module Insite
       elsif Watir::Browser.methods.include?(name.to_s.underscore.to_sym)
         raise "#{name} cannot be used as a component name, as the methodized version of the class name (#{name.to_s.underscore} conflicts with a Insite::Browser method.)"
       end
-
-      if tmp =~ /.*s+/
-        raise "Invalid component type :#{tmp}. You can create a component for the DOM object but it must be for :#{tmp.singularize} (:#{tmp} will be created automatically.)"
-      end
-
     end # Self.
 
     extend Forwardable
@@ -87,15 +82,15 @@ module Insite
 
             # One way or another there must be some arguments to identify the
             # component.
-            if klass.selector
+            if klass.selector.present?
               hsh = parse_args(a.to_a).merge(klass.selector)
             elsif a.present?
               hsh = parse_args(a)
             else
               raise(
                 Insite::Errors::ComponentReferenceError,
-                "Unable to initialize #{nstring}. Base selector options were " \
-                "not defined in the component's class definition and no " \
+                "Unable to initialize the #{nstring} component. No selector " \
+                "options were defined in the component's class definition and no " \
                 "selector options were defined in the class or class instance " \
                 "method call."
               )
