@@ -1,5 +1,5 @@
 require 'coveralls'
-Coveralls.wear_all!
+Coveralls.wear!
 
 # save to CircleCI's artifacts directory if we're on CircleCI
 require 'simplecov'
