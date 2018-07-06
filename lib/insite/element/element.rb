@@ -34,11 +34,11 @@ module Insite
       false
     end
 
-    def initialize(parent, *args)
-      parent.respond_to?(:target) ? obj = parent : obj = parent.site
-      @parent   = obj
+    def initialize(query_scope, *args)
+      query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+      @query_scope   = obj
 
-      @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
+      @site     = query_scope.class.ancestors.include?(Insite) ? query_scope : query_scope.site
       @browser  = @site.browser
 
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Watir::Element)
@@ -65,17 +65,17 @@ module Insite
         # Figure out the correct query scope.
         @non_relative = @args.delete(:non_relative) || false
         if @non_relative
-          @parent = parent.site
+          @query_scope = query_scope.site
         else
-          parent.respond_to?(:target) ? obj = parent : obj = parent.site
-          @parent = obj
+          query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+          @query_scope = obj
         end
         @selector = @args
 
         if watir_class = Insite::CLASS_MAP.key(self.class)
-          @target = watir_class.new(@parent.target, @args)
+          @target = watir_class.new(@query_scope.target, @args)
         else
-          @target = Watir::HTMLElement.new(@parent.target, @args)
+          @target = Watir::HTMLElement.new(@query_scope.target, @args)
         end
       end
     end
@@ -121,7 +121,7 @@ module Insite
       if out == @target
         self
       elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
-         Insite::CLASS_MAP[out.class].new(@parent, out)
+         Insite::CLASS_MAP[out.class].new(@query_scope, out)
       else
         out
       end
@@ -130,8 +130,8 @@ module Insite
     def present?
       sleep 0.1
       begin
-        if @parent
-          if @parent.respond_to?(:present?) && @parent.present? && @target.present?
+        if @query_scope
+          if @query_scope.respond_to?(:present?) && @query_scope.present? && @target.present?
             true
           else
             false
