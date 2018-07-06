@@ -105,14 +105,12 @@ module Watir
           if tag = send(k).instance_variable_get(:@selector)[:tag_name]
             <<-EOS.gsub(/^\s{12}(?!\S|\n|$)/, '')
                 def #{k}(*args)
-                  # respond_to?(:target) ? obj = self : obj = @browser
                   #{v}.new(self, parse_args(args).merge(tag_name: "#{tag}"))
                 end
             EOS
           else
             <<-EOS.gsub(/^\s{12}(?!\S|\n|$)/, '')
                 def #{k}(*args)
-                  # respond_to?(:target) ? obj = self : obj = @browser
                   #{v}.new(self, parse_args(args))
                 end
             EOS
@@ -120,7 +118,6 @@ module Watir
         else
           <<-EOS.gsub(/^\s{10}(?!\S|\n|$)/, '')
               def #{k}(*args)
-                # respond_to?(:target) ? obj = self : obj = @browser
                 #{v}.new(self, parse_args(args))
               end
           EOS
