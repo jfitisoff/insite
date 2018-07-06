@@ -129,27 +129,34 @@ module Insite
 
     def self.select_by(hsh = {})
       tmp = selector.clone
-      hsh.each do |k, v|
-        if %i(css, xpath).include? k
-          raise ArgumentError, "The :#{k} selector argument is not currently allowed for component definitions."
-        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
-          raise(
-            ArgumentError,
-            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
-            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
-            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
-            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
-            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
-            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
-            "#{self} component.\n\n",
-            caller
-          )
-        elsif tmp[k].is_a?(Array)
+      # intersection = (tmp.keys & hsh.keys).map do |k|
+      #   if k.is_a?(Symbol)
+      #     "Attribute:\t:#{k}"
+      #   else
+      #     "Attribute:\t'#{k}'"
+      #   end
+      # end.join("\n")
+
+      # if intersection.present?
+      #   raise(
+      #     Insite::Errors::ComponentSelectorError,
+      #     "\n\nOne or more duplicate selector arguments were defined in the #{self} component. " \
+      #     "definition. This component inherits from the #{superclass} component, which already includes " \
+      #     "the attribute(s) that you are trying to use. This method only allows you to specify initial defaults " \
+      #     "OR add to inherited defaults. If you truly want to change the inherited selector arguments " \
+      #     "use the Component#select_by! method instead, which completely overwrites the attributes " \
+      #     "inherited from the parent class. ",
+      #     caller
+      #   )
+      # else
+        hsh.each do |k, v|
+          if tmp[k].is_a?(Array)
             tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
-        else
-          tmp[k] = v
+          else
+            tmp[k] = v
+          end
         end
-      end
+      # end
       self.selector = tmp
     end
 
