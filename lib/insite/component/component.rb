@@ -129,34 +129,15 @@ module Insite
 
     def self.select_by(hsh = {})
       tmp = selector.clone
-      # intersection = (tmp.keys & hsh.keys).map do |k|
-      #   if k.is_a?(Symbol)
-      #     "Attribute:\t:#{k}"
-      #   else
-      #     "Attribute:\t'#{k}'"
-      #   end
-      # end.join("\n")
 
-      # if intersection.present?
-      #   raise(
-      #     Insite::Errors::ComponentSelectorError,
-      #     "\n\nOne or more duplicate selector arguments were defined in the #{self} component. " \
-      #     "definition. This component inherits from the #{superclass} component, which already includes " \
-      #     "the attribute(s) that you are trying to use. This method only allows you to specify initial defaults " \
-      #     "OR add to inherited defaults. If you truly want to change the inherited selector arguments " \
-      #     "use the Component#select_by! method instead, which completely overwrites the attributes " \
-      #     "inherited from the parent class. ",
-      #     caller
-      #   )
-      # else
-        hsh.each do |k, v|
-          if tmp[k].is_a?(Array)
-            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
-          else
-            tmp[k] = v
-          end
+      hsh.each do |k, v|
+        if tmp[k].is_a?(Array)
+          tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
+        else
+          tmp[k] = v
         end
-      # end
+      end
+
       self.selector = tmp
     end
 
@@ -184,10 +165,6 @@ module Insite
     #
     # In some cases, dom_type can also be a Watir DOM object, and in this case, the
     # args are ignored and the component is initialized using the DOM object.
-    #
-    # TODO: Needs a rewrite, lines between individual and collection are blurred
-    # here and that makes the code more confusing. And there should be a proper
-    # collection class for element collections, with possibly some AR-like accessors.
     def initialize(parent, *args)
       @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
       @browser  = @site.browser
