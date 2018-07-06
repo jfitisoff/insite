@@ -1,6 +1,6 @@
 module Insite
   class ComponentCollection
-    attr_reader :args, :collection_member_type, :browser, :indentifiers, :parent, :site, :target
+    attr_reader :args, :collection_member_type, :browser, :indentifiers, :query_scope, :site, :target
     class_attribute :selector, default: {}
     self.selector  = self.selector.clone
 
@@ -42,8 +42,8 @@ module Insite
       length == 0
     end
 
-    def initialize(parent, *args)
-      @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
+    def initialize(query_scope, *args)
+      @site     = query_scope.class.ancestors.include?(Insite) ? query_scope : query_scope.site
       @browser  = @site.browser
       @collection_member_type = self.class.instance_variable_get(:@collection_member_type)
       @selector = @collection_member_type.selector
@@ -63,23 +63,23 @@ module Insite
 
         @non_relative = @args.delete(:non_relative) || false
         if @non_relative
-          @parent = parent.site
+          @query_scope = query_scope.site
         else
-          parent.respond_to?(:target) ? obj = parent : obj = parent.site
-          @parent = obj
+          query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+          @query_scope = obj
         end
 
         if watir_class = Insite::CLASS_MAP.key(self.class)
-          @target = watir_class.new(@parent.target, @args)
+          @target = watir_class.new(@query_scope.target, @args)
         else
-          @target = Watir::HTMLElementCollection.new(@parent.target, @args)
+          @target = Watir::HTMLElementCollection.new(@query_scope.target, @args)
         end
       end
     end
 
     def inspect
       @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
-      "#<#{self.class}: @parent: #{@parent}; @selector=#{s}>"
+      "#<#{self.class}: @query_scope: #{@query_scope}; @selector=#{s}>"
     end
 
     def last
@@ -100,7 +100,7 @@ module Insite
       out = []
       @target.to_a.each_with_index do |elem, idx|
         out << @collection_member_type.new(
-          @parent,
+          @query_scope,
           @args.merge!(index: idx)
         )
       end

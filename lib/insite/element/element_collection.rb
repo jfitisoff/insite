@@ -30,13 +30,13 @@ module Insite
       end
     end
 
-    def initialize(parent, *args)
+    def initialize(query_scope, *args)
       @collection_member_type = self.class.collection_member_type
 
       # Figure out the correct query scope.
-      parent.respond_to?(:target) ? obj = parent : obj = parent.site
-      @parent   = obj
-      @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
+      query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+      @query_scope   = obj
+      @site     = query_scope.class.ancestors.include?(Insite) ? query_scope : query_scope.site
       @browser  = @site.browser
       if args[0].is_a?(Insite::Element) || args[0].is_a?(Watir::Element)
         @target   = args[0].target
@@ -54,13 +54,13 @@ module Insite
           # Figure out the correct query scope.
           @non_relative = @args.delete(:non_relative) || false
           if @non_relative
-            @parent = parent.site
+            @query_scope = query_scope.site
           else
-            parent.respond_to?(:target) ? obj = parent : obj = parent.site
-            @parent = obj
+            query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+            @query_scope = obj
           end
 
-          @target   = Watir::HTMLElementCollection.new(@parent.target, @args)
+          @target   = Watir::HTMLElementCollection.new(@query_scope.target, @args)
         else
           @args   = parse_args(args).merge(
             tag_name: Insite.class_to_tag(@collection_member_type)
@@ -70,14 +70,14 @@ module Insite
           # Figure out the correct query scope.
           @non_relative = @args.delete(:non_relative) || false
           if @non_relative
-            @parent = parent.site
+            @query_scope = query_scope.site
           else
-            parent.respond_to?(:target) ? obj = parent : obj = parent.site
-            @parent = obj
+            query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+            @query_scope = obj
           end
           @selector = @args
 
-          @target   = Insite::CLASS_MAP.key(self.class).new(@parent.target, @args)
+          @target   = Insite::CLASS_MAP.key(self.class).new(@query_scope.target, @args)
         end
       end
     end
@@ -96,7 +96,7 @@ module Insite
 
     def inspect
       @selector.empty? ? s = '{element: (selenium element)}' : s = @selector.to_s
-      "#<#{self.class}: @parent: #{@parent}; @selector=#{s}>"
+      "#<#{self.class}: @query_scope: #{@query_scope}; @selector=#{s}>"
     end
 
     def last
@@ -113,7 +113,7 @@ module Insite
       out = []
       @target.to_a.each_with_index do |elem, idx|
         out << @collection_member_type.new(
-          @parent,
+          @query_scope,
           @args.merge(index: idx)
         )
       end

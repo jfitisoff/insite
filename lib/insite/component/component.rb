@@ -7,7 +7,7 @@ require 'pry'
 # into components that can be reused across multiple pages.
 module Insite
   class Component
-    attr_reader :args, :browser, :non_relative, :parent, :selector, :site, :type, :target
+    attr_reader :args, :browser, :non_relative, :query_scope, :selector, :site, :type, :target
     class_attribute :selector, default: {}
     self.selector  = self.selector.clone
 
@@ -129,27 +129,15 @@ module Insite
 
     def self.select_by(hsh = {})
       tmp = selector.clone
+
       hsh.each do |k, v|
-        if %i(css, xpath).include? k
-          raise ArgumentError, "The :#{k} selector argument is not currently allowed for component definitions."
-        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
-          raise(
-            ArgumentError,
-            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
-            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
-            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
-            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
-            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
-            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
-            "#{self} component.\n\n",
-            caller
-          )
-        elsif tmp[k].is_a?(Array)
-            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
+        if tmp[k].is_a?(Array)
+          tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
         else
           tmp[k] = v
         end
       end
+
       self.selector = tmp
     end
 
@@ -177,12 +165,8 @@ module Insite
     #
     # In some cases, dom_type can also be a Watir DOM object, and in this case, the
     # args are ignored and the component is initialized using the DOM object.
-    #
-    # TODO: Needs a rewrite, lines between individual and collection are blurred
-    # here and that makes the code more confusing. And there should be a proper
-    # collection class for element collections, with possibly some AR-like accessors.
-    def initialize(parent, *args)
-      @site     = parent.class.ancestors.include?(Insite) ? parent : parent.site
+    def initialize(query_scope, *args)
+      @site     = query_scope.class.ancestors.include?(Insite) ? query_scope : query_scope.site
       @browser  = @site.browser
       @component_elements = self.class.component_elements
 
@@ -196,7 +180,7 @@ module Insite
         unless self.class.selector.present? || parse_args(args).present?
           raise(
             Insite::Errors::ComponentSelectorError,
-            "Unable to initialize a #{self.class} Component for #{parent.class}. " \
+            "Unable to initialize a #{self.class} Component for #{query_scope.class}. " \
             "A Component selector wasn't defined in this Component's class " \
             "definition and the method call did not include selector arguments.",
             caller
@@ -209,19 +193,19 @@ module Insite
         # Figure out the correct query scope.
         @non_relative = @args.delete(:non_relative) || false
         if @non_relative
-          @parent = parent.site
+          @query_scope = query_scope.site
         else
-          parent.respond_to?(:target) ? obj = parent : obj = parent.site
-          @parent = obj
+          query_scope.respond_to?(:target) ? obj = query_scope : obj = query_scope.site
+          @query_scope = obj
         end
 
         # See if there's a Watir DOM method for the class. If not, then
         # initialize using the default HTML element.
         watir_class = Insite::CLASS_MAP.key(self.class)
         if watir_class && watir_class != Watir::HTMLElement
-          @target = watir_class.new(@parent.target, @args)
+          @target = watir_class.new(@query_scope.target, @args)
         else
-          @target = Watir::HTMLElement.new(@parent.target, @args)
+          @target = Watir::HTMLElement.new(@query_scope.target, @args)
         end
 
         # New webdriver approach.
@@ -273,7 +257,7 @@ module Insite
         if out == @target
           self
         elsif out.is_a?(Watir::Element) || out.is_a?(Watir::ElementCollection)
-          Insite::CLASS_MAP[out.class].new(@parent, out)
+          Insite::CLASS_MAP[out.class].new(@query_scope, out)
         else
           out
         end
@@ -381,8 +365,8 @@ module Insite
     def present?
       sleep 0.1
       begin
-        if @parent
-          if @parent.present? && @target.present?
+        if @query_scope
+          if @query_scope.present? && @target.present?
             true
           else
             false
