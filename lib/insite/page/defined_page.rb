@@ -2,7 +2,7 @@
 # TODO: Add page query methods.
 module Insite
   class DefinedPage
-    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :url_hash, :component_elements
+    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :component_elements
 
     include Insite::CommonMethods
     extend  Insite::ComponentMethods
@@ -186,19 +186,6 @@ module Insite
             )
           )
         end
-
-        if @url_template.variables.present?
-          @url_hash = nil
-        else
-          @url_hash = @url_template.pattern.hash
-        end
-
-        # @static_template_components_xpath = @url_template
-        #   .pattern
-        #   .split("://")
-        #   .last.gsub(/\{\S+?\}/, '/')[/[^,\/]\S+[\/,#,$]/]
-        #   .split('/')
-        #   .reject {|str| str.empty? }
 
         @has_fragment = @url_template.pattern =~ /#/
       end
