@@ -102,7 +102,7 @@ class NewsPostPage < RubyLangTemplate
 end
 
 class FooAttrPage < RubyLangTemplate
-  set_url "/{language}/{foo}"
+  set_url "/{foo}/about/"
 end
 
 class NoAttrPage < RubyLangTemplate
