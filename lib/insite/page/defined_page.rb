@@ -214,10 +214,6 @@ module Insite
       end
     end # Self.
 
-    def describe
-      self.class.describe
-    end
-
     def defined?
       true
     end
