@@ -129,6 +129,34 @@ module Insite
 
     def self.select_by(hsh = {})
       tmp = selector.clone
+      hsh.each do |k, v|
+        if %i(css, xpath).include?(k) && tmp.keys.any? { |key| key != k }
+          raise ArgumentError, "The :#{k} selector argument cannot be used in conjunction with other " \
+          "selector arguments. Current selector arguments: :#{tmp.keys.join(", :")}."
+          # "Current selector arguments: #{tmp.map { |k, v| "#{k}:"} }is not currently allowed for component definitions."
+        elsif k == :tag_name && tmp[k] && v && tmp[k] != v
+          raise(
+            ArgumentError,
+            "\n\nInvalid use of the :tag_name selector in the #{self} component class. This component inherits " \
+            "from the #{superclass} component, which already defines #{superclass.selector[:tag_name]} as " \
+            "the tag name. If you are intentionally trying to overwrite the tag name in the inherited class, " \
+            "use #{self}.select_by! in the page definition in place of #{self}.select_by. Warning: The " \
+            "select_by! method arguments overwrite the selector that were inherited from #{superclass}. " \
+            "So if you DO use it you'll need to specify ALL of the selector needed to properly identify the " \
+            "#{self} component.\n\n",
+            caller
+          )
+        elsif tmp[k].is_a?(Array)
+            tmp[k] = ([tmp[k]].flatten + [v].flatten).uniq
+        else
+          tmp[k] = v
+        end
+      end
+      self.selector = tmp
+    end
+
+    def self.select_by(hsh = {})
+      tmp = selector.clone
 
       hsh.each do |k, v|
         if tmp[k].is_a?(Array)

@@ -113,13 +113,17 @@ module Insite
   #  => 1
   # TODO: Sort args.
   def initialize(base_url = nil, hsh={})
-    @arguments       = hsh.with_indifferent_access
-    @base_url        = base_url
-    @browser_type    = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
-    @pages           = self.class::DefinedPage.descendants.reject { |p| p.page_template? }
+    @arguments    = hsh.with_indifferent_access
+    @base_url     = base_url
+    @browser_type = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
 
-    # Build generic components for custom tags, which are defined
-    # using Site.custom_tags.
+    # Cull templates from array of pages that gets returned (since templates
+    # should never be used directly.)
+    @pages = self.class::DefinedPage.descendants.reject do |pg|
+      pg.page_template?
+    end
+
+    # Builds generic components for custom tags.
     if self.class.custom_tags
       self.class.custom_tags.each do |tag|
         # TODO: Ditch string interpolation.
@@ -156,6 +160,14 @@ module Insite
           end
         end
       end
+    end
+
+    # Sort templates by variable count: Templates with more vars will be
+    # prioritized. This will partially eliminate the potential for a match on
+    # the wrong template when there are two or more templates that match the
+    # URL.
+    @pages = @pages.sort do |pg1, pg2|
+      pg1.url_template.variables.length <=> pg2.url_template.variables.length
     end
 
     visited = Set.new
@@ -298,15 +310,53 @@ module Insite
   # URL in the browser.
   #
   # If a matching page can't be found then Insite will return an "undefined page"
-  # object. See the Un class for more details.
+  # object. See the UndefinedPage class for more details.
   def page
+    # 1.)
+    # Before anything else, look to see if it's the most recent page:
     return @most_recent_page if @most_recent_page && @most_recent_page.on_page?
     url = @browser.url
+
     found_page = nil
+    # 2.)
+    # Ensure that static templates are always prioritized when attempting to
+    # match, which will prevent the wrong template from getting matched in this
+    # scenario:
+    #  - "/accounts/{account_code}"
+    #  - "/accounts/new"
+    #
+    # Start by working through the array from FRONT to BACK, since any static
+    # templates will be at the front of the array. Stop when we start to see
+    # templates whth vars (These will get handled in the next statement.)
     @pages.each do |pg|
+      break if pg.url_template.variables.length > 0
+
       if pg.url_matcher && pg.url_matcher =~ url
         found_page = pg
-      elsif !pg.url_matcher && pg.url_template.match(url)
+      elsif pg.url_template.match(url)
+        found_page = pg
+      else
+        next
+      end
+
+      break if found_page
+    end
+
+    # 3.) Now we've reached the templates that include one or more variables.
+    # For these, we want to try to match on the templates with more variables.
+    # This prevents an invalid match in the following situation and removes the
+    # need to provide a URL matcher to override the URL template:
+    # - "/accounts/{account_code}/edit"
+    # - "/accounts/{account_code}"
+    # Now work through all the array from BACK to FRONT, stopping when we reach
+    # the point where we see templates without a var (since those were already
+    # handled above.)
+    @pages.reverse.each do |pg|
+      break if pg.url_template.variables.length == 0
+
+      if pg.url_matcher && pg.url_matcher =~ url
+        found_page = pg
+      elsif pg.url_template.match(url)
         found_page = pg
       else
         next

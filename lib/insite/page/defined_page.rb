@@ -12,26 +12,8 @@ module Insite
     alias_method :update_page, :update_object
 
     class << self
-      attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_template
+      attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_hash, :url_template
       attr_accessor :component_elements
-
-      def describe
-    puts <<-EOF
-    Page Class:\t#{name} (#{__FILE__})
-    URL Template:\t#{@url_template.pattern}"
-    URL Matcher:\t#{@url_matcher || 'Not specified.'}
-
-    Contains user-defined logic for a single page.
-
-    Page Elements:\n#{@page_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
-
-    Components:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
-
-    Features:\n#{@component_elements.sort.map { |x| "  #{x} #{x.class.to_s.methodize}\n" }.join }
-
-    EOF
-
-      end
 
       # Allows you to set special page attributes that affect page behavior. The two page
       # attributes currently supported are :navigation_disabled and :page_template:

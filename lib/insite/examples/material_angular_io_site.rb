@@ -10,6 +10,14 @@ end
   require "insite/examples/material_angular_io/components/#{c}"
 end
 
+class OneVarTemplatePage < MaterialAngularIO::Page
+  set_url "/components/chips/overview/{var1}"
+end
+
+class TwoVarTemplatePage < MaterialAngularIO::Page
+  set_url "/components/chips/overview/{var1}/{var2}"
+end
+
 # Most of the pages for material.angular.io are auto-generated because
 # their URLs match a pattern. But some custom page definitions are included
 # below. This first overwrites the auto-generated page definition for
