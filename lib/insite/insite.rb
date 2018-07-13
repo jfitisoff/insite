@@ -215,6 +215,7 @@ module Insite
   # what was attempted.
   def method_missing(mth, *args, &block)
     original_page = @most_recent_page
+
     if original_page.respond_to?(mth)
       original_page.public_send(mth, *args, &block)
     else
@@ -235,6 +236,8 @@ module Insite
           caller
         )
       end
+    else
+      super
     end
   end
 

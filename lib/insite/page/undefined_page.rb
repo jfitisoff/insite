@@ -35,7 +35,7 @@ module Insite
 
     # Returns a Nokogiri object for the page HTML.
     def nokogiri
-      @site.nokogiri
+      Nokogiri::HTML(html)
     end
 
     # Similar to the method that you can call on a page object you've defined (but always
