@@ -202,16 +202,16 @@ module Insite
         regexp ? @url_matcher = regexp : nil
       end
 
-      def component_method(method_name, component_symbol, component_method, target_element)
-        @component_methods ||= []
-        @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
-
-        define_method(method_name) do |*args, &block|
-          self.class.const_get(component_symbol.to_s.camelize)
-          .new(@site, @site.send(target_element))
-          .send(component_method, *args, &block)
-        end
-      end
+      # def component_method(method_name, component_symbol, component_method, target_element)
+      #   @component_methods ||= []
+      #   @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
+      #
+      #   define_method(method_name) do |*args, &block|
+      #     self.class.const_get(component_symbol.to_s.camelize)
+      #     .new(@site, @site.send(target_element))
+      #     .send(component_method, *args, &block)
+      #   end
+      # end
     end # Self.
 
     def defined?
