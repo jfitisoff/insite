@@ -220,6 +220,7 @@ module Insite
       original_page.public_send(mth, *args, &block)
     else
       new_page = page
+
       if new_page.respond_to?(mth)
         page.public_send(mth, *args, &block)
       elsif !new_page.defined?
@@ -236,8 +237,6 @@ module Insite
           caller
         )
       end
-    else
-      super
     end
   end
 
