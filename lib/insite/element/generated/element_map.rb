@@ -284,7 +284,6 @@ module Insite
     "Insite::RadialGradient"=>[:radial_gradient],
     "Insite::RadialGradientCollection"=>[:radial_gradients],
     "Insite::Radio"=>[:radio],
-    "Insite::RadioSet"=>[:radio_set],
     "Insite::RadioCollection"=>[:radios],
     "Insite::Rect"=>[:rect],
     "Insite::RectCollection"=>[:rects],
