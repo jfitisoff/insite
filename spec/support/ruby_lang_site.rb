@@ -140,6 +140,13 @@ class BadSite
   include Insite
 end
 
+# class SiteWithBadPageMatcher
+#   include Insite
+#
+#   class TestingPageStringMatcher < RubyLangTemplate
+#     set_url_matcher 'whoops'
+#   end
+# end
 # class BadPage < BadSite::Page
 #   set_url_matcher 'invalid'
 # end

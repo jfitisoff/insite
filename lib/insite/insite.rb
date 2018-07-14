@@ -1,4 +1,5 @@
 require 'timeout'
+require_relative 'methods/common_methods'
 
 # Usage:
 #  require 'insite'
@@ -7,17 +8,20 @@ require 'timeout'
 #    include Insite
 #  end
 module Insite
-  attr_reader :base_url, :unique_methods, :browser_type
+  attr_reader :base_url, :unique_methods, :browser_type, :site
   attr_accessor :pages, :browser, :arguments, :most_recent_page
+
+  include CommonMethods
 
   def self.class_to_tag(klass)
     if klass.respond_to?(:collection) && klass.collection?
-      Watir.tag_to_class.key(klass) ||
-      Watir.tag_to_class.key(CLASS_MAP.key(klass)) ||
-      Watir.tag_to_class.key(CLASS_MAP.key(klass.collection_member_class))
+      (
+        Watir.tag_to_class.key(klass) ||
+        Watir.tag_to_class.key(CLASS_MAP.key(klass)) ||
+        Watir.tag_to_class.key(CLASS_MAP.key(klass.collection_member_class))
+      )
     else
-      Watir.tag_to_class.key(klass) ||
-      Watir.tag_to_class.key(CLASS_MAP.key(klass))
+      Watir.tag_to_class.key(klass) || Watir.tag_to_class.key(CLASS_MAP.key(klass))
     end
   end
 
@@ -113,6 +117,7 @@ module Insite
   #  => 1
   # TODO: Sort args.
   def initialize(base_url = nil, hsh={})
+    @site = self
     @arguments    = hsh.with_indifferent_access
     @base_url     = base_url
     @browser_type = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
@@ -191,6 +196,10 @@ module Insite
     @browser.elements(xpath: non_standard_tag_xpath).map do |e|
       e.html.match(/<(\S+?(?=[\s,>]))/)[1]
     end.uniq.sort
+  end
+
+  def html
+    @browser.html
   end
 
   def html_tags
@@ -317,6 +326,7 @@ module Insite
     # 1.)
     # Before anything else, look to see if it's the most recent page:
     return @most_recent_page if @most_recent_page && @most_recent_page.on_page?
+    process_browser
     url = @browser.url
 
     found_page = nil
