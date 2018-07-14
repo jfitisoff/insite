@@ -12,10 +12,6 @@ module Insite
     end
     alias nokogiri document
 
-    # Returns a string representation of the page.
-    def inspect
-      "#<#{self.class.name}:#{object_id} @url=#{@browser.url}>"
-    end
 
     private
     def process_browser
@@ -57,6 +53,46 @@ module Insite
 
     end
     public
+    # private
+    # def process_browser
+    #   if @site.browser.is_a?(Watir::Browser)
+    #     begin
+    #       if @site.browser.exists?
+    #         return @site.browser
+    #       else
+    #         raise(
+    #           Insite::Errors::BrowserClosedError,
+    #           "Browser check failed. The browser is no longer present.\n\n"
+    #         )
+    #       end
+    #     rescue(Insite::Errors::BrowserNotOpenError) => e
+    #       raise e
+    #     rescue => e
+    #       raise(
+    #         Insite::Errors::BrowserResponseError,
+    #         <<~eos
+    #         Browser check failed. The browser returned an #{e.class} (#{e}) when it was queried.
+    #         Backtrace for the error:
+    #         #{e.backtrace.join("\n")}
+    #
+    #         eos
+    #       )
+    #     end
+    #   elsif @site.browser.nil?
+    #     raise(
+    #       Insite::Errors::BrowserNotOpenError,
+    #       "A browser has not been defined for the site. Try using Site#open to " \
+    #       "start a browser.\n\n"
+    #     )
+    #   else
+    #     raise(
+    #       Insite::Errors::BrowserNotValidError,
+    #       "Expected: Watir::Browser. Actual: #{@site.browser.class}.\n\n"
+    #     )
+    #   end
+    #
+    # end
+    # public
 
     def update_object(hash_args = {})
       rescues = [

@@ -1,7 +1,8 @@
 require_relative 'support/spec_helper'
 require_relative 'support/ruby_lang_site'
 
-describe "Page Object" do
+# TODO: Needs organizing
+describe "page objects" do
 
   before(:all) do
     @github = GithubSite.new('https://github.com/')
@@ -17,6 +18,20 @@ describe "Page Object" do
   after(:all) do
     @site.close
     @github.close
+  end
+
+  context "site methods" do
+    it "returns false for #browser? when browser doesn't exist" do
+      expect(GithubSite.new('https://github.com/').browser?).to eq false
+    end
+
+    it "returns a driver object when #driver is called" do
+      expect(@github.driver).to be_instance_of Selenium::WebDriver::Chrome::Driver
+    end
+
+    it "returns false for #driver? when driver doesn't exist" do
+      expect(GithubSite.new('https://github.com/').driver?).to eq false
+    end
   end
 
   it "raises when the visit method is called on a page that does not allow navigation" do
@@ -44,7 +59,7 @@ describe "Page Object" do
   end
 
   it "raises a PageInitError when hash args don't include required param" do
-  @site.arguments[:language] = nil
+    @site.arguments[:language] = nil
     expect { @site.foo_attr_page wrong: 'argument' }.to raise_error Insite::Errors::PageInitError
   end
 
@@ -80,7 +95,9 @@ describe "Page Object" do
   end
 
   it "raises an error when a page matcher doesn't match when the page is visited" do
-    expect { @site.testing_page_bad_matcher.visit }.to raise_error Insite::Errors::WrongPageError
+    expect {
+      @site.testing_page_bad_matcher.visit
+    }.to raise_error Insite::Errors::WrongPageError
   end
 
   it "defines a ? method to verify page display" do
