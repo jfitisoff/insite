@@ -1,8 +1,6 @@
 require_relative 'support/spec_helper'
 require_relative 'support/ruby_lang_site'
 
-Pry.config.pager = false
-
 describe Insite::UndefinedPage do
   before(:all) do
     @s = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en'

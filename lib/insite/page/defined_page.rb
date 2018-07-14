@@ -214,12 +214,20 @@ module Insite
       # end
     end # Self.
 
+    def browser?
+      @site.browser?
+    end
+
     def defined?
       true
     end
 
     def driver
       @browser.driver
+    end
+
+    def driver?
+      browser?
     end
 
     def html
