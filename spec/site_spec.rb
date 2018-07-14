@@ -7,7 +7,11 @@ describe "page objects" do
   before(:all) do
     @github = GithubSite.new('https://github.com/')
     @github.open
-    @site = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en'
+    @site = RubyLangSite.new(
+      "https://www.ruby-lang.org/",
+      language_code: "en",
+      libs: "libraries"
+    )
     @site.open
   end
 
