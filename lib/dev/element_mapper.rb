@@ -23,6 +23,7 @@ module Watir
       end.to_h
     end
 
+    # TODO: Watir::RadioSet
     def method_map
       mmap = {}
       unprocessed = []

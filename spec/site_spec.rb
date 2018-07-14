@@ -7,7 +7,11 @@ describe "page objects" do
   before(:all) do
     @github = GithubSite.new('https://github.com/')
     @github.open
-    @site = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en'
+    @site = RubyLangSite.new(
+      "https://www.ruby-lang.org/",
+      language_code: "en",
+      libs: "libraries"
+    )
     @site.open
   end
 
@@ -74,6 +78,10 @@ describe "page objects" do
 
   it "can tell it's on the page when there are no page args" do
     expect(@site.testing_page_no_args.on_page?).to be_truthy
+  end
+
+  it "pulls from site args when a page arg is missing" do
+    expect(@site.libraries_page).to be_truthy
   end
 
   it "uses URL fragment for a page url template that specifies one" do

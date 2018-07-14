@@ -25,8 +25,6 @@ module Insite
               "Browser check failed. The browser is no longer present.\n\n"
             )
           end
-        rescue(Insite::Errors::BrowserNotOpenError) => e
-          raise e
         rescue => e
           raise(
             Insite::Errors::BrowserResponseError,

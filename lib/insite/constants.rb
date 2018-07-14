@@ -1,4 +1,3 @@
-
 module Insite
   METHOD_MAP = {Watir::Rect=>[:rect],
    Watir::Menu=>[:menu],
@@ -169,7 +168,6 @@ module Insite
   Watir::Use=>[:use],
   Watir::TableCaption=>[:caption],
   Watir::FieldSet=>[:fieldset, :field_set],
-  Watir::RadioSet=>[:radio_set],
   Watir::FieldSetCollection=>[:fieldsets, :field_sets],
   Watir::Input=>[:input],
   Watir::Output=>[:output],
@@ -316,7 +314,7 @@ module Insite
     bdis         colgroup    div               font              h6s         kbds     menuitems         optgroups    radial_gradient   select_list   svgs       time
     bdo          colgroups   divs              fonts             hatchpath   keygen   menus             option       radial_gradients  select_lists  switch     times
     bdos         cols        dl                footer            hatchpaths  keygens  mesh              options      radio             selects       switches   titles
-    blockquote   cursor      dls               footers           head        label    meshes            output       radio_set         small         symbol     tr
+    blockquote   cursor      dls               footers           head        label    meshes            output       small             symbol        tr
     blockquotes  cursors     dt                foreign_object    header      labels   meshgradient      outputs      radios            smalls        symbols    track
     body         data        dts               foreign_objects   headers     legend   meshgradients     p            rb                solidcolor    table      tracks
     bodys        datalist    element           form              heads       legends  meshpatch         param        rbs               solidcolors   tables     trs
