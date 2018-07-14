@@ -111,7 +111,6 @@ class LibrariesPage < RubyLangTemplate
   set_url "/en/{libs}/"
 end
 
-https://www.ruby-lang.org/en/libraries/
 class NoAttrPage < RubyLangTemplate
   set_url "/en/community/"
 end
