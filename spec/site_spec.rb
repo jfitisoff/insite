@@ -76,6 +76,10 @@ describe "page objects" do
     expect(@site.testing_page_no_args.on_page?).to be_truthy
   end
 
+  it "pulls from site args when a page arg is missing" do
+    expect(@site.libraries_page).to be_truthy
+  end
+
   it "uses URL fragment for a page url template that specifies one" do
     expect(@site.testing_page_has_frag.page_url).to match %r{/en/test#frag$}
   end

@@ -17,6 +17,10 @@ describe Insite::DefinedPage do
     expect(page.defined?).to eq true
   end
 
+  it "returns a boolean when #browser? is called" do
+    expect(page.browser?).to be_true
+  end
+
   it "returns a selenium driver when #driver is called" do
     expect(page.driver).to be_instance_of Selenium::WebDriver::Chrome::Driver
   end
@@ -25,4 +29,7 @@ describe Insite::DefinedPage do
     expect(Nokogiri::HTML(page.html)).to be_instance_of Nokogiri::HTML::Document
   end
 
+  it "returns the page title displayed in browser when #title is called" do
+    expect(page.title)).to eq page.browser.title
+  end
 end

@@ -1,7 +1,7 @@
 require 'insite'
 
 def new_session
-  s = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en'
+  s = RubyLangSite.new 'https://www.ruby-lang.org/', language_code: 'en', libs: 'libraries'
   s.open
   s.home_page(language_code: 'en')
   s
@@ -105,6 +105,13 @@ class FooAttrPage < RubyLangTemplate
   set_url "/{foo}/about/"
 end
 
+# Test page to confirm that missing args can be pulled from site args if
+# they're included there.
+class LibrariesPage < RubyLangTemplate
+  set_url "/en/{libs}/"
+end
+
+https://www.ruby-lang.org/en/libraries/
 class NoAttrPage < RubyLangTemplate
   set_url "/en/community/"
 end
