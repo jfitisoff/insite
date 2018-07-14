@@ -3,7 +3,7 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
 
-Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc., allowing you to write test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
+Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
