@@ -9,5 +9,6 @@ if ENV['CIRCLE_ARTIFACTS']
 end
 
 SimpleCov.start do
+  add_filter 'examples'
   add_filter 'spec'
 end
