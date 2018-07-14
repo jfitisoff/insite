@@ -18,7 +18,7 @@ describe Insite::DefinedPage do
   end
 
   it "returns a boolean when #browser? is called" do
-    expect(page.browser?).to be_true
+    expect(page.browser?).to eq true
   end
 
   it "returns a selenium driver when #driver is called" do
@@ -30,6 +30,6 @@ describe Insite::DefinedPage do
   end
 
   it "returns the page title displayed in browser when #title is called" do
-    expect(page.title)).to eq page.browser.title
+    expect(page.title).to eq page.browser.title
   end
 end
