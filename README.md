@@ -1,7 +1,7 @@
 # insite
 [![Gem Version](https://badge.fury.io/rb/insite.svg)](https://rubygems.org/gems/insite)
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
-[![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)
 
 Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
 
@@ -12,10 +12,7 @@ All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
 # Sample Code
-Some sample code for material.angular.io can be found here:
-[angular.material.io](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io)
-
-Some support for content projection and reverse host projection (ngcontent/nghost) will be added in the next release.
+Some sample code for material.angular.io can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
 
 **Note:** This is not an Angular-specific library.
 
@@ -30,7 +27,7 @@ Some support for content projection and reverse host projection (ngcontent/nghos
 # Basic Usage
 
 ## Creating a site object
-You just need to require the gem and then create a site class that includes the Insite module.
+To create a site, you just need to require the gem and then create a site class that includes the Insite module.
 ```ruby
 require 'insite'
 
@@ -64,16 +61,59 @@ end
 s.example_page.accessor_for_custom_tag1
 => #<CustomTag1: located: true; @selector={:tag_name: "custom-tag1", :id=>"foo"}>
 
-# Default Component accessor method with arguments:
+# But even if you don't define a _named_ version of your CustomTag1 component  
+# for a _specific_ page you'll still be able to access your component from _any_
+# page using a default accessor method that automatically gets created:
 s.custom_tag1(text: "Foo")
 => #<CustomTag1: located: true; @selector={"custom-tag1", :text=>"Foo"}>
 
-# Collection accessor:
+# When a Component is defined a collection class automatically gets defined for
+# it, as well as a default method for accessing it:
 s.custom_tag1s
 => #<CustomTag1Collection: located: true; @selector={"custom-tag1", :text=>"Foo"}>
+
+# It's also possible to do inline modifications to a component when a page has
+# some special functionality (You just need to define the additional
+# functionality in a block argument.)
+class BatmanPage < MySite::Page
+  set_url "/batman"
+
+  custom_tag1 :batman_component, id: "bman" do
+    def batman_returns
+      return "Batman"
+    end
+  end
+end
+
+# Usage:
+s.batman_page.batman_component.batman_returns
+=> "Batman"
+
+# When a block argument is provided, a modified, page-specific version of the
+# component is defined within the page's namespace. The special version of the
+# component includes the functionality specified in the block argument (In this
+# example, it's a single method that returns a string value.)
 ```
 
-## Creating Page Objects
+## Creating a Site Object
+```ruby
+# Create a new instance of the site object.
+s = MySite.new "https://mysite.com"
+
+# Open a browser. You can pass browser arguments in if necessary and they'll get
+# just passed through to the constructor (See Watir/Selenium docs describing
+# args allowed when creating new browser/driver instances.)
+s.open
+
+# Log into the site. Note that there's no explicit navigation. If the login page
+# isn't displayed, navigation is _automatic_ If the page _is_ being displayed
+# then navigation doesn't occur since you're already there.
+s.login_page.login(email: "foo@bar.com", password: "P@ssword123")
+```
+
+## Creating page objects for your site
+Once you've created your site object (by including Insite) you just need to have your page object classes inherit from your site's page class, which gets created when the module is included. Below is a page object for the example shown above. An accessor method for your page is automatically defined on the site object for each page that you create.
+
 ```ruby
 # A site's pages should inherit from the site's Page class.
 class LoginPage < MySite::Page
@@ -95,20 +135,6 @@ class LoginPage < MySite::Page
 end
 ```
 
-## Using the Site Object
-```ruby
-# Create a new instance of the site object.
-s = MySite.new "https://mysite.com"
-
-# Open a browser.
-s.open
-
-# Log into the site. Note that there's no explicit navigation. If the login page
-# isn't displayed, navigation is _automatic_ If the page _is_ being displayed
-# then navigation doesn't occur since you're already there.
-s.login_page.login(email: "foo@bar.com", "P@ssword123")
-```
-
 # Elements and Components
 Elements are standard DOM objects e.g., div, span, etc. Components are reusable widgets for recurring features in your application (cards, pagination, toggle widget etc.) These features can be identified by class, tag name, xpath, css etc.
 
@@ -125,9 +151,11 @@ s.component1.element1
 ## Elements
 Elements are any standard DOM object (div, span etc.) Insite provides page object class methods for defining element accessors for these -- see the page object example above, which defines element accessors for two text fields and a button.
 
-Element methods are predefined for page objects. When defining a page object class there should be element methods that correspond to all of the standard HTML tags.
+Insite uses Watir for browser operations so if you're familiar with that API it should feel pretty much the same. The main difference is that all Watir DOM classes are wrapped in an Insite element class. The main reason for the wrapper classes at the moment are to allow interoperability between components and elements. But the plan is to add additional functionality going forward (geared towards making it easier to write page objects and components.)
 
-### Simple element examples
+When an element is defined for a page, there's just one basic accessor that gets created for the element. That's actually by design. Please note that all pages support an update_page method that takes a hash of element names and values and then applies each value to the specified element. This method figures out whether the element is a text field, check box, file field etc., and then does the appropriate thing with the value when working with the element. See the log in code snippet above for a simple example.
+
+### Element definition examples
 
 ``` ruby
 # Element accessor for a div element that contains customer info.
@@ -143,7 +171,7 @@ spans :phone_numbers, id /^phone-\d+/
 element :first_name, tag_name: "input", id: "fname"
 ```
 
-### Element with block argument
+### Element definitions with a block argument
 
 ```ruby
 # More complex div element containing sub-elements.
@@ -169,7 +197,7 @@ class SomeComponent < MySite::Component
 end
 ```
 
-When defining the component, you'll usually want to defined how to _identify_ it. This is done using the select_by method. This method is used to specify a base set of attributes (a "selector") that will be used to identify the Component:
+When defining a component, you'll usually want to define how to _identify_ it. This is done using the select_by method. This method is used to specify a base set of attributes (a "selector") that will be used to find the component:
 
 ```ruby
 class SomeComponent < MySite::Component
@@ -177,19 +205,19 @@ class SomeComponent < MySite::Component
 end
 ```
 
-The selector attributes are locked. You can't overwrite them but you _can_ add to them:
+The selector attributes are locked by default. You can't overwrite them but you _can_ add to them:
 ```ruby
 class ComponentExamplePage < MySite::Page
   set_url "/foo"
 
   # Text isn't defined in the base selector so it gets added and the accessor
   # method for this component will find the element using the following:
-  # tag_name: "foo", class: "bar", text: "Foo Bar Baz"
-  some_component :foo_bar_baz, text: "Foo Bar Baz"
+  # tag_name: "foo", class: "bar", text: "Foo Bar Baz" (case insensitive.)
+  some_component :foo_bar_baz, text: /Foo Bar Baz/i
 end
 ```
 
-When defining a Component that inherits from another Component, you can use the select_by! method to overwrite the selector defined for the superclass:
+But you can overwrite the defaults if you use the select_by! method, which will completely overwrite an inherited selector
 
 ```ruby
 class SomeComponent < MySite::Component
@@ -202,7 +230,7 @@ class SomeOtherComponent < SomeComponent
 end
 ```
 
-It's not actually necessary to define a Component selector. However, If you don't specify a selector you'll be required to specify arguments to identify the component:
+It's not actually necessary to define a component selector. However, If you don't specify one you'll always be required to specify selector arguments when using the component in a page definition or calling the default accessor method that gets created when a component is defined (see above.)
 
 ```ruby
 class ExampleComponent < MySite::Component
