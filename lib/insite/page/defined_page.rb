@@ -331,7 +331,6 @@ module Insite
         end
 
         self.class_eval do
-          #klass = fname.to_s.camelize.constantize
           if klass.alias
             define_method(klass.alias) do
               klass.new(self)

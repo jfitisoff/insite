@@ -26,7 +26,7 @@ Some sample code for material.angular.io can be found [here](https://github.com/
 
 # Basic Usage
 
-## Creating a site object
+## Defining a site object
 To create a site, you just need to require the gem and then create a site class that includes the Insite module.
 ```ruby
 require 'insite'
@@ -36,7 +36,7 @@ class MySite
 end
 ```
 
-If your web application uses custom HTML tags, you can add support for these tags in the site's class definition using the set_custom_tags method, which takes an array of custom tag names and creates Components for each tag name:
+If your web application uses custom HTML tags, you can add support for these tags in the site's class definition using the set_custom_tags method, which takes an array of custom tag names and creates components for each tag name:
 ```ruby
 class MySite
   include Insite
@@ -47,53 +47,8 @@ class MySite
   set_custom_tags "custom-tag1", "custom-tag2"
 end
 ```
-**Note:** Components that are defined in this manner won't have any special functionality. You'll just get named methods that can be used to define and access HTML elements that use the custom tag. See below for information on how to build more complicated Components.
 
-# Usage in page definition:
-```ruby
-class ExamplePage < MySite::Page
-  set_url "/foo"
-
-  custom_tag1 :accessor_for_custom_tag1, id: "foo"
-end
-
-# Named accessor method for ExamplePage:
-s.example_page.accessor_for_custom_tag1
-=> #<CustomTag1: located: true; @selector={:tag_name: "custom-tag1", :id=>"foo"}>
-
-# But even if you don't define a _named_ version of your CustomTag1 component  
-# for a _specific_ page you'll still be able to access your component from _any_
-# page using a default accessor method that automatically gets created:
-s.custom_tag1(text: "Foo")
-=> #<CustomTag1: located: true; @selector={"custom-tag1", :text=>"Foo"}>
-
-# When a Component is defined a collection class automatically gets defined for
-# it, as well as a default method for accessing it:
-s.custom_tag1s
-=> #<CustomTag1Collection: located: true; @selector={"custom-tag1", :text=>"Foo"}>
-
-# It's also possible to do inline modifications to a component when a page has
-# some special functionality (You just need to define the additional
-# functionality in a block argument.)
-class BatmanPage < MySite::Page
-  set_url "/batman"
-
-  custom_tag1 :batman_component, id: "bman" do
-    def batman_returns
-      return "Batman"
-    end
-  end
-end
-
-# Usage:
-s.batman_page.batman_component.batman_returns
-=> "Batman"
-
-# When a block argument is provided, a modified, page-specific version of the
-# component is defined within the page's namespace. The special version of the
-# component includes the functionality specified in the block argument (In this
-# example, it's a single method that returns a string value.)
-```
+**Note:** Components that are defined in this manner won't have any special functionality. You'll just get named methods that can be used to define and access HTML elements that use the custom tag. See below for information on how components work and how to build more complicated components with custom functionality.
 
 ## Creating a Site Object
 ```ruby
@@ -174,7 +129,8 @@ element :first_name, tag_name: "input", id: "fname"
 ### Element definitions with a block argument
 
 ```ruby
-# More complex div element containing sub-elements.
+# More complex element definition (A div element containing multiple
+# sub-elements.)
 div :allow_purchase_code, class: "multi-currency", do
   button :enable, id: "pc-enable"
   radio  :initial_purchase, id: "pc-initial-only"
@@ -184,11 +140,11 @@ end
 ```
 
 ## Components
-Components are pseudo-elements that are designed to model recurring UI features.
+Components are pseudo-elements that you define. They are DOM element wrappers that are designed to model recurring UI features.
 
 ### Creating Components
 
-To define a Component you just need to create a class that inherits from the site object's Component class:
+To define a component you just need to create a class that inherits from the site object's Component class:
 
 ```ruby
 # Note: When you define a class for an individual Component a collection class
