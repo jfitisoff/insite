@@ -3,7 +3,7 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)
 
-Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code everywhere that the feature occurs.
+Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
@@ -90,10 +90,106 @@ class LoginPage < MySite::Page
 end
 ```
 
-# Elements and Components
-Elements are standard DOM objects e.g., div, span, etc. Components are reusable widgets for recurring features in your application (cards, pagination, toggle widget etc.) These features can be identified by class, tag name, xpath, css etc.
+## Elements and Components
 
-Element methods are automatically defined. Component methods automatically get defined when you create a Component class for your site as defined below.
+### Elements
+Elements are _standard_ DOM objects e.g., divs, spans, inputs etc. Components are reusable widgets for recurring features in your application (cards, pagination, toggle widget etc.) Elements can be identified by the ways that you would normally expect (one or more attributes or CSS/XPath.)
+
+When defining your page object classes there are class-level methods that model all of the standard DOM objects as well as methods that model _collections_ of those objects.
+
+```ruby
+# Defines a page accessor method for a single div element:
+div :single_div_method, text: "Some Label"
+
+# Defines a page accessor method for a collection of div elements:
+divs :all_divs_on_page
+
+# Using the methods defined above:
+page.single_div_method.text
+=> "Some Label"
+
+page.all_divs_on_page.length
+=> 11
+```
+
+### Components
+
+Your web application pages likely have common features that are implemented in the same or in a similar way everywhere they show up in your application. Components allow you to write portable implementations of those features that you can apply everywhere that the feature occurs. Benefits:
+
+ * Page implementations become more standardized. If you use the same component everywhere that the feature occurs then the way that you interface with the feature is uniform throughout the application.
+ * Easier maintenance. When you use components, the implementation is in one place and you don't have to make changes in multiple places. You can also make changes to your framework code much more quickly.
+
+Components are customizable wrappers around DOM elements. The process of identifying components is a little more complicated than identifying DOM elements. Each DOM element has a unique tag. Components are a little more abstract. They're designed to model features that your developers are writing and there may be (hopefully minor) variations in how that feature is implemented in the UI. For example, sometimes a UI card might be implemented in a div and sometimes in a section.
+
+Components allow you specify a sort of base selector in the component definition. This base selector is intended to identify the component in the same way that a standard DOM element is identified.
+
+Ideally, you want to find one thing (or a reliable combination of things) that you can use to uniquely identify components on a page. In some cases you can do that by class, or maybe the component uses a non-standard HTML tag. But you can have more complicated cases. For example, maybe you are trying to model cards in your application and the cards are sometimes implemented in a div and sometimes in a section. It may take a little work to figure this out but it's well worth it. Here's an example of a component definition for a toggle widget:
+
+```ruby
+# Component must inherit from your site's Component class (this class is
+# automatically added to your site when you include Insite.)
+class UIToggle < MySite::Component
+  select_by class: 'Toggle'
+
+  def on
+    click unless on?
+  end
+
+  # The HTML method returns the component's HTML.
+  def on?
+    html.match(/-toggle-on/)
+  end
+
+  def off
+    click unless off?
+  end
+
+  def off?
+    !off?
+  end
+end
+```
+
+When a component is defined you automatically get support for calling it in a variety of ways. Here's how you would use the toggle in a page object definition:
+
+```ruby
+# Accessor methods in page object class definitions:
+class FooPage < MySite::Page
+  set_url '/foo'
+
+  # Creates a 'site_access' method that returns a UIToggle:
+  ui_toggle :site_access_toggle text: "Site Access"
+
+  # Creates an 'all_special_toggles' method that returns a Toggle collection:
+  ui_toggles :all_special_toggles, class: 'special-toggle'
+end
+
+# Usage:
+s.my_toggle_page # OR page = s.my_toggle_page
+s.site_access_toggle.on
+
+s.all_special_toggles.first.on?
+=> false
+```
+
+There are also some instance methods that automatically get added to all of your page object classes for the component. You get "generic" methods for the component on your page instances, one for a single instance of the component, another for a collection. The method names are the snake-case version of the component's class name (or the pluralized version of the name in the case of a collection.)
+
+```ruby
+s.my_toggle_page
+
+# Any page instance supports these component methods:
+
+# Get first toggle on page
+s.ui_toggle
+
+# Get toggle with specific text:
+s.ui_toggle text: "Special Toggle"
+
+# Get a toggle collection:
+s.ui_toggles
+```
+
+To recap, when you define a component you can create named accessor methods for the component when you are defining page objects. If you don't define accessor methods in your page object definitions you'll still get methods for working with your components.
 
 ### Elements and Components are Interchangeable
 Elements and Components can interact with each other:
