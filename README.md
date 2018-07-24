@@ -91,7 +91,9 @@ end
 ```
 
 ## Creating components for your site (and using them in pages)
-Sample component definition:
+
+
+Sample component definitions for two components:
 
 # Components should inherit from your site's Component class, which
 # automatically gets created when you include Insite. In this case,
@@ -103,18 +105,22 @@ Sample component definition:
 class MatChipList < MaterialAngularIO::Component
   select_by tag_name: 'mat-chip-list'
 
+  # Adds a chip using the given text input.
   def add(value)
     mat_input(ngcontent => true).set(value + "\n")
   end
 
+  # Clears the chip list's input field.
   def clear_input(value)
     mat_input(ngcontent => true).clear
   end
 
+  # Remove an input (assumes chip is removable.)
   def remove(value)
     mat_input(ngcontent => true).mat_icon.click
   end
 
+  # Sets the input field.
   def set_input(value)
     mat_input(ngcontent => true).set(value)
   end
@@ -148,6 +154,9 @@ class MatChip < MaterialAngularIO::Component
     element(class: 'mat-chip-select').exist?
   end
 end
+```
+
+Here's a page object definition that defines an accessor method for the first chip list on the page:
 
 ```ruby
 # See https://material.angular.io/components/chips/overview
@@ -158,6 +167,43 @@ class ChipsOverviewPage < MaterialAngularIO::Page
   mat_chip :first_chip_example, index: 0
 end
 ```
+
+Here's how you would use these components on the page when working with your site:
+
+```ruby
+s = MaterialAngularIO.new("https://material.angular.io")
+
+s.open
+
+s.chips_overview_page
+
+s.first_chip_example.mat_chips.length
+=> 4
+
+s.first_chip_example.mat_chips.first.text
+=> "One fish"
+
+s.first_chip_example.mat_chips.first.removable?
+=> false
+```
+
+In the example above, a named accessor method was created for a particular page. Sometimes it's useful to label things. But insite also automatically defines "generic" component accessor methods that you can use on any page. So as long as the component is defined you could use the components described above on any page without writing any additional code:
+
+```ruby
+# Return an object for the second chip list on the page.
+s.mat_chip_list(index: 2)
+
+# Return a collection of chip lists.
+s.mat_chip_lists
+
+# Return the first chip on the page with text "Apple":
+s.mat_chip(text: "Apple")
+
+# Return a collection representing all chips on the page:
+s.mat_chips
+```
+
+
 
 ## Elements and Components
 
