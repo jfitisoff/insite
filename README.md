@@ -7,7 +7,7 @@ Insite is a page object library that is geared towards supporting component-base
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
-All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_ as Components. Elements and Components are interchangable, meaning that they are designed to interact with each other.
+All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_ as Components. Components are custom, portable widgets that you can use to model common features in your web application. Elements and Components are interchangable. Components can be called from elements and vice versa.
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
@@ -90,6 +90,75 @@ class LoginPage < MySite::Page
 end
 ```
 
+## Creating components for your site (and using them in pages)
+Sample component definition:
+
+# Components should inherit from your site's Component class, which
+# automatically gets created when you include Insite. In this case,
+# the site's class name is MaterialAngularIO.
+
+```ruby
+# A chip list contains a set of chips.
+# See https://material.angular.io/components/chips/overview for more details.
+class MatChipList < MaterialAngularIO::Component
+  select_by tag_name: 'mat-chip-list'
+
+  def add(value)
+    mat_input(ngcontent => true).set(value + "\n")
+  end
+
+  def clear_input(value)
+    mat_input(ngcontent => true).clear
+  end
+
+  def remove(value)
+    mat_input(ngcontent => true).mat_icon.click
+  end
+
+  def set_input(value)
+    mat_input(ngcontent => true).set(value)
+  end
+end
+
+# Component that models an individual chip within a chip list.
+class MatChip < MaterialAngularIO::Component
+  select_by tag_name: 'mat-chip'
+
+  def disabled?
+    element(class: 'mat-chip-disabled').exist?
+  end
+
+  def label
+    nokogiri.xpath('//text()')[0]
+  end
+
+  def remove
+    element(class: 'mat-chip-remove').click
+  end
+
+  def removable?
+    element(class: 'mat-chip-remove').exist?
+  end
+
+  def selected?
+    aria_selected == 'true'
+  end
+
+  def selectable?
+    element(class: 'mat-chip-select').exist?
+  end
+end
+
+```ruby
+# See https://material.angular.io/components/chips/overview
+class ChipsOverviewPage < MaterialAngularIO::Page
+  set_url "/components/chips/overview"
+
+  # Defines a
+  mat_chip :first_chip_example, index: 0
+end
+```
+
 ## Elements and Components
 
 ### Elements
@@ -114,125 +183,12 @@ page.all_divs_on_page.length
 
 ### Components
 
-Your web application pages likely have common features that are implemented in the same or in a similar way everywhere they show up in your application. Components allow you to write portable implementations of those features that you can apply everywhere that the feature occurs. Benefits:
-
- * Page implementations become more standardized. If you use the same component everywhere that the feature occurs then the way that you interface with the feature is uniform throughout the application.
- * Easier maintenance. When you use components, the implementation is in one place and you don't have to make changes in multiple places. You can also make changes to your framework code much more quickly.
-
-Components are customizable wrappers around DOM elements. The process of identifying components is a little more complicated than identifying DOM elements. Each DOM element has a unique tag. Components are a little more abstract. They're designed to model features that your developers are writing and there may be (hopefully minor) variations in how that feature is implemented in the UI. For example, sometimes a UI card might be implemented in a div and sometimes in a section.
-
-Components allow you specify a sort of base selector in the component definition. This base selector is intended to identify the component in the same way that a standard DOM element is identified.
-
-Ideally, you want to find one thing (or a reliable combination of things) that you can use to uniquely identify components on a page. In some cases you can do that by class, or maybe the component uses a non-standard HTML tag. But you can have more complicated cases. For example, maybe you are trying to model cards in your application and the cards are sometimes implemented in a div and sometimes in a section. It may take a little work to figure this out but it's well worth it. Here's an example of a component definition for a toggle widget:
-
-```ruby
-# Component must inherit from your site's Component class (this class is
-# automatically added to your site when you include Insite.)
-class UIToggle < MySite::Component
-  select_by class: 'Toggle'
-
-  def on
-    click unless on?
-  end
-
-  # The HTML method returns the component's HTML.
-  def on?
-    html.match(/-toggle-on/)
-  end
-
-  def off
-    click unless off?
-  end
-
-  def off?
-    !off?
-  end
-end
-```
-
-When a component is defined you automatically get support for calling it in a variety of ways. Here's how you would use the toggle in a page object definition:
-
-```ruby
-# Accessor methods in page object class definitions:
-class FooPage < MySite::Page
-  set_url '/foo'
-
-  # Creates a 'site_access' method that returns a UIToggle:
-  ui_toggle :site_access_toggle text: "Site Access"
-
-  # Creates an 'all_special_toggles' method that returns a Toggle collection:
-  ui_toggles :all_special_toggles, class: 'special-toggle'
-end
-
-# Usage:
-s.my_toggle_page # OR page = s.my_toggle_page
-s.site_access_toggle.on
-
-s.all_special_toggles.first.on?
-=> false
-```
-
-There are also some instance methods that automatically get added to all of your page object classes for the component. You get "generic" methods for the component on your page instances, one for a single instance of the component, another for a collection. The method names are the snake-case version of the component's class name (or the pluralized version of the name in the case of a collection.)
-
-```ruby
-s.my_toggle_page
-
-# Any page instance supports these component methods:
-
-# Get first toggle on page
-s.ui_toggle
-
-# Get toggle with specific text:
-s.ui_toggle text: "Special Toggle"
-
-# Get a toggle collection:
-s.ui_toggles
-```
-
-To recap, when you define a component you can create named accessor methods for the component when you are defining page objects. If you don't define accessor methods in your page object definitions you'll still get methods for working with your components.
-
 ### Elements and Components are Interchangeable
 Elements and Components can interact with each other:
 ```ruby
 s.element1.component1
 
 s.component1.element1
-```
-
-## Elements
-Elements are any standard DOM object (div, span etc.) Insite provides page object class methods for defining element accessors for these -- see the page object example above, which defines element accessors for two text fields and a button.
-
-Insite uses Watir for browser operations so if you're familiar with that API it should feel pretty much the same. The main difference is that all Watir DOM classes are wrapped in an Insite element class. The main reason for the wrapper classes at the moment are to allow interoperability between components and elements. But the plan is to add additional functionality going forward (geared towards making it easier to write page objects and components.)
-
-When an element is defined for a page, there's just one basic accessor that gets created for the element. That's actually by design. Please note that all pages support an update_page method that takes a hash of element names and values and then applies each value to the specified element. This method figures out whether the element is a text field, check box, file field etc., and then does the appropriate thing with the value when working with the element. See the log in code snippet above for a simple example.
-
-### Element definition examples
-
-``` ruby
-# Element accessor for a div element that contains customer info.
-# Usage: s.page.customer_info
-div :customer_info, class: 'customer-info'
-
-# Element accessor for a collection of spans that contain phone numbers.
-# Usage: s.page.phone_numbers
-spans :phone_numbers, id /^phone-\d+/
-
-# Element accessor for a text field.
-# Usage: s.page.first_name
-element :first_name, tag_name: "input", id: "fname"
-```
-
-### Element definitions with a block argument
-
-```ruby
-# More complex element definition (A div element containing multiple
-# sub-elements.)
-div :allow_purchase_code, class: "multi-currency", do
-  button :enable, id: "pc-enable"
-  radio  :initial_purchase, id: "pc-initial-only"
-  radio  :all_purchases, id: "pc-all"
-  button :submit, id: "pc-confirm"
-end
 ```
 
 ## Components
