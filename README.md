@@ -17,7 +17,7 @@ Here's an example that shows how to open a site, navigate to a page and then int
 
 The components being demonstrated here are Angular-specific but insite itself is framework-agnostic.
 
-If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the is exercising.
+If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the example is exercising.
 
 ```ruby
 # Create a new instance of your site class. The only required argument is the
@@ -156,7 +156,7 @@ s.first_chip_example.mat_chips.first.removable?
 => false
 ```
 
-In the example above, a named accessor method was created for a particular page. Sometimes it's useful to label things. But insite also automatically defines "generic" component accessor methods that you can use on any page. So as long as the component is defined you could use the components described above on any page without writing any additional code:
+In the example above, a named accessor method was created for a chip list on one particular page. Sometimes it's useful to label things. But insite also automatically defines "generic" component accessor methods that you can use on any page. So as long as the component is defined you could use the components described above on any page without writing any additional code:
 
 ```ruby
 # Return an object for the second chip list on the page.
