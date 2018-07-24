@@ -65,7 +65,7 @@ s.first_chip_example.mat_chips.length
 #     given page.
 ```
 
-Insite has some regression tests that run for this site. Some sample code for [material.angular.io](https://material.angular.io) can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
+Insite has some regression tests that use [material.angular.io](https://material.angular.io). The site code that the tests utilize can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
 
 # Installation:
 ```
