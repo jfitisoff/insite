@@ -13,11 +13,11 @@ This library also has some useful navigational and organizational features that 
 
 # How it works
 
-Here's an example that shows how you open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
+Here's an example that shows how to open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
 
-The components being demonstrated here are Angular-specific but insite is framework-agnostic.
+The components being demonstrated here are Angular-specific but insite itself is framework-agnostic.
 
-If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the code is written for.
+If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the is exercising.
 
 ```ruby
 # Create a new instance of your site class. The only required argument is the
@@ -65,7 +65,7 @@ s.first_chip_example.mat_chips.length
 #     given page.
 ```
 
-Insite has some regression tests that run for this site. Some sample code for material.angular.io can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
+Insite has some regression tests that run for this site. Some sample code for [material.angular.io](https://material.angular.io) can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
 
 # Installation:
 ```
