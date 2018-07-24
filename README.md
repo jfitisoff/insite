@@ -41,7 +41,6 @@ s.chips_overview_page
 # new page. But you can if you want to:
 page = s.chips_overview_page
 
-
 # This next line calls a first_chip_example method that has been manually
 # defined in the ChipsOverviewPage page class. Note the subsequent call to
 # mat_chips, which returns a chip collection (the second of the two
@@ -64,9 +63,11 @@ s.first_chip_example.mat_chips.length
 #     methods that are set up for you automatically. These are page instance
 #     methods that you can use when working with a page. In the example above,
 #     the mat_chips method was automatically added when the component was
-#     defined.
+#     defined. For each component you define, there will be a DOM accessor
+#     method for a single instance of the component as well as a method to
+#     get a component collection.
 #
-#     Putting this another way, if you define a FooBar component you'll
+#     Putting this another way: If you define a FooBar component you'll
 #     always be able to call "page.foo_bar" and "page.foo_bars" on any
 #     given page.
 ```
