@@ -5,7 +5,7 @@
 
 Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
-Components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
+In addition to serving as reusable containers for recurring features, components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page. The benefits of this site wrapper approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
 
