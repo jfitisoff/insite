@@ -13,7 +13,7 @@ This library also has some useful navigational and organizational features that 
 
 # How it works
 
-This example shows how you open a site and navigate and interact with a page. If you read further down you'll see examples showing the code that implements this example.
+Here's an example that shows how you open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
 
 The components being demonstrated here are Angular-specific but insite is framework-agnostic.
 
@@ -65,9 +65,7 @@ s.first_chip_example.mat_chips.length
 #     given page.
 ```
 
-Some sample code for material.angular.io can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
-
-**Note:** This is not an Angular-specific library.
+Insite has some regression tests that run for this site. Some sample code for material.angular.io can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
 
 # Installation:
 ```
