@@ -11,7 +11,54 @@ All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
-# Sample Code
+# How it works
+
+```ruby
+# Create a new instance of your site class. The only required argument is the
+# "base URL" for the site. You can also pass in optional hash arguments. See
+# documententation for more info.
+s = MaterialAngularIO.new("https://material.angular.io")
+
+# Open a browser. Optional arguments can by passed in to specify browser type,
+# profile, etc.
+s.open
+
+# Accessor methods are automatically defined for your pages. If you call an
+# accessor method navigation is automatic. If you **aren't** on the page insite
+# will navigate for you. If you **are** on the page insite will figure that out
+# skip navigation.
+s.chips_overview_page
+
+# Note that no page object variable got declared here. insite caches the
+# current page and the site delegates method calls down to the page object.
+
+# This next line calls a `first_chip_example` method that has been manually
+# defined in the ChipsOverviewPage page class. Note the subsequent call to
+# `mat_chips`, which returns a chip collection (second of the two components
+# defined above.):
+s.first_chip_example.mat_chips.length
+=> 4
+
+# Some notes about this example (There's actually a lot to unpack here.):
+#
+# 1.) Components are interoperable with standard DOM objects and each other.
+#     In the example above, `first_chip_example` and `mat_chips` are both
+#     component methods. Chip lists contain chips so these two components
+#     are used together by definition. But there's no need to "wire up" the
+#     two components -- they work the same as regular DOM objects and you
+#     can call any component method on any component.
+#
+# 2.) As mentioned above, the `first_chip_example` was manually defined for a
+#     single page. But when components are defined some generic methods are
+#     set up for you automatically. These are instance methods that you can
+#     use when working with the page. In the example above, the `mat_chips`
+#     method was automatically defined when the component was defined.
+#
+#     Putting this another way, if you define a FooBar component you'll
+#     always be able to call `page.foo_bar` and `page.foo_bars` on any
+#     given page.
+```
+
 Some sample code for material.angular.io can be found [here](https://github.com/jfitisoff/insite/tree/master/lib/insite/examples/material_angular_io).
 
 **Note:** This is not an Angular-specific library.
@@ -50,22 +97,6 @@ end
 
 **Note:** Components that are defined in this manner won't have any special functionality. You'll just get named methods that can be used to define and access HTML elements that use the custom tag. See below for information on how components work and how to build more complicated components with custom functionality.
 
-## Creating a Site Object
-```ruby
-# Create a new instance of the site object.
-s = MySite.new "https://mysite.com"
-
-# Open a browser. You can pass browser arguments in if necessary and they'll get
-# just passed through to the constructor (See Watir/Selenium docs describing
-# args allowed when creating new browser/driver instances.)
-s.open
-
-# Log into the site. Note that there's no explicit navigation. If the login page
-# isn't displayed, navigation is _automatic_ If the page _is_ being displayed
-# then navigation doesn't occur since you're already there.
-s.login_page.login(email: "foo@bar.com", password: "P@ssword123")
-```
-
 ## Creating page objects for your site
 Once you've created your site object (by including Insite) you just need to have your page object classes inherit from your site's page class, which gets created when the module is included. Below is a page object for the example shown above. An accessor method for your page is automatically defined on the site object for each page that you create.
 
@@ -90,70 +121,6 @@ class LoginPage < MySite::Page
 end
 ```
 
-## Creating components for your site (and using them in pages)
-
-
-Sample component definitions for two components:
-
-Components should inherit from your site's Component class, which automatically gets created when you include Insite. In this case, the site's class name is `MaterialAngularIO`.
-
-```ruby
-# A chip list contains a set of chips.
-# See https://material.angular.io/components/chips/overview for more details.
-class MatChipList < MaterialAngularIO::Component
-  select_by tag_name: 'mat-chip-list'
-
-  # Adds a chip using the given text input.
-  def add(value)
-    mat_input(ngcontent => true).set(value + "\n")
-  end
-
-  # Clears the chip list's input field.
-  def clear_input(value)
-    mat_input(ngcontent => true).clear
-  end
-
-  # Remove an input (assumes chip is removable.)
-  def remove(value)
-    mat_input(ngcontent => true).mat_icon.click
-  end
-
-  # Sets the input field.
-  def set_input(value)
-    mat_input(ngcontent => true).set(value)
-  end
-end
-
-# Component that models an individual chip within a chip list.
-class MatChip < MaterialAngularIO::Component
-  select_by tag_name: 'mat-chip'
-
-  def disabled?
-    element(class: 'mat-chip-disabled').exist?
-  end
-
-  def label
-    nokogiri.xpath('//text()')[0]
-  end
-
-  def remove
-    element(class: 'mat-chip-remove').click
-  end
-
-  def removable?
-    element(class: 'mat-chip-remove').exist?
-  end
-
-  def selected?
-    aria_selected == 'true'
-  end
-
-  def selectable?
-    element(class: 'mat-chip-select').exist?
-  end
-end
-```
-
 Here's a page object definition that defines an accessor method for the first chip list on the page:
 
 ```ruby
@@ -161,7 +128,7 @@ Here's a page object definition that defines an accessor method for the first ch
 class ChipsOverviewPage < MaterialAngularIO::Page
   set_url "/components/chips/overview"
 
-  # Defines a
+  # Defines a named accessor method for the first chip list on the page.
   mat_chip :first_chip_example, index: 0
 end
 ```
