@@ -95,9 +95,7 @@ end
 
 Sample component definitions for two components:
 
-# Components should inherit from your site's Component class, which
-# automatically gets created when you include Insite. In this case,
-# the site's class name is MaterialAngularIO.
+Components should inherit from your site's Component class, which automatically gets created when you include Insite. In this case, the site's class name is `MaterialAngularIO`.
 
 ```ruby
 # A chip list contains a set of chips.
