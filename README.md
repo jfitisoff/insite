@@ -9,7 +9,7 @@ Components can be thought of as custom watir/selenium DOM elements that extend t
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
-There are many benefits to adding a wrapper class for your page objects. See summary [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
+The benefits of this approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
@@ -50,20 +50,20 @@ s.first_chip_example.mat_chips.length
 # Some notes about this example (There's actually a lot to unpack here.):
 #
 # 1.) Components are interoperable with standard DOM objects and each other.
-#     In the example above, `first_chip_example` and `mat_chips` are both
+#     In the example above, "first_chip_example" and "mat_chips" are both
 #     component methods. Chip lists contain chips so these two components
 #     are used together by definition. But there's no need to "wire up" the
 #     two components -- they work the same as regular DOM objects and you
 #     can call any component method on any component.
 #
-# 2.) As mentioned above, the `first_chip_example` was manually defined for a
+# 2.) As mentioned above, the "first_chip_example" was manually defined for a
 #     single page. But when components are defined some generic methods are
 #     set up for you automatically. These are instance methods that you can
 #     use when working with the page. In the example above, the `mat_chips`
 #     method was automatically defined when the component was defined.
 #
 #     Putting this another way, if you define a FooBar component you'll
-#     always be able to call `page.foo_bar` and `page.foo_bars` on any
+#     always be able to call "page.foo_bar" and "page.foo_bars" on any
 #     given page.
 ```
 
