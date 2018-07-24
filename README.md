@@ -37,30 +37,37 @@ s.chips_overview_page
 
 # Note that no page object variable got declared here. insite caches the
 # current page and the site delegates method calls down to the page object.
+# So it's not necessary to declare a new page variable every time you access a
+# new page. But you can if you want to:
+page = s.chips_overview_page
 
-# This next line calls a `first_chip_example` method that has been manually
+# This next line calls a first_chip_example method that has been manually
 # defined in the ChipsOverviewPage page class. Note the subsequent call to
-# `mat_chips`, which returns a chip collection (second of the two components
-# defined above.):
+# mat_chips, which returns a chip collection (the second of the two
+# components defined above.):
 s.first_chip_example.mat_chips.length
 => 4
 
-# Some notes about this example (There's actually a lot to unpack here.):
+# Some notes about what's going on here:
 #
 # 1.) Components are interoperable with standard DOM objects and each other.
 #     In the example above, "first_chip_example" and "mat_chips" are both
-#     component methods. Chip lists contain chips so these two components
-#     are used together by definition. But there's no need to "wire up" the
-#     two components -- they work the same as regular DOM objects and you
-#     can call any component method on any component.
+#     methods that return a component. Chip lists contain chips so these
+#     two components are designed to be used together: One doesn't make sense
+#     without the other. Because insite treats the components you write as
+#     extended DOM objects there's no need to write any glue code to tie these
+#     components together -- that happens automatically.
 #
-# 2.) As mentioned above, the "first_chip_example" was manually defined for a
-#     single page. But when components are defined some generic methods are
-#     set up for you automatically. These are instance methods that you can
-#     use when working with the page. In the example above, the `mat_chips`
-#     method was automatically defined when the component was defined.
+# 2.) As mentioned above, that "first_chip_example" method was manually defined
+#     for a single page. But when you define a component there are some generic
+#     methods that are set up for you automatically. These are page instance
+#     methods that you can use when working with a page. In the example above,
+#     the mat_chips method was automatically added when the component was
+#     defined. For each component you define, there will be a DOM accessor
+#     method for a single instance of the component as well as a method to
+#     get a component collection.
 #
-#     Putting this another way, if you define a FooBar component you'll
+#     Putting this another way: If you define a FooBar component you'll
 #     always be able to call "page.foo_bar" and "page.foo_bars" on any
 #     given page.
 ```
