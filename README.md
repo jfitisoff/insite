@@ -3,15 +3,23 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)
 
-Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
+Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
+
+Components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page.
 
-All HTML objects are modeled as Elements (e.g., Selenium or Watir elements) _or_ as Components. Components are custom, portable widgets that you can use to model common features in your web application. Elements and Components are interchangable. Components can be called from elements and vice versa.
+There are many benefits to adding a wrapper class for your page objects. See summary [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
 
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
 # How it works
+
+This example shows how you open a site and navigate and interact with a page. If you read further down you'll see examples showing the code that implements this example.
+
+The components being demonstrated here are Angular-specific but insite is framework-agnostic.
+
+If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the code is written for.
 
 ```ruby
 # Create a new instance of your site class. The only required argument is the
@@ -26,7 +34,7 @@ s.open
 # Accessor methods are automatically defined for your pages. If you call an
 # accessor method navigation is automatic. If you **aren't** on the page insite
 # will navigate for you. If you **are** on the page insite will figure that out
-# skip navigation.
+# and skip navigation (because you're already there.)
 s.chips_overview_page
 
 # Note that no page object variable got declared here. insite caches the
