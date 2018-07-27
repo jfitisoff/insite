@@ -9,6 +9,7 @@ require "insite/constants"
 require "insite/insite"
 require "insite/errors"
 require "insite/version"
+require "insite/browser"
 
 # Modules with method definitions used by UI metaclasses.
 require "insite/methods/dom_methods"

@@ -54,6 +54,10 @@ module Insite
     end
   end
 
+  def bowser
+    Insite::Browser.new @browser
+  end
+
   # Returns true if there's an open browser (that's also responding.) False if not.
   def browser?
     begin
