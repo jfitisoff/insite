@@ -9,6 +9,8 @@ In addition to serving as reusable containers for recurring features, components
 
 This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page. The benefits of this site wrapper approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
 
+Insite leverages (watir's)[https://github.com/watir/watir] API to support standard DOM elements. Insite DOM elements are wrapper classes around watir DOM elements. The wrappers support compatibility between standard HTML DOM elements and the components that you define, as well as functioning as containers for additional functionality.
+
 **Note:** Documentation for this library is still a WIP and features are subject to change.
 
 # How it works
