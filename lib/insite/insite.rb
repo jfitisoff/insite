@@ -8,7 +8,7 @@ require_relative 'methods/common_methods'
 #    include Insite
 #  end
 module Insite
-  attr_reader :base_url, :unique_methods, :browser_type, :site
+  attr_reader :base_url, :unique_methods, :browser_type, :site, :watir
   attr_accessor :pages, :browser, :arguments, :most_recent_page
 
   include CommonMethods
@@ -54,9 +54,9 @@ module Insite
     end
   end
 
-  def bowser
-    Insite::Browser.new @browser
-  end
+  # def bowser
+  #   Insite::Browser.new @browser
+  # end
 
   # Returns true if there's an open browser (that's also responding.) False if not.
   def browser?
@@ -197,7 +197,7 @@ module Insite
   end
 
   def find_non_standard_tags
-    @browser.elements(xpath: non_standard_tag_xpath).map do |e|
+    @browser.elements(xpath: non_standard_tag_xpath).to_a.map do |e|
       e.html.match(/<(\S+?(?=[\s,>]))/)[1]
     end.uniq.sort
   end
@@ -306,15 +306,16 @@ module Insite
 
     if browser_platform
       self.instance_variable_set(
-        :@browser,
+        :@watir,
         Watir::Browser.new(browser_platform, *args)
       )
     else
       self.instance_variable_set(
-        :@browser,
+        :@watir,
         Watir::Browser.new(*args)
       )
     end
+    self.instance_variable_set(:@browser, Insite::Browser.new(@watir))
 
     Watir.logger.level = :error
     self

@@ -2,6 +2,7 @@ require 'watir'
 require 'watir-scroll'
 require 'active_support'
 require 'active_support/core_ext'
+require 'active_support/core_ext/object/try'
 require 'addressable/template'
 require 'nokogiri'
 

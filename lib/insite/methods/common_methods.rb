@@ -15,9 +15,9 @@ module Insite
 
     private
     def process_browser
-      if @site.browser.is_a?(Watir::Browser)
+      if @site.browser.is_a?(Insite::Browser)
         begin
-          if @site.browser.exists?
+          if @site.browser.try(:exists?)
             return @site.browser
           else
             raise(
@@ -45,52 +45,12 @@ module Insite
       else
         raise(
           Insite::Errors::BrowserNotValidError,
-          "Expected: Watir::Browser. Actual: #{@site.browser.class}.\n\n"
+          "Expected: Insite::Browser. Actual: #{@site.browser.class}.\n\n"
         )
       end
 
     end
     public
-    # private
-    # def process_browser
-    #   if @site.browser.is_a?(Watir::Browser)
-    #     begin
-    #       if @site.browser.exists?
-    #         return @site.browser
-    #       else
-    #         raise(
-    #           Insite::Errors::BrowserClosedError,
-    #           "Browser check failed. The browser is no longer present.\n\n"
-    #         )
-    #       end
-    #     rescue(Insite::Errors::BrowserNotOpenError) => e
-    #       raise e
-    #     rescue => e
-    #       raise(
-    #         Insite::Errors::BrowserResponseError,
-    #         <<~eos
-    #         Browser check failed. The browser returned an #{e.class} (#{e}) when it was queried.
-    #         Backtrace for the error:
-    #         #{e.backtrace.join("\n")}
-    #
-    #         eos
-    #       )
-    #     end
-    #   elsif @site.browser.nil?
-    #     raise(
-    #       Insite::Errors::BrowserNotOpenError,
-    #       "A browser has not been defined for the site. Try using Site#open to " \
-    #       "start a browser.\n\n"
-    #     )
-    #   else
-    #     raise(
-    #       Insite::Errors::BrowserNotValidError,
-    #       "Expected: Watir::Browser. Actual: #{@site.browser.class}.\n\n"
-    #     )
-    #   end
-    #
-    # end
-    # public
 
     def update_object(hash_args = {})
       rescues = [
