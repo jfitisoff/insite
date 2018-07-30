@@ -1,7 +1,7 @@
 # insite
 [![Gem Version](https://badge.fury.io/rb/insite.svg)](https://rubygems.org/gems/insite)
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
-[![Coverage Status](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)](https://img.shields.io/coveralls/github/jfitisoff/insite/master.svg)
+[![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
 
 Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
