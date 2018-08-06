@@ -7,7 +7,7 @@ Insite is a page object library that is geared towards supporting component-base
 
 In addition to serving as reusable containers for recurring features, components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
 
-This library also has some useful navigational and organizational features that stem from the way that pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page. The benefits of this site wrapper approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
+This library also has some useful navigational and organizational features that stem from the way that your pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page. The benefits of this site wrapper approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
 
 Insite leverages [watir's](https://github.com/watir/watir) API to support standard DOM elements. Insite DOM elements are wrapper classes around watir DOM elements. The wrappers support compatibility between standard HTML DOM elements and the components that you define, as well as functioning as containers for additional functionality.
 
@@ -17,7 +17,7 @@ Insite leverages [watir's](https://github.com/watir/watir) API to support standa
 
 Here's an example that shows how to open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
 
-The components being demonstrated here are Angular-specific but insite itself is framework-agnostic.
+The components being demonstrated here are Angular-specific but insite is framework-agnostic.
 
 If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the example is exercising.
 
@@ -27,14 +27,14 @@ If you're interested, here's the [actual page](https://material.angular.io/compo
 # documententation for more info.
 s = MaterialAngularIO.new("https://material.angular.io")
 
-# Open a browser. Optional arguments can by passed in to specify browser type,
+# Open a browser. Optional arguments can be passed in to specify browser type,
 # profile, etc.
 s.open
 
 # Accessor methods are automatically defined for your pages. If you call an
-# accessor method navigation is automatic. If you **aren't** on the page insite
-# will navigate for you. If you **are** on the page insite will figure that out
-# and skip navigation (because you're already there.)
+# accessor method navigation is **automatic**. If you **aren't** on the page
+# insite will navigate for you. If you **are** on the page insite will figure
+# that out and skip navigation (because you're already there.)
 s.chips_overview_page
 
 # Note that no page object variable got declared here. insite caches the
