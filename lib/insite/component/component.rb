@@ -2,7 +2,7 @@ require_relative 'component_methods'
 require_relative 'component_collection'
 require_relative 'component_instance_methods'
 require_relative '../methods/common_methods'
-require 'pry'
+
 # Allows the page object developer to encapsulate common web application features
 # into components that can be reused across multiple pages.
 module Insite

@@ -155,13 +155,44 @@ module Insite
           end
         end
 
+        # Update the site class with methods for each page that is defined.
         self.class.class_eval do
+
+          # Returns a page object for the page.
           define_method(current_page.to_s.underscore) do |args = nil, block = nil|
             current_page.new(self, args)
           end
 
+          # Returns true if the page is being displayed, false if not.
           define_method("#{current_page.to_s.underscore}?") do
             on_page? current_page
+          end
+
+          # Similar to the method above but attempts navigation prior to the page
+          # check. Returns a boolean rather than a page object: true if the
+          # right page was loaded successfully, false if not. A navigation attempt
+          # always occurs when this method is called.
+          #
+          # The main benefit of this method is to make it easier to write test
+          # scenarios for situations where you know navigation is going to fail
+          # (Examples of this would be session timeouts or role/privilege
+          # test scenarios.) Normally an Insite::Errors::WrongPageError is
+          # automatically raised when a navigation attempt fails. So in order to
+          # test these sorts of scenarios you'd have to do a little more work to
+          # handle the exception. Examples in RSpec:
+          #
+          # The "hard" way:
+          # expect {s.login_page }.to raise_error(Insite::Errors::WrongPageError)
+          #
+          # The same assert using this method:
+          # expect(s.try_login_page).to be_truthy
+          define_method("try_#{current_page.to_s.underscore}") do |args = nil, block = nil|
+            begin
+              current_page.new(self, args)
+              true
+            rescue Insite::Errors::WrongPageError => e
+              return false
+            end
           end
         end
       end

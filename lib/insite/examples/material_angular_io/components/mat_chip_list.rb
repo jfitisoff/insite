@@ -1,5 +1,5 @@
 require_relative 'angular_material_component'
-require 'pry'
+
 class MatChipList < AngularMaterialComponent
   select_by tag_name: 'mat-chip-list'
 
