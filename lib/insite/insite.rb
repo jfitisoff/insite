@@ -187,10 +187,12 @@ module Insite
           # The same assert using this method:
           # expect(s.try_login_page).to be_truthy
           define_method("try_#{current_page.to_s.underscore}") do |args = nil, block = nil|
-            current_page.new(self, args)
-            true
-          rescue Insite::Errors::WrongPageError => e
-            return false
+            begin
+              current_page.new(self, args)
+              true
+            rescue Insite::Errors::WrongPageError => e
+              return false
+            end
           end
         end
       end
