@@ -124,7 +124,7 @@ module Insite
 
     # Cull templates from array of pages that gets returned (since templates
     # should never be used directly.)
-    @pages = self.class::DefinedPage.descendants.reject do |pg|
+    @pages = self.class::Page.descendants.reject do |pg|
       pg.page_template?
     end
 
