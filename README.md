@@ -3,6 +3,30 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
 
+Insite is a page object library for UI automation. It differs from other page object libraries in two ways:
+
+## It approaches your site is an application as opposed to a collection of individual pages
+
+Insite adds the concept of a site object to the page object model. The site object is a proxy for your page objects:
+
+<details>
+  <summary>
+  ```ruby
+    class MySite
+      include Insite
+    end
+  ```
+  </summary>
+</details>
+
+The site object knows about all of the
+
+ class
+
+## Recurring UI features in your application are modeled as fully-compatible DOM extensions
+
+
+
 Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
 In addition to serving as reusable containers for recurring features, components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
