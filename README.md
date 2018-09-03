@@ -11,17 +11,12 @@ Insite adds the concept of a site object to the page object model. The site obje
 
 <details>
   <summary>Defining a site object</summary>
-  ```ruby
-    class MySite
-      include Insite
-    end
-  ```
-
+```ruby
+class MySite
+  include Insite
+end
+```
 </details>
-
-The site object knows about all of the
-
- class
 
 ## Recurring UI features in your application are modeled as fully-compatible DOM extensions
 
