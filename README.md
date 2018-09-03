@@ -9,14 +9,15 @@ Insite is a page object library for UI automation. It differs from other page ob
 
 Insite adds the concept of a site object to the page object model. The site object is a proxy for your page objects:
 
-<details>
-<summary>Defining a site object</summary>
+<details><summary>Defining a site object</summary>
 <p>
+
 ```ruby
 class MySite
   include Insite
 end
 ```
+
 </p>
 </details>
 
