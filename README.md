@@ -21,11 +21,71 @@ end
 </p>
 </details>
 
-## Recurring UI features in your application are modeled as fully-compatible DOM extensions
 
 
+Insite is a page object library that models your site as an _application_ rather than a collection of semi-independent pages. It all
 
-Insite is a page object library that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
+ with two main differences:
+* It models your web app as an _application_ (individual pages are part of that application.)
+* It has a unique approach to modeling recurring application features (via "components.") Components behave like extended DOM elements: They fully interact with standard DOM elements and other components.
+
+
+Insite is a page object library that includes a number of features designed to reduce the cost of UI test automation. It allows you to work with your site in a more natural way by adding a wrapper class for your page objects called a _site_ _object_:
+
+### Traditional Page Object Model
+login_page    welcome_page    account_settings_page
+    ┣element1      ┣element1          ┣element1
+    ┣element2      ┣element1          ┣element2
+    ┗element3      ┗element3          ┗element3
+
+<table>
+<tr>
+<td>
+login_page
+  ┣element1
+  ┣element2
+  ┗element3
+</td>
+<td>
+welcome_page
+  ┣element1
+  ┣element2
+  ┗element3
+</td>
+<td>
+account_settings_page
+  ┣element1
+  ┣element2
+  ┗element3
+</td>
+</tr>
+</table>
+
+### POM with Site Object
+
+                      site
+    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
+login_page        welcome_page    account_settings_page
+    ┣element1          ┣element1          ┣element1
+    ┣element2          ┣element1          ┣element2
+    ┗element3          ┗element3          ┗element3
+
+ This site object functions as a browser for your page objects. It centralizes browser management and also supports the concept of a "base URL" for a site. Adding the concept of a
+
+```ruby
+site.login_page
+```
+
+A site object models your web application as a whole. It functions as a brows for your page objects.  
+
+
+The site object functions manages your page objects and acts a lot like a web browser.
+
+
+A site object is basically a browser for all of your page objects. You use it to navigate
+
+
+that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
 In addition to serving as reusable containers for recurring features, components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
 
