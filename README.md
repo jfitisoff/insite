@@ -38,29 +38,6 @@ login_page    welcome_page    account_settings_page
     ┣element2      ┣element1          ┣element2
     ┗element3      ┗element3          ┗element3
 
-<table>
-<tr>
-<td>
-login_page
-  ┣element1
-  ┣element2
-  ┗element3
-</td>
-<td>
-welcome_page
-  ┣element1
-  ┣element2
-  ┗element3
-</td>
-<td>
-account_settings_page
-  ┣element1
-  ┣element2
-  ┗element3
-</td>
-</tr>
-</table>
-
 ### POM with Site Object
 
                       site
