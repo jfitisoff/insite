@@ -3,66 +3,102 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
 
-Insite is a page object library for UI automation. It differs from other page object libraries in two ways:
 
-## It approaches your site is an application as opposed to a collection of individual pages
 
-Insite adds the concept of a site object to the page object model. The site object is a proxy for your page objects:
+Insite is a page object library that is geared towards supporting UI web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs. This isn't a novel concept. Most page object libraries support some sort of approach to define reusable features. But insite's approach is slightly different. The components that you define act like extensions of the DOM. They interoperate with standard DOM elements and with other components.
 
-<details><summary>Defining a site object</summary>
+<details><summary>Div Table Component Example</summary>
 <p>
+Most "tables" nowadays are actually a collection of divs. Here's how support for a div table could be implemented using components
 
 ```ruby
+require 'insite'
+
+# Insite requires you to define a site object in addition to your
+# pages but it doesn't have to be any more complicated that this.
 class MySite
   include Insite
 end
+
+# Adding just one page object for demo purposes.
+class DashboardPage < MySite::Page
+  # Relative URL for the page. This is used to create a URL template.
+  set_url "/dashboard"
+
+  # Creates an accessor method for one of the "tables" on this page.
+  # The page method is "monthly_signups." The table is identified as
+  # a div that includes "UITable" in its class attribute. it's also
+  # identified by some table text.
+  ui_table :monthly_signups, text: /^Monthly Signups/
+end
+
+# Component for table container
+class UITable < MySite::Component
+  # Any div where class attribute includes "UITable"
+  select_by tag_name: 'div', class: 'UITable'
+end
+
+# Component for table row
+class UITableRow < MySite::Component
+  # Any div where class attribute includes "UITableRow"
+  select_by tag_name: 'div', class: 'UITableRow'
+end
+
+# Component for table cell
+class UITableCell < MySite::Component
+  # Any div where class attribute includes "UITableCell"
+  select_by tag_name: 'div', class: 'UITableCell'
+end
+```
+
+Usage example:
+
+```ruby
+# Create a site object instance (only required argument is a "base URL"):
+site = MySite.new("https://someurl.com")
+
+# Open a browser (default browser is Chrome)
+site.open
+
+# Navigate to the login page **IF** the page isn't being displayed.
+# The current page is cached by the site object and it delegates
+# method calls doen to the cached page:
+site.login_page
+
+# The dashboard page class defines a method to access the "Monthly Signups"
+# table:
+site.monthly_signups
+
+# But you don't necessarily need to do this in order to use a component when
+# working with a page. You automatically get two "generic" page instance methods
+# when you define a component: One to access individual occurrences of a component
+# and a second one that represents a collection. So for the table components
+# described above, you get the following functionality automatically, for ANY
+# page:
+
+# First UI table on page:
+page.ui_table
+
+# UI table with id == "foo":
+page.ui_table(id: "foo")
+
+# UI table collection:
+page.ui_tables.length
+=> 3
+
+# Components interoperate with each other:
+page.ui_table.ui_rows.length
+=> 4
+
+# They also interoperate with DOM objects. This gets the first link in the first
+# row of the the first table:
+page.ui_table.ui_rows[0].link
+=> 6
+
 ```
 
 </p>
 </details>
-
-
-
-Insite is a page object library that models your site as an _application_ rather than a collection of semi-independent pages. It all
-
- with two main differences:
-* It models your web app as an _application_ (individual pages are part of that application.)
-* It has a unique approach to modeling recurring application features (via "components.") Components behave like extended DOM elements: They fully interact with standard DOM elements and other components.
-
-
-Insite is a page object library that includes a number of features designed to reduce the cost of UI test automation. It allows you to work with your site in a more natural way by adding a wrapper class for your page objects called a _site_ _object_:
-
-### Traditional Page Object Model
-login_page    welcome_page    account_settings_page
-    ┣element1      ┣element1          ┣element1
-    ┣element2      ┣element1          ┣element2
-    ┗element3      ┗element3          ┗element3
-
-### POM with Site Object
-
-                      site
-    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓
-login_page        welcome_page    account_settings_page
-    ┣element1          ┣element1          ┣element1
-    ┣element2          ┣element1          ┣element2
-    ┗element3          ┗element3          ┗element3
-
- This site object functions as a browser for your page objects. It centralizes browser management and also supports the concept of a "base URL" for a site. Adding the concept of a
-
-```ruby
-site.login_page
-```
-
-A site object models your web application as a whole. It functions as a brows for your page objects.  
-
-
-The site object functions manages your page objects and acts a lot like a web browser.
-
-
-A site object is basically a browser for all of your page objects. You use it to navigate
-
-
-that is geared towards supporting component-based web frameworks such as Angular, React, etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
 
 In addition to serving as reusable containers for recurring features, components can be thought of as custom watir/selenium DOM elements that extend the DOM. They are interoperable with standard DOM elements.
 
