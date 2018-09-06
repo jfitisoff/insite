@@ -13,9 +13,9 @@ Insite leverages [watir's](https://github.com/watir/watir) API to support standa
 
 # How it works
 
-Here's an example that shows how to open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
+Here's an example that shows how to open a site, navigate to a page and then interact with its contents.
 
-The components being demonstrated here are Angular-specific but insite is framework-agnostic.
+The components being demonstrated here are Angular-specific and are identified by tag name. But insite is framework-agnostic and frameworks can be identified in all of the same ways that you'd identify elements using Selenium or Watir.
 
 If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the example is exercising.
 
