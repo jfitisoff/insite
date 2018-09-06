@@ -3,9 +3,9 @@
 [![Build Status](https://circleci.com/gh/jfitisoff/insite.svg?style=shield)](https://circleci.com/gh/jfitisoff/insite)
 [![Coverage Status](https://coveralls.io/repos/github/jfitisoff/insite/badge.svg?branch=master)](https://coveralls.io/github/jfitisoff/insite?branch=master)
 
-Insite is a page object library that is geared towards supporting UI frameworks such as Angular, React, Vue etc. It allows you to create _highly portable_ test framework components that model recurring features in the application under test. This allows you to write code _once_ for application features like cards, search widgets, pagination, etc. and then easily re-use this code _everywhere_ that the feature occurs.
+Insite is a page object library that allows you to work with your website in much the same way as an actual user does. It provides a page object browser (called a _site_ _object_) for your page objects. Site objects are smart: They can determine which page they on and whether or not a page object has been defined for the currently displayed page. Benefits are simplified navigation, better error handling when things go wrong and less code needed to maintain your site and write tests.
 
-This library also has some useful navigational and organizational features that stem from the way that your pages are used. The page objects that you define with this library are utilized via a _site object_. This site object can be thought of as a _browser_ for your page objects. As you navigate through a site, the site object keeps track of where you are and delegates method calls down to the currently displayed page. The benefits of this site wrapper approach are outlined [here](https://github.com/jfitisoff/insite/wiki/Benefits-of-a-%22Site-Object-Model%22-approach).
+Insite also provides a highly flexible, object-oriented approach to writing code for reusable features. It supports this via _components_, which can be thought of as DOM extensions. Components are fully interoperable with standard DOM elements and other components. When a component is defined, you get accessor methods for each page that belongs to your site, one for an individual instance of the component and another for a component collection. You can also define named component accessor in your page object definitions if needed.
 
 Insite leverages [watir's](https://github.com/watir/watir) API to support standard DOM elements. Insite DOM elements are wrapper classes around watir DOM elements. The wrappers support compatibility between standard HTML DOM elements and the components that you define, as well as functioning as containers for additional functionality.
 
@@ -13,9 +13,9 @@ Insite leverages [watir's](https://github.com/watir/watir) API to support standa
 
 # How it works
 
-Here's an example that shows how to open a site, navigate to a page and then interact with its contents. If you read further down you'll see examples showing the code that implements this example.
+Here's an example that shows how to open a site, navigate to a page and then interact with its contents.
 
-The components being demonstrated here are Angular-specific but insite is framework-agnostic.
+The components being demonstrated here are Angular-specific and are identified by tag name. But insite is framework-agnostic and frameworks can be identified in all of the same ways that you'd identify elements using Selenium or Watir.
 
 If you're interested, here's the [actual page](https://material.angular.io/components/chips/overview) that the example is exercising.
 
