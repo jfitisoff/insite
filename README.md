@@ -11,7 +11,7 @@ Insite is a page object library that allows you to work with your website in muc
 ```ruby
 require 'insite'
 
-# Site object class for your site. It doesn't need to be any
+# Site object class for the site. It doesn't need to be any
 # more complicated than this:
 class Wikipedia
   include Insite
@@ -32,21 +32,23 @@ end
 
 # Usage
 
-# First create a site object instance, defining a "base URL" for
-# the site.
+# New site instance (the only required argument is a "base URL" for the site.)
+
 site = Wikipedia.new("https://en.wikipedia.org")
 
-# Open a browser for the site (default is Chrome and assumes you
-# have Chromedriver installed.)
+# Opens a browser for the site (default browser type is Chrome.)
 site.open
 
-# Sites know about all of their pages:
+# Sites know about all of their pages. This method returns all of the page
+# object classes that have been defined for the site:
 site.pages
 => [MainPage, PortalContentsPage]
 
-# Get the page that's currently being displayed. Neither of the
-# pages you've defined are being displayed so a special "undefined
-# page" is returned.
+# To get the page that's currently being displayed you can call this method.
+# The browser was just opened and a Wikipedia page isn't being displayed yet.
+# So an "undefined" page is returned. This is a special page class that's
+# returned any time that a page isn't recognized. Undefined pages support any
+# components that you may have written.
 site.page
 => #<Insite::UndefinedPage:0x00007fe3eb172718
  @browser=#<Watir::Browser:0x..fe5ecb18b91b57fe url="data:," title="">,
@@ -54,15 +56,18 @@ site.page
  @base_url="https://en.wikipedia.org" @most_recent_page=>,
  @url="data:,">
 
-# Navigate to Wikipedia's "Main Page." Insite checks to see if the page is
-# displayed and only navigates if it needs to:
+# Accessor method for Wikipedia's "Main Page." Accessor methods are the
+# snake_case version of the page object's class name. When this method gets
+# called the site checks to see if the page is displayed and automatically
+# navigate if it isn't (it won't navigate if you're already there.)
+
 site.main_page
 => #<MainPage:70308428311260 @url_template=#<Addressable::Template:0x3ff1f54161a4 PATTERN:https://en.wikipedia.org/wiki/Main_Page>>
 
-# The site tracks the current page and delegates method calls down to
-# it. So there's typically no need to declare page object variables. In
-# this case, the currently displayed page supports a site_notice method
-# method and the site delegates the method call down to the page.
+# The site tracks the current page and delegates method calls down to it. So
+# there's typically no need to declare page object variables. In this case, the
+# current page supports a site_notice method and the site delegates the method
+# call down to the page.
 site.site_notice
 => #<Insite::Div: located: true; @selector={:id=>"siteNotice", :tag_name=>:div}>
 
@@ -74,6 +79,7 @@ site.portal_contents_page
 ```
 
 </p>
+
 </details>
 
 Insite also provides a highly flexible, object-oriented approach to writing code for reusable features. It supports this via _components_, which can be thought of as DOM extensions. Components are fully interoperable with standard DOM elements and other components. When a component is defined, you get accessor methods for each page that belongs to your site, one for an individual instance of the component and another for a component collection. You can also define named component accessor in your page object definitions if needed.
