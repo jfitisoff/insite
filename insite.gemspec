@@ -1,22 +1,18 @@
 require './lib/insite/version'
 
 Gem::Specification.new do |s|
-  description = <<~eos
-  Insite is a page object library that allows you to work with your website in much the same way as an actual user does. It provides a page object browser (called a site object) for your page objects. Site objects are smart: They can determine which page they on and whether or not a page object has been defined for the currently displayed page. Benefits are simplified navigation, better error handling when things go wrong and less code needed to maintain your site and write tests.
-
-  Insite also provides a highly flexible, object-oriented approach to writing code for reusable features. It supports this via _components_, which can be thought of as DOM extensions. Components are fully interoperable with standard DOM elements and other components. When a component is defined, you get accessor methods for each page that belongs to your site, one for an individual instance of the component and another
-  eos
-
-  summary = <<~eos
-  Insite is a page object library that allows you to work with your website in much the same way as an actual user does.
-
-  This library also provides a highly portable, object oriented approach to modeling recurring features in your application (e,g, cards, calendars. search widgets.) Reusable components that you write for UI testing are fully compatible with standard DOM elements.
-  eos
+  summary = [
+    "Insite is a page object library that allows you to work with your website in",
+    "much the same way that a user does. It also provides a highly portable, ",
+    "object oriented approach to modeling recurring features in your application",
+    "(e.g., cards, calendars. search widgets.) Reusable components that you write",
+    "for UI testing are fully compatible with standard DOM elements."
+  ].join("\n")
 
   s.name        = 'insite'
   s.version     = Insite::VERSION
   s.date        = Time.now.strftime("%Y-%m-%d")
-  s.description = description
+  s.description = summary
   s.summary     = summary
   s.authors     = ["John Fitisoff"]
   s.email       = 'jfitisoff@yahoo.com'
