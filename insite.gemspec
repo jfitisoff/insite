@@ -3,10 +3,18 @@ require './lib/insite/version'
 Gem::Specification.new do |s|
   summary = [
     "Insite is a page object library that allows you to work with your website in",
-    "much the same way that a user does. It also provides a highly portable, ",
-    "object oriented approach to modeling recurring features in your application",
-    "(e.g., cards, calendars. search widgets.) Reusable components that you write",
-    "for UI testing are fully compatible with standard DOM elements."
+    "a more natural way. It does this by providing a wrapper class for all of your",
+    "pages. This wrapper (called a site object) functions as a sort of browser for",
+    "your page objects. Benefits of this approach include simplified navigation ",
+    "and better error handling when things go wrong.\n",
+    "Insite also provides a highly portable, object oriented approach to modeling",
+    "recurring features in your web application (e.g., cards, calendars, search ",
+    "widgets, etc.) Components that you write are essentially DOM extensions:",
+    "They can be referenced from other components or any standard DOM object.",
+    "This interoperability with the DOM makes your component features more",
+    "accessible when writing tests and almost completely eliminates the need to",
+    "write code to wire your components up to pages or to get them to work with",
+    "other components."
   ].join("\n")
 
   s.name        = 'insite'
