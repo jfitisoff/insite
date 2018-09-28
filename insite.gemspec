@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
 
   s.files = [
     "lib/insite.rb",
+    "bin/insite",
     "lib/insite/element/element.rb",
     "lib/insite/element/element_collection.rb",
     "lib/insite/element/generated/class_map.rb",
