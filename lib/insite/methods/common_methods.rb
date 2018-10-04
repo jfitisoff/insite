@@ -12,8 +12,6 @@ module Insite
     end
     alias nokogiri document
 
-
-    private
     def process_browser
       if @site.browser.is_a?(Watir::Browser)
         begin

@@ -118,14 +118,14 @@ module Insite
   # TODO: Sort args.
   def initialize(base_url = nil, hsh={})
     @site = self
-    @arguments    = hsh.with_indifferent_access
+    @arguments    = hsh.merge({scheme: 'https'}).with_indifferent_access
     @base_url     = base_url
     @browser_type = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
 
-    # Cull templates from array of pages that gets returned (since templates
-    # should never be used directly.)
+    # Don't include the base page class or any page templates in the site's
+    # pages. Those should never be used directly.
     @pages = self.class::DefinedPage.descendants.reject do |pg|
-      pg.page_template?
+      pg.page_template? || pg == self.class::Page
     end
 
     # Builds generic components for custom tags.
@@ -444,5 +444,15 @@ module Insite
     @browser.url
   end
 
-  at_exit { @browser.close if @browser }
+  private
+  def process_base_url(base)
+    case base
+    when /^(https\:|http\:)/
+      base.sub(/^(http\:|https\:)/, "{scheme}:")
+    when /^www\./
+      base.sub(/^www\./, "{scheme}://")
+    else
+      "{scheme}://#{base}"
+    end
+  end
 end

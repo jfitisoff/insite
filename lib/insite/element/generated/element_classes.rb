@@ -71,12 +71,6 @@ module Insite
   class CircleCollection < Insite::ElementCollection
   end
 
-  class Cursor < Insite::Element
-  end
-
-  class CursorCollection < Insite::ElementCollection
-  end
-
   class DList < Insite::Element
   end
 
@@ -227,18 +221,6 @@ module Insite
   class HTMLElementCollection < Insite::ElementCollection
   end
 
-  class Hatch < Insite::Element
-  end
-
-  class HatchCollection < Insite::ElementCollection
-  end
-
-  class Hatchpath < Insite::Element
-  end
-
-  class HatchpathCollection < Insite::ElementCollection
-  end
-
   class Head < Insite::Element
   end
 
@@ -279,12 +261,6 @@ module Insite
   end
 
   class InputCollection < Insite::ElementCollection
-  end
-
-  class Keygen < Insite::Element
-  end
-
-  class KeygenCollection < Insite::ElementCollection
   end
 
   class LI < Insite::Element
@@ -339,42 +315,6 @@ module Insite
   end
 
   class MediaCollection < Insite::ElementCollection
-  end
-
-  class Menu < Insite::Element
-  end
-
-  class MenuCollection < Insite::ElementCollection
-  end
-
-  class MenuItem < Insite::Element
-  end
-
-  class MenuItemCollection < Insite::ElementCollection
-  end
-
-  class Mesh < Insite::Element
-  end
-
-  class MeshCollection < Insite::ElementCollection
-  end
-
-  class MeshGradient < Insite::Element
-  end
-
-  class MeshGradientCollection < Insite::ElementCollection
-  end
-
-  class Meshpatch < Insite::Element
-  end
-
-  class MeshpatchCollection < Insite::ElementCollection
-  end
-
-  class Meshrow < Insite::Element
-  end
-
-  class MeshrowCollection < Insite::ElementCollection
   end
 
   class Meta < Insite::Element
@@ -537,12 +477,6 @@ module Insite
   end
 
   class SelectCollection < Insite::ElementCollection
-  end
-
-  class Solidcolor < Insite::Element
-  end
-
-  class SolidcolorCollection < Insite::ElementCollection
   end
 
   class Source < Insite::Element

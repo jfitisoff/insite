@@ -184,14 +184,6 @@ module Insite
       Insite::TableColCollection.new(self, parse_args(args).merge(tag_name: "col"))
     end
 
-    def cursor(*args)
-      Insite::Cursor.new(self, parse_args(args).merge(tag_name: "cursor"))
-    end
-
-    def cursors(*args)
-      Insite::CursorCollection.new(self, parse_args(args).merge(tag_name: "cursor"))
-    end
-
     def data(*args)
       Insite::Data.new(self, parse_args(args).merge(tag_name: "data"))
     end
@@ -472,14 +464,6 @@ module Insite
       Insite::HeadingCollection.new(self, parse_args(args).merge(tag_name: "h6"))
     end
 
-    def hatchpath(*args)
-      Insite::Hatchpath.new(self, parse_args(args).merge(tag_name: "hatchpath"))
-    end
-
-    def hatchpaths(*args)
-      Insite::HatchpathCollection.new(self, parse_args(args).merge(tag_name: "hatchpath"))
-    end
-
     def head(*args)
       Insite::Head.new(self, parse_args(args).merge(tag_name: "head"))
     end
@@ -572,14 +556,6 @@ module Insite
       Insite::HTMLElementCollection.new(self, parse_args(args).merge(tag_name: "kbd"))
     end
 
-    def keygen(*args)
-      Insite::Keygen.new(self, parse_args(args).merge(tag_name: "keygen"))
-    end
-
-    def keygens(*args)
-      Insite::KeygenCollection.new(self, parse_args(args).merge(tag_name: "keygen"))
-    end
-
     def label(*args)
       Insite::Label.new(self, parse_args(args).merge(tag_name: "label"))
     end
@@ -658,54 +634,6 @@ module Insite
 
     def marks(*args)
       Insite::HTMLElementCollection.new(self, parse_args(args).merge(tag_name: "mark"))
-    end
-
-    def menu(*args)
-      Insite::Menu.new(self, parse_args(args).merge(tag_name: "menu"))
-    end
-
-    def menuitem(*args)
-      Insite::MenuItem.new(self, parse_args(args).merge(tag_name: "menuitem"))
-    end
-
-    def menuitems(*args)
-      Insite::MenuItemCollection.new(self, parse_args(args).merge(tag_name: "menuitem"))
-    end
-
-    def menus(*args)
-      Insite::MenuCollection.new(self, parse_args(args).merge(tag_name: "menu"))
-    end
-
-    def mesh(*args)
-      Insite::Mesh.new(self, parse_args(args).merge(tag_name: "mesh"))
-    end
-
-    def meshes(*args)
-      Insite::MeshCollection.new(self, parse_args(args).merge(tag_name: "mesh"))
-    end
-
-    def meshgradient(*args)
-      Insite::MeshGradient.new(self, parse_args(args).merge(tag_name: "meshgradient"))
-    end
-
-    def meshgradients(*args)
-      Insite::MeshGradientCollection.new(self, parse_args(args).merge(tag_name: "meshgradient"))
-    end
-
-    def meshpatch(*args)
-      Insite::Meshpatch.new(self, parse_args(args).merge(tag_name: "meshpatch"))
-    end
-
-    def meshpatches(*args)
-      Insite::MeshpatchCollection.new(self, parse_args(args).merge(tag_name: "meshpatch"))
-    end
-
-    def meshrow(*args)
-      Insite::Meshrow.new(self, parse_args(args).merge(tag_name: "meshrow"))
-    end
-
-    def meshrows(*args)
-      Insite::MeshrowCollection.new(self, parse_args(args).merge(tag_name: "meshrow"))
     end
 
     def meta(*args)
@@ -982,14 +910,6 @@ module Insite
 
     def smalls(*args)
       Insite::HTMLElementCollection.new(self, parse_args(args).merge(tag_name: "small"))
-    end
-
-    def solidcolor(*args)
-      Insite::Solidcolor.new(self, parse_args(args).merge(tag_name: "solidcolor"))
-    end
-
-    def solidcolors(*args)
-      Insite::SolidcolorCollection.new(self, parse_args(args).merge(tag_name: "solidcolor"))
     end
 
     def source(*args)

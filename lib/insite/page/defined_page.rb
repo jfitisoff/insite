@@ -174,16 +174,18 @@ module Insite
       def set_url_template(base_url)
         case @page_url
         when nil, ''
-          @url_template = Addressable::Template.new(base_url)
+          @url_template = Addressable::Template.new(
+            process_base_url(base_url)
+          )
         when /(http:\/\/|https:\/\/)/i
           @url_template = Addressable::Template.new(
-            @page_url.gsub(/(?<!:)\/\/+/, '/')
+            process_base_url(
+              @page_url.gsub(/(?<!:)\/\/+/, '/')
+            )
           )
         else
           @url_template = Addressable::Template.new(
-            Addressable::URI.parse(
-              "#{base_url}#{@page_url}".gsub(/(?<!:)\/\/+/, '/')
-            )
+            "#{process_base_url(base_url)}#{@page_url}".gsub(/(?<!:)\/\/+/, '/')
           )
         end
 
@@ -202,16 +204,17 @@ module Insite
         regexp ? @url_matcher = regexp : nil
       end
 
-      # def component_method(method_name, component_symbol, component_method, target_element)
-      #   @component_methods ||= []
-      #   @component_methods << method_name.to_sym unless @component_methods.include?(method_name.to_sym)
-      #
-      #   define_method(method_name) do |*args, &block|
-      #     self.class.const_get(component_symbol.to_s.camelize)
-      #     .new(@site, @site.send(target_element))
-      #     .send(component_method, *args, &block)
-      #   end
-      # end
+      private
+      def process_base_url(base)
+        case base
+        when /^(https\:|http\:)/
+          base.sub(/^(http\:|https\:)/, "{scheme}:")
+        when /^www\./
+          base.sub(/^www\./, "{scheme}://")
+        else
+          "{scheme}://#{base}"
+        end
+      end
     end # Self.
 
     def browser?
@@ -254,9 +257,22 @@ module Insite
       @query_arguments    = self.class.query_arguments
       @has_fragment       = self.class.has_fragment
 
-      # Try to expand the URL template if the URL has parameters.
-      @arguments = {}.with_indifferent_access # Stores the param list that will expand the url_template after examining the arguments used to initialize the page.
+      # Try to expand the URL template if the URL has parameters. Stores the
+      # param list that will expand the url_template after examining the
+      # arguments used to initialize the page. (Start with an empty hash and
+      # then build it out.)
+      @arguments = {}.with_indifferent_access
+
       match = @url_template.match(@browser.url)
+
+      # Raise if args are provided and the page doesn't take any args.
+      if (@required_arguments - [:scheme]).empty? && args
+        raise(
+          Insite::Errors::PageInitError,
+          "#{args.class} was provided as a #{self.class.name} initialization argument, " \
+          "but the page URL doesn't require any arguments.\n\n#{caller.join("\n")}"
+        )
+      end
 
       if @required_arguments.present? && !args
         @required_arguments.each do |arg|
@@ -278,14 +294,16 @@ module Insite
       elsif @required_arguments.present?
         @required_arguments.each do |arg| # Try to extract each URL argument from the hash or object provided, OR from the site object.
           if args.is_a?(Hash) && args.present?
-            args = args.with_indifferent_access
+            # args = args.with_indifferent_access
 
-            if args[arg] #The hash has the required argument.
+            if @arguments[arg] #The hash has the required argument.
               @arguments[arg]= args[arg]
             elsif match && match.keys.include?(arg.to_s)
               @arguments[arg] = match[arg.to_s]
             elsif @site.respond_to?(arg)
               @arguments[arg] = site.public_send(arg)
+            elsif @site.arguments[arg]
+              @arguments[arg] = @site.arguments[arg]
             else
               raise(
                 Insite::Errors::PageInitError,
@@ -296,9 +314,12 @@ module Insite
             end
           elsif args # Some non-hash object was provided.
             if args.respond_to?(arg) #The hash has the required argument.
+              # @arguments[arg]= args.public_send(arg)
               @arguments[arg]= args.public_send(arg)
             elsif @site.respond_to?(arg)
               @arguments[arg]= site.public_send(arg)
+            elsif @site.arguments[arg]
+              @arguments[arg] = @site.arguments[arg]
             else
               raise(
                 Insite::Errors::PageInitError,
@@ -311,12 +332,13 @@ module Insite
             # Do nothing here yet.
           end
         end
-      elsif @required_arguments.empty? && args # If there are no required arguments then nothing should be provided.
-        raise(
-          Insite::Errors::PageInitError,
-          "#{args.class} was provided as a #{self.class.name} initialization argument, " \
-          "but the page URL doesn't require any arguments.\n\n#{caller.join("\n")}"
-        )
+      # If there are no required arguments then nothing should be provided.
+      # elsif (@required_arguments - [:scheme]).empty? && args
+      #   raise(
+      #     Insite::Errors::PageInitError,
+      #     "#{args.class} was provided as a #{self.class.name} initialization argument, " \
+      #     "but the page URL doesn't require any arguments.\n\n#{caller.join("\n")}"
+      #   )
       else
         # Do nothing here yet.
       end

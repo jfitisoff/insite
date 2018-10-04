@@ -1,6 +1,5 @@
 module Insite
   METHOD_MAP = {Watir::Rect=>[:rect],
-   Watir::Menu=>[:menu],
    Watir::HTMLElement=>
     [:var,
      :i,
@@ -87,8 +86,6 @@ module Insite
   Watir::TimeCollection=>[:times],
   Watir::Circle=>[:circle],
   Watir::CircleCollection=>[:circles],
-  Watir::Cursor=>[:cursor],
-  Watir::CursorCollection=>[:cursors],
   Watir::Defs=>[:defs],
   Watir::DefsCollection=>[:defss],
   Watir::Desc=>[:desc],
@@ -99,20 +96,10 @@ module Insite
   Watir::ForeignObjectCollection=>[:foreign_objects],
   Watir::GCollection=>[:gs],
   Watir::Button=>[:button],
-  Watir::Hatchpath=>[:hatchpath],
-  Watir::HatchpathCollection=>[:hatchpaths],
   Watir::LinearGradient=>[:linear_gradient],
   Watir::LinearGradientCollection=>[:linear_gradients],
   Watir::Marker=>[:marker],
   Watir::MarkerCollection=>[:markers],
-  Watir::Mesh=>[:mesh],
-  Watir::MeshCollection=>[:meshes],
-  Watir::MeshGradient=>[:meshgradient],
-  Watir::MeshGradientCollection=>[:meshgradients],
-  Watir::Meshpatch=>[:meshpatch],
-  Watir::MeshpatchCollection=>[:meshpatches],
-  Watir::Meshrow=>[:meshrow],
-  Watir::MeshrowCollection=>[:meshrows],
   Watir::MetadataCollection=>[:metadatas],
   Watir::PatternCollection=>[:patterns],
   Watir::Polygon=>[:polygon],
@@ -122,10 +109,8 @@ module Insite
   Watir::AreaCollection=>[:areas],
   Watir::PolylineCollection=>[:polylines],
   Watir::Script=>[:script],
-  Watir::Solidcolor=>[:solidcolor],
   Watir::RadialGradient=>[:radial_gradient],
   Watir::RadialGradientCollection=>[:radial_gradients],
-  Watir::SolidcolorCollection=>[:solidcolors],
   Watir::RectCollection=>[:rects],
   Watir::SVG=>[:svg],
   Watir::SVGCollection=>[:svgs],
@@ -209,14 +194,10 @@ module Insite
   Watir::HtmlCollection=>[:htmls],
   Watir::HR=>[:hr],
   Watir::IFrame=>[:iframe],
-  Watir::Keygen=>[:keygen],
   Watir::InputCollection=>[:inputs],
-  Watir::KeygenCollection=>[:keygens],
   Watir::LegendCollection=>[:legends],
   Watir::LICollection=>[:lis],
   Watir::IFrameCollection=>[:iframes],
-  Watir::MenuItem=>[:menuitem],
-  Watir::MenuCollection=>[:menus],
   Watir::Legend=>[:legend],
   Watir::Meter=>[:meter],
   Watir::Label=>[:label],
@@ -225,7 +206,6 @@ module Insite
   Watir::MeterCollection=>[:meters],
   Watir::MetaCollection=>[:metas],
   Watir::Param=>[:param],
-  Watir::MenuItemCollection=>[:menuitems],
   Watir::Data=>[:data],
   Watir::OptGroupCollection=>[:optgroups],
   Watir::OList=>[:ol],
@@ -293,9 +273,9 @@ module Insite
   # Watir DOM methods. This data is used to create class-level element accessors
   # for page objects.
   DOM_METHODS = %i(
-    a            br          datalists         elements          forms       hidden   li                meshpatches  params            rect          source     tbody        tspan
-    abbr         brs         datas             ellipse           frame       hiddens  line              meshrow      path              rects         sources    tbodys       tspans
-    abbrs        bs          date_field        ellipses          frames      hr       linear_gradient   meshrows     paths             rp            span       td           u
+    a            br          datalists         elements          forms       hidden   li                             params            rect          source     tbody        tspan
+    abbr         brs         datas             ellipse           frame       hiddens  line                           path              rects         sources    tbodys       tspans
+    abbrs        bs          date_field        ellipses          frames      hr       linear_gradient                paths             rp            span       td           u
     address      button      date_fields       em                frameset    hrs      linear_gradients  meta         pattern           rps           spans      tds          ul
     addresses    buttons     date_time_field   embed             framesets   htmls    lines             metadata     patterns          rt            ss         template     uls
     area         canvas      date_time_fields  embeds            g           i        link              metadatas    picture           rtc           stop       templates    us
@@ -309,14 +289,14 @@ module Insite
     audios       cite        descs             figcaptions       h4          inputs   marker            object       progress          script        summaries  tfoots       views
     b            cites       details           figure            h4s         ins      markers           objects      progresses        scripts       summary    th           wbr
     base         code        detailses         figures           h5          inses    marks             ol           ps                section       sup        thead        wbrs
-    bases        codes       dfn               file_field        h5s         is       menu              ols          q                 sections      sups       theads
-    bdi          col         dfns              file_fields       h6          kbd      menuitem          optgroup     qs                select        svg        ths
-    bdis         colgroup    div               font              h6s         kbds     menuitems         optgroups    radial_gradient   select_list   svgs       time
-    bdo          colgroups   divs              fonts             hatchpath   keygen   menus             option       radial_gradients  select_lists  switch     times
-    bdos         cols        dl                footer            hatchpaths  keygens  mesh              options      radio             selects       switches   titles
-    blockquote   cursor      dls               footers           head        label    meshes            output       small             symbol        tr
-    blockquotes  cursors     dt                foreign_object    header      labels   meshgradient      outputs      radios            smalls        symbols    track
-    body         data        dts               foreign_objects   headers     legend   meshgradients     p            rb                solidcolor    table      tracks
-    bodys        datalist    element           form              heads       legends  meshpatch         param        rbs               solidcolors   tables     trs
+    bases        codes       dfn               file_field        h5s         is                         ols          q                 sections      sups       theads
+    bdi          col         dfns              file_fields       h6          kbd                        optgroup     qs                select        svg        ths
+    bdis         colgroup    div               font              h6s         kbds                       optgroups    radial_gradient   select_list   svgs       time
+    bdo          colgroups   divs              fonts                                                    option       radial_gradients  select_lists  switch     times
+    bdos         cols        dl                footer                                                   options      radio             selects       switches   titles
+    blockquote               dls               footers           head        label                      output       small             symbol        tr
+    blockquotes              dt                foreign_object    header      labels                     outputs      radios            smalls        symbols    track
+    body         data        dts               foreign_objects   headers     legend                     p            rb                              table      tracks
+    bodys        datalist    element           form              heads       legends                    param        rbs                             tables     trs
   ).freeze
 end
