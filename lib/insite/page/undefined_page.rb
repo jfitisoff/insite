@@ -1,6 +1,6 @@
 module Insite
   class UndefinedPage
-    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher
+    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :required_arguments, :site, :url_template, :url_matcher
 
     include Insite::CommonMethods
     extend  Insite::ComponentMethods

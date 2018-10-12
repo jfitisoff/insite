@@ -1,8 +1,9 @@
 # TODO: Title matcher?
 # TODO: Add page query methods.
+require 'pry'
 module Insite
   class DefinedPage
-    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :query_arguments, :required_arguments, :site, :url_template, :url_matcher, :component_elements
+    attr_reader :arguments, :browser, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :required_arguments, :site, :url_template, :url_matcher, :component_elements
 
     include Insite::CommonMethods
     extend  Insite::ComponentMethods
@@ -12,7 +13,7 @@ module Insite
     alias_method :update_page, :update_object
 
     class << self
-      attr_reader :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :url_matcher, :url_hash, :url_template
+      attr_reader :arguments, :has_fragment, :page_attributes, :page_elements, :page_features, :page_url, :required_arguments, :url_matcher, :url_hash, :url_template
       attr_accessor :component_elements
 
       # Allows you to set special page attributes that affect page behavior. The two page
@@ -66,15 +67,6 @@ module Insite
       def page_template?
         @page_attributes ||= []
         @page_attributes.include? :page_template
-      end
-
-      # Returns an array of symbols representing the required arguments for the page's page URL.
-      def required_arguments
-        @arguments ||= @url_template.keys.map { |k| k.to_sym }
-      end
-
-      def query_arguments
-        required_arguments.find { |x| @url_template.pattern =~ /\?.*#{x}=*/ }
       end
 
       # Used to define the full or relative URL to the page. Typically, you will *almost* *always* want to use
@@ -190,6 +182,13 @@ module Insite
         end
 
         @has_fragment = @url_template.pattern =~ /#/
+
+        @arguments ||= @url_template.keys.map(&:to_sym)
+
+        @required_arguments ||= @url_template.pattern
+          .scan(/\{(#{self.arguments.join('|')})/)
+          .flatten
+          .map(&:to_sym)
       end
 
       # Optional. Allows you to specify a fallback mechanism for checking to see if the correct page is
@@ -251,10 +250,10 @@ module Insite
       @page_elements      = self.class.page_elements
       # TODO: Clean this up
       @page_features      = self.class.instance_variable_get(:@page_features)
+      @all_arguments      = self.class.arguments
       @required_arguments = self.class.required_arguments
       @url_matcher        = self.class.url_matcher
       @url_template       = self.class.url_template
-      @query_arguments    = self.class.query_arguments
       @has_fragment       = self.class.has_fragment
 
       # Try to expand the URL template if the URL has parameters. Stores the
@@ -266,7 +265,7 @@ module Insite
       match = @url_template.match(@browser.url)
 
       # Raise if args are provided and the page doesn't take any args.
-      if (@required_arguments - [:scheme]).empty? && args
+      if (@all_arguments - [:scheme]).empty? && args
         raise(
           Insite::Errors::PageInitError,
           "#{args.class} was provided as a #{self.class.name} initialization argument, " \
@@ -274,28 +273,30 @@ module Insite
         )
       end
 
-      if @required_arguments.present? && !args
-        @required_arguments.each do |arg|
+      if @all_arguments.present? && !args
+        @all_arguments.each do |arg|
           if match && match.keys.include?(arg.to_s)
             @arguments[arg] = match[arg.to_s]
           elsif @site.arguments[arg]
             @arguments[arg] = @site.arguments[arg]
           elsif @site.respond_to?(arg) && @site.public_send(arg)
             @arguments[arg] = @site.public_send(arg)
+          elsif !@required_arguments.include?(arg)
+            @arguments[arg] = nil
           else
             raise(
               Insite::Errors::PageInitError,
-              "No arguments provided when attempting to initialize #{self.class.name}. " \
-              "This page object requires the following arguments for initialization: "\
-              ":#{@required_arguments.join(', :')}.\n\n#{caller.join("\n")}"
+              "An error occurred when attempting to build a URL for the #{self.class} page.\n" \
+              "URL template:\t#{@url_template.pattern}\n" \
+              "URL arguments:\t#{@arguments}\n" \
+              "Required args:\t#{@required_arguments.join(', :')}.\n" \
+              "Generated URL:\t#{@url_template.expand(@arguments)}\n"
             )
           end
         end
-      elsif @required_arguments.present?
-        @required_arguments.each do |arg| # Try to extract each URL argument from the hash or object provided, OR from the site object.
+      elsif @all_arguments.present?
+        @all_arguments.each do |arg| # Try to extract each URL argument from the hash or object provided, OR from the site object.
           if args.is_a?(Hash) && args.present?
-            # args = args.with_indifferent_access
-
             if @arguments[arg] #The hash has the required argument.
               @arguments[arg]= args[arg]
             elsif match && match.keys.include?(arg.to_s)
@@ -304,41 +305,41 @@ module Insite
               @arguments[arg] = site.public_send(arg)
             elsif @site.arguments[arg]
               @arguments[arg] = @site.arguments[arg]
+            elsif !@required_arguments.include?(arg)
+              @arguments[arg] = nil
             else
               raise(
                 Insite::Errors::PageInitError,
-                "A required page argument is missing. #{args.class} was provided, " \
-                "but this object did not respond to :#{arg}, which is necessary to " \
-                "build a URL for the #{self.class.name} page.\n\n#{caller.join("\n")}"
+                "An error occurred when attempting to build a URL for the #{self.class} page.\n" \
+                "URL template:\t#{@url_template.pattern}\n" \
+                "URL arguments:\t#{@arguments}\n" \
+                "Required args:\t#{@required_arguments.join(', :')}.\n" \
+                "Generated URL:\t#{@url_template.expand(@arguments)}\n"
               )
             end
           elsif args # Some non-hash object was provided.
             if args.respond_to?(arg) #The hash has the required argument.
-              # @arguments[arg]= args.public_send(arg)
               @arguments[arg]= args.public_send(arg)
             elsif @site.respond_to?(arg)
               @arguments[arg]= site.public_send(arg)
             elsif @site.arguments[arg]
               @arguments[arg] = @site.arguments[arg]
+            elsif !@required_arguments.include?(arg)
+              @arguments[arg] = nil
             else
               raise(
                 Insite::Errors::PageInitError,
-                "A required page argument is missing. #{args.class} was provided, but " \
-                "this object did not respond to :#{arg}, which is necessary to build " \
-                "a URL for the #{self.class.name} page.\n\n#{caller.join("\n")}"
+                "An error occurred when attempting to build a URL for the #{self.class} page.\n" \
+                "URL template:\t#{@url_template.pattern}\n" \
+                "URL arguments:\t#{@arguments}\n" \
+                "Required args:\t#{@required_arguments.join(', :')}.\n" \
+                "Generated URL:\t#{@url_template.expand(@arguments)}\n"
               )
             end
           else
             # Do nothing here yet.
           end
         end
-      # If there are no required arguments then nothing should be provided.
-      # elsif (@required_arguments - [:scheme]).empty? && args
-      #   raise(
-      #     Insite::Errors::PageInitError,
-      #     "#{args.class} was provided as a #{self.class.name} initialization argument, " \
-      #     "but the page URL doesn't require any arguments.\n\n#{caller.join("\n")}"
-      #   )
       else
         # Do nothing here yet.
       end
@@ -390,9 +391,7 @@ module Insite
       @page_attributes.include? :navigation_disabled
     end
 
-    def on_page?
-      url = @browser.url
-
+    def on_page?(url = @browser.url)
       if @url_matcher
         if @url_matcher =~ url
           return true
