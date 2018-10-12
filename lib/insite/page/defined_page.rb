@@ -264,15 +264,6 @@ module Insite
 
       match = @url_template.match(@browser.url)
 
-      # Raise if args are provided and the page doesn't take any args.
-      if (@all_arguments - [:scheme]).empty? && args
-        raise(
-          Insite::Errors::PageInitError,
-          "#{args.class} was provided as a #{self.class.name} initialization argument, " \
-          "but the page URL doesn't require any arguments.\n\n#{caller.join("\n")}"
-        )
-      end
-
       if @all_arguments.present? && !args
         @all_arguments.each do |arg|
           if match && match.keys.include?(arg.to_s)
