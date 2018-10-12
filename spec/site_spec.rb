@@ -140,11 +140,6 @@ describe "page objects" do
     lang = Lang.new('en')
     @site.home_page lang
   end
-
-  it "raises when the page URL has no arguments but page arguments are provided" do
-    expect { @site.no_attr_page foo: 'bar' }.to raise_error Insite::Errors::PageInitError
-  end
-
 end
 
 describe "Site Object Delegation" do
