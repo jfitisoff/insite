@@ -80,25 +80,6 @@ module Insite
       end
     end
 
-    # def initialize(site, element)
-    #   @site    = site
-    #   @browser = @site.browser
-    #   @target  = element
-    #
-    #   # Temporary replacement for custom wait_until.
-    #   # TODO: Continue looking at scolling solutions.
-    #   if @target.present? && @target.respond_to?(:scroll)
-    #     @target.scroll.to
-    #     t = ::Time.now + 2
-    #     while ::Time.now <= t do
-    #       break if @target.present?
-    #       sleep 0.1
-    #     end
-    #   end
-    #
-    #   @target
-    # end
-
     def inspect
       if @target.selector.present?
         s = @selector.to_s
