@@ -117,8 +117,16 @@ module Insite
   #  => 1
   # TODO: Sort args.
   def initialize(base_url = nil, hsh={})
+    if hsh.include?(:scheme)
+      @arguments = hsh.with_indifferent_access
+    else
+      base_url.match(/(https|http)/i)
+      scheme = $1 || 'https'
+      @arguments = hsh.merge({scheme: scheme}).with_indifferent_access
+    end
+
     @site = self
-    @arguments    = hsh.merge({scheme: 'https'}).with_indifferent_access
+    @arguments    = hsh.merge({scheme: scheme}).with_indifferent_access
     @base_url     = base_url
     @browser_type = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
 
