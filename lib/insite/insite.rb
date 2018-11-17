@@ -126,7 +126,6 @@ module Insite
     end
 
     @site = self
-    @arguments    = hsh.merge({scheme: scheme}).with_indifferent_access
     @base_url     = base_url
     @browser_type = (@arguments[:browser] ? @arguments[:browser].to_sym : nil)
 
