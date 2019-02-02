@@ -3,7 +3,7 @@ require './lib/insite/version'
 Gem::Specification.new do |s|
   summary = [
     "Page object library with an emphasis on simplified navigation and reusable code.",
-    "It has features geared towards supporting web components (www.webcomponents.org)"
+    "It has features geared towards supporting web components (www.webcomponents.org)",
     "or any recurring feature in your application. UI automation components that you",
     "define are extensions of the DOM and are fully interopable with standard DOM",
     "elements and other components."
